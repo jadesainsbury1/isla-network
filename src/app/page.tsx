@@ -105,6 +105,7 @@ export default function LandingPage() {
           <a className="lp-nav-link" href="#faq">FAQ</a>
           <a className="lp-nav-link" href="#pricing">Pricing</a>
           <button className="lp-nav-btn" onClick={() => setBannerVisible(true)}>Join Now</button><a href="/demo" style={{padding:"9px 20px",background:"transparent",color:"#B8944A",fontFamily:"DM Mono,monospace",fontSize:"10px",letterSpacing:"0.15em",textTransform:"uppercase",border:"1px solid #B8944A44",textDecoration:"none",marginLeft:"8px"}}>See Demo</a>
+          <Link href="/auth/login" className="lp-nav-link" style={{ marginLeft: 8 }}>Sign In</Link>
         </div>
       </nav>
 
