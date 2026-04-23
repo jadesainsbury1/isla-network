@@ -114,7 +114,7 @@ export default function LandingPage() {
         <div className="lp-hero-inner">
           <div className="lp-hero-tag">Verified · Ibiza 2026 · Expanding Globally</div>
           <h1>
-            
+            Never lose a commission <em>again.</em>
           </h1>
           <p className="lp-hero-sub">
             Track every euro you&apos;re owed. Know who&apos;s paid. Know who hasn&apos;t.
