@@ -72,7 +72,7 @@ export default function LandingPage() {
         <div className="lp-banner">
           <div className="lp-banner-logo">ISLA · The Concierge Network</div>
           <h1 className="lp-banner-headline">
-            Never lose a<br />commission <em>again.</em>
+            
           </h1>
           <p className="lp-banner-sub">
             Track every euro you&apos;re owed. Find the highest-paying booking{' '}
@@ -113,7 +113,7 @@ export default function LandingPage() {
         <div className="lp-hero-inner">
           <div className="lp-hero-tag">Verified · Ibiza 2026 · Expanding Globally</div>
           <h1>
-            Never lose a<br />commission <em>again.</em>
+            
           </h1>
           <p className="lp-hero-sub">
             Track every euro you&apos;re owed. Know who&apos;s paid. Know who hasn&apos;t.

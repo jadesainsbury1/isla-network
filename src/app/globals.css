@@ -486,6 +486,20 @@ tr:hover td { background: #1E1C1833; }
 
 /* Banner */
 .lp-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--lp-gold);
+  color: var(--lp-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 32px;
+  gap: 16px;
+}
+.lp-banner {
   position: fixed; inset: 0;
   background: var(--lp-ink);
   z-index: 1000;
@@ -493,45 +507,14 @@ tr:hover td { background: #1E1C1833; }
   align-items: center; justify-content: center;
   padding: 48px 24px; text-align: center;
 }
-.lp-banner::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 30%, #B8944A0E, transparent 60%),
-              radial-gradient(ellipse 40% 60% at 20% 80%, #2E5F6E08, transparent 60%);
-  pointer-events: none;
-}
-.lp-banner-logo {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px; letter-spacing: 0.3em;
-  color: var(--lp-gold); margin-bottom: 48px;
-  position: relative; z-index: 1;
-}
-.lp-banner-headline {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(44px, 8vw, 88px); font-weight: 300;
-  color: var(--lp-sand); line-height: 0.95;
-  letter-spacing: -0.02em; margin-bottom: 24px;
-  position: relative; z-index: 1;
-}
+.lp-banner::before { display:none; }
+.lp-banner-logo { display:none; }
+.lp-banner-headline { display:none; }
 .lp-banner-headline em { font-style: italic; color: var(--lp-gold); }
-.lp-banner-sub {
-  font-size: clamp(15px, 2vw, 18px); color: var(--lp-muted);
-  max-width: 480px; line-height: 1.65; margin-bottom: 48px;
-  font-weight: 300; position: relative; z-index: 1;
-}
+.lp-banner-sub { font-size:13px; color:var(--lp-ink); margin:0; }
 .lp-banner-sub strong { color: #C8C0B4; font-weight: 400; }
-.lp-banner-btns {
-  display: flex; gap: 12px; flex-wrap: wrap;
-  justify-content: center; margin-bottom: 32px;
-  position: relative; z-index: 1;
-}
-.lp-banner-dismiss {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.2em; color: #3A3028;
-  text-transform: uppercase; cursor: pointer;
-  transition: color 0.2s; position: relative; z-index: 1;
-  background: none; border: none;
-}
+.lp-banner-btns { display:flex; gap:8px; flex-shrink:0; }
+.lp-banner-dismiss { font-family:"DM Mono",monospace; font-size:10px; letter-spacing:0.15em; color:var(--lp-ink); opacity:0.6; background:none; border:none; cursor:pointer; flex-shrink:0; }
 .lp-banner-dismiss:hover { color: var(--lp-muted); }
 
 /* Buttons */
@@ -791,6 +774,6 @@ tr:hover td { background: #1E1C1833; }
   .lp-pricing-grid { grid-template-columns: 1fr; }
   .lp-qa-grid { grid-template-columns: 1fr; }
   .lp-hero-stats { grid-template-columns: 1fr; gap: 20px; }
-  .lp-banner-btns { flex-direction: column; align-items: center; }
+  .lp-banner-btns { display:flex; gap:8px; flex-shrink:0; }
   .lp-nav-links .lp-nav-link { display: none; }
 }
