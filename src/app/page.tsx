@@ -100,7 +100,7 @@ export default function LandingPage() {
         </div>
         <div className="lp-nav-links">
           <a className="lp-nav-link" href="#concierges">Concierges</a>
-          <a className="lp-nav-link" href="#venues">Venues</a>
+          <a className="lp-nav-link" href="#venues" style={{color:"var(--lp-gold)",fontWeight:500}}>· Venues</a>
           <a className="lp-nav-link" href="#leaderboard">Leaderboard</a>
           <a className="lp-nav-link" href="#faq">FAQ</a>
           <a className="lp-nav-link" href="#pricing">Pricing</a>
