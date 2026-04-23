@@ -62,7 +62,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 }
 
 export default function LandingPage() {
-  const [bannerVisible, setBannerVisible] = useState(true)
+  const [bannerVisible, setBannerVisible] = useState(false)
 
   return (
     <div className="lp">
