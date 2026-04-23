@@ -41,11 +41,13 @@ export default async function VenuesPage() {
                 </div>
                 <div className="venue-card-name">{venue.name}</div>
                 <div className="venue-card-type">{venue.category} · {venue.area || 'Ibiza'}</div>
+                {venue.area && <div style={{ fontSize: 11, color: 'var(--muted)', fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase', marginTop: 2 }}>📍 {venue.area}</div>}
                 <div className="venue-comm-row">
                   <span className="vcr-label">Your rate</span>
                   <span className="vcr-val">{venue.commission_rate}</span>
                 </div>
                 <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>
+                  {venue.booking_instructions && <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4, fontStyle: 'italic' }}>{venue.booking_instructions}</div>}
                   Basis: {venue.commission_basis}
                 </div>
                 {venue.contact && (
