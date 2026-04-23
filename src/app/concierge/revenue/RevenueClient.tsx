@@ -58,7 +58,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
             <span className="mono" style={{ fontSize: 10, color: 'var(--muted)' }}>{bookings.length} total</span>
           </div>
           {bookings.length === 0 ? (
-            <<div className="empty-state">
+            <div className="empty-state">
               <div className="empty-state-icon">💰</div>
               <div className="empty-state-title">Your commission dashboard starts here.</div>
               <div className="empty-state-sub">Every euro you refer — tracked, confirmed, chased automatically. Log your first booking in 10 seconds.</div>
