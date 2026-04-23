@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import VenueListingForm from './VenueListingForm'
 
 export default async function VenueListingPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 

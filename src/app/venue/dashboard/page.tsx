@@ -4,7 +4,7 @@ import ReferralActions from '@/components/ReferralActions'
 import type { Booking, Profile } from '@/lib/types'
 
 export default async function VenueDashboardPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 

@@ -9,7 +9,7 @@ const navItems = [
 ]
 
 export default async function VenueLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 

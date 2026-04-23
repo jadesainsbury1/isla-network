@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm --version)",
-      "Bash(brew list *)"
+      "Bash(brew list *)",
+      "Bash(npm run *)"
     ]
   }
 }
