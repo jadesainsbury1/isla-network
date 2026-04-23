@@ -58,13 +58,20 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
             <span className="mono" style={{ fontSize: 10, color: 'var(--muted)' }}>{bookings.length} total</span>
           </div>
           {bookings.length === 0 ? (
-            <div className="empty-state">
+            <<div className="empty-state">
               <div className="empty-state-icon">💰</div>
-              <div className="empty-state-title">No bookings yet</div>
-              <div className="empty-state-sub">Log your first booking to start tracking commissions</div>
-              <button className="btn btn-gold btn-sm" style={{ marginTop: 16 }} onClick={() => setShowModal(true)}>
-                + Log First Booking
-              </button>
+              <div className="empty-state-title">Your commission dashboard starts here.</div>
+              <div className="empty-state-sub">Every euro you refer — tracked, confirmed, chased automatically. Log your first booking in 10 seconds.</div>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
+                <button className="btn btn-gold btn-sm" onClick={() => setShowModal(true)}>+ Log First Booking</button>
+                <a href="/demo" style={{ padding: '8px 20px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, fontSize: 13, color: 'var(--muted)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>See How It Works →</a>
+              </div>
+              <div style={{ marginTop: 28, padding: '16px 20px', background: 'var(--surface)', borderRadius: 8, maxWidth: 400, margin: '24px auto 0' }}>
+                <div style={{ fontSize: 11, fontFamily: 'monospace', letterSpacing: '0.1em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 10 }}>What you'll see here</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text)', marginBottom: 6 }}><span>Total commissions owed</span><span style={{ color: 'var(--gold)' }}>€0</span></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text)', marginBottom: 6 }}><span>Confirmed & paid</span><span style={{ color: 'var(--green)' }}>€0</span></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: 'var(--text)' }}><span>Overdue — chase now</span><span style={{ color: 'var(--red)' }}>€0</span></div>
+              </div>
             </div>
           ) : (
             <table>
