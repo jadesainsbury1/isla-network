@@ -12,7 +12,7 @@
       "static/chunks/fd9d1056-c2bd33e13348e73e.js",
       "static/chunks/23-a97b47ba7817eeca.js",
       "static/chunks/main-app-a224e77547eb5bc9.js",
-      "static/css/47b86795556dedd6.css",
+      "static/css/62f081662ea51c30.css",
       "static/chunks/app/layout-44f7bedbc6ed2bc3.js"
     ],
     "/auth/login/page": [
@@ -35,6 +35,14 @@
       "static/chunks/231-dfab00c89451ed67.js",
       "static/chunks/app/auth/signup/page-3b2ee93261cc1fa4.js"
     ],
+    "/page": [
+      "static/chunks/webpack-c84e7b3dbc67fa68.js",
+      "static/chunks/fd9d1056-c2bd33e13348e73e.js",
+      "static/chunks/23-a97b47ba7817eeca.js",
+      "static/chunks/main-app-a224e77547eb5bc9.js",
+      "static/chunks/231-dfab00c89451ed67.js",
+      "static/chunks/app/page-48ab25e510db1619.js"
+    ],
     "/dashboard/page": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
       "static/chunks/fd9d1056-c2bd33e13348e73e.js",
@@ -42,22 +50,14 @@
       "static/chunks/main-app-a224e77547eb5bc9.js",
       "static/chunks/app/dashboard/page-9d59461ed8622b9e.js"
     ],
-    "/page": [
-      "static/chunks/webpack-c84e7b3dbc67fa68.js",
-      "static/chunks/fd9d1056-c2bd33e13348e73e.js",
-      "static/chunks/23-a97b47ba7817eeca.js",
-      "static/chunks/main-app-a224e77547eb5bc9.js",
-      "static/chunks/231-dfab00c89451ed67.js",
-      "static/chunks/app/page-03ebb77e522b8e1a.js"
-    ],
-    "/venue/dashboard/page": [
+    "/venue/listing/page": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
       "static/chunks/fd9d1056-c2bd33e13348e73e.js",
       "static/chunks/23-a97b47ba7817eeca.js",
       "static/chunks/main-app-a224e77547eb5bc9.js",
       "static/chunks/44530001-cf93a96be775d8c6.js",
       "static/chunks/953-b43e745131097c3a.js",
-      "static/chunks/app/venue/dashboard/page-891ec7ba27b93ba1.js"
+      "static/chunks/app/venue/listing/page-7ae1048f1bddf116.js"
     ],
     "/venue/layout": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
@@ -69,21 +69,23 @@
       "static/chunks/231-dfab00c89451ed67.js",
       "static/chunks/app/venue/layout-de9ab0bcae2ef36a.js"
     ],
-    "/venue/listing/page": [
+    "/venue/dashboard/page": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
       "static/chunks/fd9d1056-c2bd33e13348e73e.js",
       "static/chunks/23-a97b47ba7817eeca.js",
       "static/chunks/main-app-a224e77547eb5bc9.js",
       "static/chunks/44530001-cf93a96be775d8c6.js",
       "static/chunks/953-b43e745131097c3a.js",
-      "static/chunks/app/venue/listing/page-7ae1048f1bddf116.js"
+      "static/chunks/app/venue/dashboard/page-891ec7ba27b93ba1.js"
     ],
-    "/concierge/opportunities/page": [
+    "/concierge/revenue/page": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
       "static/chunks/fd9d1056-c2bd33e13348e73e.js",
       "static/chunks/23-a97b47ba7817eeca.js",
       "static/chunks/main-app-a224e77547eb5bc9.js",
-      "static/chunks/app/concierge/opportunities/page-6c42f24238a0520d.js"
+      "static/chunks/44530001-cf93a96be775d8c6.js",
+      "static/chunks/953-b43e745131097c3a.js",
+      "static/chunks/app/concierge/revenue/page-5507f5ae5c03590d.js"
     ],
     "/concierge/layout": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
@@ -95,21 +97,19 @@
       "static/chunks/231-dfab00c89451ed67.js",
       "static/chunks/app/concierge/layout-11c3076f9a9b1e5e.js"
     ],
+    "/concierge/opportunities/page": [
+      "static/chunks/webpack-c84e7b3dbc67fa68.js",
+      "static/chunks/fd9d1056-c2bd33e13348e73e.js",
+      "static/chunks/23-a97b47ba7817eeca.js",
+      "static/chunks/main-app-a224e77547eb5bc9.js",
+      "static/chunks/app/concierge/opportunities/page-6c42f24238a0520d.js"
+    ],
     "/concierge/venues/page": [
       "static/chunks/webpack-c84e7b3dbc67fa68.js",
       "static/chunks/fd9d1056-c2bd33e13348e73e.js",
       "static/chunks/23-a97b47ba7817eeca.js",
       "static/chunks/main-app-a224e77547eb5bc9.js",
       "static/chunks/app/concierge/venues/page-d52939d75bdef108.js"
-    ],
-    "/concierge/revenue/page": [
-      "static/chunks/webpack-c84e7b3dbc67fa68.js",
-      "static/chunks/fd9d1056-c2bd33e13348e73e.js",
-      "static/chunks/23-a97b47ba7817eeca.js",
-      "static/chunks/main-app-a224e77547eb5bc9.js",
-      "static/chunks/44530001-cf93a96be775d8c6.js",
-      "static/chunks/953-b43e745131097c3a.js",
-      "static/chunks/app/concierge/revenue/page-5507f5ae5c03590d.js"
     ]
   }
 }
