@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISLA — Never Lose a Commission Again</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0E0C08;
+  --charcoal: #161410;
+  --surface: #1E1C18;
+  --border: #2A2620;
+  --muted: #5A5048;
+  --text: #B8B0A0;
+  --cream: #F2EDE4;
+  --gold: #C9A96E;
+  --gold-dim: #7A5E32;
+  --gold-bright: #E0C080;
+  --green: #4A8A5A;
+  --green-bright: #6ABB7A;
+  --red: #8A3A1A;
+  --red-bright: #C05A3A;
+  --amber: #8A6A1A;
+  --amber-bright: #C09A3A;
+  --radius: 6px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN ── */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:999;
+}
+
+/* ════════════════════════════════ */
+/* LANDING                         */
+/* ════════════════════════════════ */
+#landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAV */
+.land-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.logo-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  display: block;
+}
+
+.nav-links { display:flex; gap:16px; align-items:center; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold:hover { background: var(--gold-bright); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--cream); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--gold-dim); color: var(--gold); }
+.btn-green { background: var(--green); color: var(--cream); }
+.btn-green:hover { background: #5A9A6A; }
+.btn-sm { padding: 7px 14px; font-size: 11px; }
+.btn-full { width:100%; justify-content:center; }
+.btn-red { background: var(--red); color: var(--cream); }
+
+/* HERO */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 48px 48px;
+  position: relative;
+}
+
+.hero::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 30%, #C9A96E0A, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, #4A8A5A06, transparent 60%);
+  pointer-events:none;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content:'';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 8vw, 96px);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 em { font-style: italic; color: var(--gold); }
+
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--muted);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sub strong { color: var(--text); }
+
+.hero-pills {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.hero-pill.active {
+  color: var(--gold);
+  border-color: var(--gold-dim);
+  background: #C9A96E0A;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 1;
+}
+
+/* MONEY PREVIEW */
+.money-preview {
+  background: var(--charcoal);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.money-preview-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.money-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.money-box {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.money-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.money-val.pending { color: var(--gold); }
+.money-val.confirmed { color: var(--green-bright); }
+.money-val.overdue { color: var(--red-bright); }
+
+.money-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.money-label.pending { color: var(--gold-dim); }
+.money-label.confirmed { color: var(--green); }
+.money-label.overdue { color: var(--red); }
+
+.mini-bookings { display:flex; flex-direction:column; gap:4px; }
+
+.mini-booking {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-radius: 4px;
+}
+
+.mini-booking-name { font-size: 12px; color: var(--text); }
+.mini-booking-val { font-family: 'DM Mono', monospace; font-size: 12px; }
+.mini-booking-val.paid { color: var(--green-bright); }
+.mini-booking-val.pending-val { color: var(--gold); }
+.mini-booking-val.overdue-val { color: var(--red-bright); }
+
+/* FEATURES STRIP */
+.features-strip {
+  background: var(--charcoal);
+  border-top: 1px solid var(--border);
+  padding: 40px 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.feat { padding: 0 32px; border-right: 1px solid var(--border); }
+.feat:first-child { padding-left: 0; }
+.feat:last-child { border-right: none; padding-right: 0; }
+
+.feat-icon { font-size: 18px; margin-bottom: 10px; display: block; }
+
+.feat-title {
+  font-size: 15px;
+  color: var(--cream);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.feat-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* SECTION STRIPS */
+.for-strip {
+  padding: 64px 48px;
+  border-top: 1px solid var(--border);
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.for-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.for-concierge .for-tag { color: var(--gold-dim); }
+.for-venue .for-tag { color: var(--green); }
+
+.for-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.for-title em { font-style: italic; }
+.for-concierge .for-title em { color: var(--gold); }
+.for-venue .for-title em { color: var(--green-bright); }
+
+.check-list { list-style: none; display:flex; flex-direction:column; gap:8px; }
+.check-list li { display:flex; gap:10px; font-size:13px; color:var(--text); line-height:1.5; }
+.for-concierge .check-list li::before { content:'→'; color:var(--gold); flex-shrink:0; font-weight:700; }
+.for-venue .check-list li::before { content:'→'; color:var(--green-bright); flex-shrink:0; font-weight:700; }
+
+/* CLOSER */
+.closer {
+  background: var(--charcoal);
+  border-top: 1px solid var(--border);
+  padding: 64px 48px;
+  text-align: center;
+}
+
+.closer h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 300;
+  color: var(--cream);
+  margin-bottom: 12px;
+  line-height: 1.1;
+}
+
+.closer h2 em { font-style: italic; color: var(--gold); }
+
+.closer p {
+  color: var(--muted);
+  max-width: 420px;
+  margin: 0 auto 32px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.closer-footer {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--border);
+  text-transform: uppercase;
+}
+
+/* ════════════════════════════════ */
+/* APP                             */
+/* ════════════════════════════════ */
+#app { display:none; min-height:100vh; }
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: var(--charcoal);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-top {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-user {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--cream);
+  flex-shrink: 0;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.user-name { font-size: 13px; color: var(--cream); font-weight: 500; }
+.user-role { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.1em; }
+
+.sidebar-nav { flex:1; padding: 12px 0; overflow-y: auto; }
+
+.nav-section {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding: 12px 20px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.nav-item:hover { background: var(--surface); color: var(--text); }
+.nav-item.active { background: var(--surface); color: var(--cream); border-left-color: var(--gold); }
+.nav-item .nav-icon { font-size: 14px; width: 18px; }
+
+.sidebar-bottom {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.role-toggle {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  width: 100%;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  transition: all 0.15s;
+  text-transform: uppercase;
+  border: none;
+  background: transparent;
+  text-align: center;
+}
+
+.role-btn.active { background: var(--gold); color: var(--ink); }
+
+/* MAIN */
+.main-col { background: var(--ink); overflow-y: auto; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  background: var(--ink);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.page-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  color: var(--cream);
+  font-weight: 400;
+}
+
+.topbar-right { display: flex; gap: 10px; align-items: center; }
+
+.body { padding: 28px; }
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* MONEY HEADER */
+.money-header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.money-card {
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.money-card.total {
+  background: linear-gradient(135deg, #1E1C18, #252218);
+  border: 1px solid var(--gold-dim);
+}
+
+.money-card.confirmed-card {
+  background: var(--surface);
+  border: 1px solid #4A8A5A44;
+}
+
+.money-card.overdue-card {
+  background: var(--surface);
+  border: 1px solid #8A3A1A44;
+}
+
+.money-card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.money-card.total .money-card-label { color: var(--gold-dim); }
+.money-card.confirmed-card .money-card-label { color: var(--green); }
+.money-card.overdue-card .money-card-label { color: var(--red); }
+
+.money-card-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 300;
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.money-card.total .money-card-val { color: var(--gold); }
+.money-card.confirmed-card .money-card-val { color: var(--green-bright); }
+.money-card.overdue-card .money-card-val { color: var(--red-bright); }
+
+.money-card-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* TABLE */
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.table-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table-title { font-size: 14px; color: var(--cream); font-weight: 500; }
+
+table { width:100%; border-collapse:collapse; }
+
+th {
+  padding: 10px 20px;
+  text-align: left;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--muted);
+  text-transform: uppercase;
+  background: var(--charcoal);
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #FFFFFF03; }
+
+.td-name { color: var(--cream); font-weight: 500; }
+.td-mono { font-family: 'DM Mono', monospace; font-size: 12px; }
+.td-gold { color: var(--gold); }
+.td-muted { color: var(--muted); font-size: 12px; }
+.td-green { color: var(--green-bright); }
+.td-red { color: var(--red-bright); }
+.td-amber { color: var(--amber-bright); }
+
+/* STATUS BADGES */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.badge-paid { background:#4A8A5A22; color:var(--green-bright); border:1px solid #4A8A5A44; }
+.badge-pending { background:#C9A96E22; color:var(--gold); border:1px solid #C9A96E44; }
+.badge-overdue { background:#8A3A1A22; color:var(--red-bright); border:1px solid #8A3A1A44; }
+.badge-confirmed { background:#4A8FA822; color:#6AB0C8; border:1px solid #4A8FA844; }
+.badge-verified { background:#4A8A5A22; color:var(--green-bright); border:1px solid #4A8A5A44; }
+.badge-elite { background:#C9A96E22; color:var(--gold); border:1px solid #C9A96E44; }
+.badge-new { background:#7A5A9A22; color:#9A7ABB; border:1px solid #7A5A9A44; }
+
+/* FEED */
+.feed { display:flex; flex-direction:column; gap:8px; }
+
+.feed-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.feed-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.feed-dot.green { background: var(--green-bright); }
+.feed-dot.gold { background: var(--gold); }
+.feed-dot.red { background: var(--red-bright); }
+
+.feed-title { font-size: 13px; color: var(--cream); font-weight: 500; margin-bottom: 3px; }
+.feed-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.feed-time { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 4px; }
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--charcoal);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 460px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  color: var(--cream);
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.modal-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+.form-group { margin-bottom: 14px; }
+
+.form-label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus { border-color: var(--gold-dim); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.commission-preview {
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.comm-preview-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.comm-preview-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  color: var(--gold);
+  font-weight: 300;
+}
+
+.modal-actions { display:flex; gap:10px; margin-top:20px; justify-content:flex-end; }
+
+/* CONFIRM CARD */
+.confirm-card {
+  background: var(--surface);
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.confirm-info { flex: 1; }
+.confirm-title { font-size: 13px; color: var(--cream); font-weight: 500; margin-bottom: 3px; }
+.confirm-sub { font-size: 11px; color: var(--muted); }
+.confirm-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* VENUE CARD */
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.venue-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+}
+
+.venue-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+
+.venue-card-name { font-size: 14px; color: var(--cream); font-weight: 500; margin-bottom: 3px; }
+.venue-card-type { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+
+.venue-comm-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--charcoal);
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.vcr-label { font-size: 11px; color: var(--muted); }
+.vcr-val { font-size: 14px; color: var(--gold); font-family: 'Cormorant Garamond', serif; }
+
+.venue-reliability {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.rel-label { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; }
+.rel-dots { display:flex; gap:3px; }
+.rel-dot { width:7px; height:7px; border-radius:50%; background:var(--border); }
+.rel-dot.on { background:var(--green-bright); }
+.rel-dot.warn { background:var(--amber-bright); }
+
+/* SEARCH BAR */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+}
+
+.search-input::placeholder { color: var(--muted); }
+.search-input:focus { border-color: var(--gold-dim); }
+
+.filter-sel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  outline: none;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--green);
+  border: 1px solid var(--green-bright);
+  color: var(--cream);
+  padding: 12px 20px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  z-index: 200;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s;
+  max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* OPPORTUNITIES */
+.opp-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.2s;
+}
+
+.opp-card:hover { border-color: var(--gold-dim); }
+.opp-card.hot { border-color: #8A3A1A66; background: #8A3A1A0A; }
+
+.opp-left {}
+.opp-title { font-size: 14px; color: var(--cream); font-weight: 500; margin-bottom: 3px; }
+.opp-sub { font-size: 12px; color: var(--muted); }
+
+.opp-right { text-align: right; flex-shrink: 0; }
+.opp-comm { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold); font-weight: 300; display: block; line-height: 1; }
+.opp-basis { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; }
+
+/* EXPANSION PILLS */
+.exp-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+
+.exp-pill {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.exp-pill.live { border-color: var(--green); color: var(--green-bright); background: #4A8A5A11; }
+.exp-pill.soon { border-color: var(--gold-dim); color: var(--gold); background: #C9A96E11; }
+.exp-pill.planned { color: var(--muted); }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .land-nav,.features-strip,.closer{padding-left:24px;padding-right:24px;}
+  .hero{padding:60px 24px 40px;}
+  .features-strip{grid-template-columns:1fr;gap:24px;}
+  .feat{padding:0;border-right:none;border-bottom:1px solid var(--border);padding-bottom:20px;}
+  .feat:last-child{border-bottom:none;padding-bottom:0;}
+  .for-strip{grid-template-columns:1fr;padding:40px 24px;gap:28px;}
+  .money-row{grid-template-columns:1fr;}
+  .app-shell{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .money-header{grid-template-columns:1fr;}
+  .body{padding:16px;}
+  .topbar{padding:12px 16px;}
+  .two-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ -->
+<!-- LANDING                         -->
+<!-- ════════════════════════════════ -->
+<div id="landing">
+  <nav class="land-nav">
+    <div>
+      <div class="logo">ISLA</div>
+      <span class="logo-sub">The Concierge Network</span>
+    </div>
+    <div class="nav-links">
+      <button class="btn btn-ghost btn-sm" onclick="openApp('venue')">For Venues</button>
+      <button class="btn btn-gold btn-sm" onclick="openApp('concierge')">Request Access</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Verified · Ibiza 2026 · Expanding Globally</div>
+    <h1>Never lose a<br>commission <em>again.</em></h1>
+    <p class="hero-sub">Track every euro you're owed. Know who's paid. Know who hasn't. Find the highest-paying booking <strong>right now.</strong></p>
+
+    <div class="hero-pills">
+      <span class="hero-pill active">💰 Live commission rates</span>
+      <span class="hero-pill active">✓ Payment tracking</span>
+      <span class="hero-pill active">⚡ Real-time opportunities</span>
+      <span class="hero-pill">Free for concierges</span>
+    </div>
+
+    <div class="hero-ctas">
+      <button class="btn btn-gold" onclick="openApp('concierge')">Request Access — Free</button>
+      <button class="btn btn-ghost" onclick="openApp('venue')">List Your Venue</button>
+    </div>
+
+    <div class="money-preview">
+      <div class="money-preview-label">Your season at a glance · Sofia Reyes · Gran Hotel Montesol</div>
+      <div class="money-row">
+        <div class="money-box">
+          <span class="money-val pending">€14,820</span>
+          <span class="money-label pending">Total owed</span>
+        </div>
+        <div class="money-box">
+          <span class="money-val confirmed">€11,140</span>
+          <span class="money-label confirmed">Confirmed</span>
+        </div>
+        <div class="money-box">
+          <span class="money-val overdue">€3,680</span>
+          <span class="money-label overdue">Overdue</span>
+        </div>
+      </div>
+      <div class="mini-bookings">
+        <div class="mini-booking">
+          <span class="mini-booking-name">🍣 Nobu Ibiza Bay · 4 covers · Apr 17</span>
+          <span class="mini-booking-val paid">€120 ✓</span>
+        </div>
+        <div class="mini-booking">
+          <span class="mini-booking-name">🛥 Ocean Beats Charter · 6hr · Apr 16</span>
+          <span class="mini-booking-val paid">€350 ✓</span>
+        </div>
+        <div class="mini-booking">
+          <span class="mini-booking-name">🍽 Sa Caleta · 8 covers · Apr 14</span>
+          <span class="mini-booking-val overdue-val">€200 overdue</span>
+        </div>
+        <div class="mini-booking">
+          <span class="mini-booking-name">🎉 Ushuaïa VIP · 12 guests · Apr 12</span>
+          <span class="mini-booking-val pending-val">€480 pending</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="features-strip">
+    <div class="feat">
+      <span class="feat-icon">💰</span>
+      <div class="feat-title">Your revenue dashboard</div>
+      <div class="feat-desc">Total owed, confirmed, overdue — at a glance. Every commission tracked from the moment you log it. Never lose money because you forgot to chase.</div>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">⚡</span>
+      <div class="feat-title">Live opportunities</div>
+      <div class="feat-desc">Last-minute tables, elevated commissions, high-spend experiences — posted live by venues. You hear about them first. Not after everyone else.</div>
+    </div>
+    <div class="feat">
+      <span class="feat-icon">🔒</span>
+      <div class="feat-title">Verified. Protected.</div>
+      <div class="feat-desc">Every venue verified. Commission terms agreed upfront. Payment reliability scores before you commit. Your income is protected before you pick up the phone.</div>
+    </div>
+  </div>
+
+  <!-- FOR CONCIERGES -->
+  <div style="border-top:1px solid var(--border)">
+    <div class="for-strip for-concierge">
+      <div>
+        <span class="for-tag">For Concierges & GRMs · Always Free</span>
+        <h2 class="for-title">Know where the money is.<br><em>Right now. Today.</em></h2>
+        <ul class="check-list">
+          <li>See which venues pay the highest commissions — sorted by rate, not alphabet</li>
+          <li>Your personal revenue dashboard: owed, confirmed, overdue, paid</li>
+          <li>Log a booking in 10 seconds. Track every euro from referral to payout.</li>
+          <li>Live opportunities — last-minute tables, elevated commissions, priority access</li>
+          <li>Payment reliability scores — know who pays before you refer</li>
+          <li>Your verified profile and earnings history follow you across every market</li>
+        </ul>
+        <div style="margin-top:24px">
+          <button class="btn btn-gold" onclick="openApp('concierge')">Request Access — Free →</button>
+        </div>
+      </div>
+      <div class="money-preview" style="max-width:100%">
+        <div class="money-preview-label">Top opportunities right now</div>
+        <div class="opp-card hot">
+          <div class="opp-left">
+            <div class="opp-title">🔥 Nobu Ibiza Bay — Last-minute tables</div>
+            <div class="opp-sub">Tonight only · Tables of 4+ · Limited availability</div>
+          </div>
+          <div class="opp-right">
+            <span class="opp-comm">15%</span>
+            <span class="opp-basis">Net F&B · boosted</span>
+          </div>
+        </div>
+        <div class="opp-card">
+          <div class="opp-left">
+            <div class="opp-title">Ocean Beats Charter</div>
+            <div class="opp-sub">Weekend availability · Full day · Any group size</div>
+          </div>
+          <div class="opp-right">
+            <span class="opp-comm">12%</span>
+            <span class="opp-basis">Gross charter value</span>
+          </div>
+        </div>
+        <div class="opp-card">
+          <div class="opp-left">
+            <div class="opp-title">Atzaró Spa & Wellness</div>
+            <div class="opp-sub">Weekend packages · 2 pax min · All inclusive</div>
+          </div>
+          <div class="opp-right">
+            <span class="opp-comm">15%</span>
+            <span class="opp-basis">Gross package price</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOR VENUES -->
+  <div style="background:var(--charcoal);border-top:1px solid var(--border)">
+    <div class="for-strip for-venue">
+      <div>
+        <span class="for-tag">For Venues · From €500/yr</span>
+        <h2 class="for-title">If you're not on ISLA,<br>the best concierges<br><em>won't find you.</em></h2>
+        <ul class="check-list">
+          <li>When a top concierge asks "where tonight?" — you're the answer they see</li>
+          <li>Post live opportunities: last-minute tables, elevated commissions, special events</li>
+          <li>See exactly who referred, what was confirmed, and who went quiet</li>
+          <li>One source of truth for GRM, reservations and finance — no more gaps</li>
+          <li>Pay reliably. Build your reputation. Get recommended first.</li>
+          <li>Handover notes that survive October — your next GRM starts from day one</li>
+        </ul>
+        <div style="margin-top:24px">
+          <button class="btn btn-ghost" onclick="openApp('venue')">List Your Venue →</button>
+        </div>
+      </div>
+      <div>
+        <div class="confirm-card">
+          <div class="confirm-info">
+            <div class="confirm-title">Sofia Reyes · Gran Hotel Montesol</div>
+            <div class="confirm-sub">Table of 8 · Tonight · Dinner · Est. commission €240</div>
+          </div>
+          <div class="confirm-actions">
+            <button class="btn btn-green btn-sm" onclick="showToast('Referral confirmed ✓ Sofia notified instantly')">Confirm</button>
+            <button class="btn btn-ghost btn-sm">Reject</button>
+          </div>
+        </div>
+        <div class="confirm-card" style="border-color:var(--border)">
+          <div class="confirm-info">
+            <div class="confirm-title">Marco Delgado · Atzaró Hotel</div>
+            <div class="confirm-sub">Table of 4 · Tomorrow lunch · Est. commission €120</div>
+          </div>
+          <div class="confirm-actions">
+            <button class="btn btn-green btn-sm" onclick="showToast('Referral confirmed ✓ Marco notified instantly')">Confirm</button>
+            <button class="btn btn-ghost btn-sm">Reject</button>
+          </div>
+        </div>
+        <div style="padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-top:2px">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:12px">Your season so far</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:300">34</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">Concierges</div></div>
+            <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:300">187</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">Covers sent</div></div>
+            <div style="text-align:center"><div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--green-bright);font-weight:300">⭐⭐⭐⭐⭐</div><div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace">Payout score</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="closer">
+    <h2>If you're not in ISLA,<br>you're <em>missing money.</em></h2>
+    <p>The island's top concierges open ISLA to find tonight's best opportunity. If you're not listed, you don't exist in that moment.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="openApp('concierge')">Request Access — Free</button>
+      <button class="btn btn-ghost" onclick="openApp('venue')">List Your Venue</button>
+    </div>
+    <div class="closer-footer">ISLA · Never Lose a Commission Again · islanetwork.es · Ibiza 2026 → Dubai · London · Mykonos</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ -->
+<!-- APP                             -->
+<!-- ════════════════════════════════ -->
+<div id="app">
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="logo" style="font-size:18px">ISLA</div>
+        <span class="logo-sub">The Concierge Network</span>
+      </div>
+      <div class="sidebar-user" id="sidebarUser"></div>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
+      <div class="sidebar-bottom">
+        <div class="role-toggle">
+          <button class="role-btn active" id="btnConcierge" onclick="switchRole('concierge')">GRM</button>
+          <button class="role-btn" id="btnVenue" onclick="switchRole('venue')">Venue</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-col">
+      <div class="topbar">
+        <div class="page-title" id="pageTitle">My Revenue</div>
+        <div class="topbar-right">
+          <button class="btn btn-ghost btn-sm" onclick="showLanding()">← Back</button>
+        </div>
+      </div>
+
+      <div class="body">
+
+        <!-- ══ CONCIERGE VIEWS ══ -->
+        <div id="cv">
+
+          <!-- MY REVENUE -->
+          <div id="v-revenue" class="view active">
+            <div class="exp-row">
+              <div class="exp-pill live">🟢 Ibiza · Live</div>
+              <div class="exp-pill soon">⏳ Mykonos</div>
+              <div class="exp-pill soon">⏳ St Tropez</div>
+              <div class="exp-pill planned">📍 Dubai · 2027</div>
+              <div class="exp-pill planned">📍 London · 2027</div>
+            </div>
+
+            <div class="money-header">
+              <div class="money-card total">
+                <span class="money-card-label">Total owed · Season 2026</span>
+                <span class="money-card-val">€14,820</span>
+                <span class="money-card-sub">Across 31 bookings</span>
+              </div>
+              <div class="money-card confirmed-card">
+                <span class="money-card-label">Confirmed · awaiting payment</span>
+                <span class="money-card-val">€11,140</span>
+                <span class="money-card-sub">Venue confirmed · pay direct</span>
+              </div>
+              <div class="money-card overdue-card">
+                <span class="money-card-label">Overdue · chase now</span>
+                <span class="money-card-val">€3,680</span>
+                <span class="money-card-sub">3 venues · 14+ days outstanding</span>
+              </div>
+            </div>
+
+            <!-- OVERDUE ALERTS -->
+            <div class="table-card" style="border-color:var(--red);margin-bottom:20px">
+              <div class="table-head">
+                <span class="table-title">🔴 Chase These Now</span>
+                <span class="badge badge-overdue">3 overdue</span>
+              </div>
+              <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+                <div class="confirm-card" style="border-color:var(--red)">
+                  <div class="confirm-info">
+                    <div class="confirm-title">Sa Caleta Experience — €200 overdue</div>
+                    <div class="confirm-sub">8 covers · Apr 14 · 14 days outstanding · Contact: Maria S.</div>
+                  </div>
+                  <div class="confirm-actions">
+                    <button class="btn btn-red btn-sm" onclick="showToast('WhatsApp opened for Maria at Sa Caleta')">Chase →</button>
+                  </div>
+                </div>
+                <div class="confirm-card" style="border-color:#8A3A1A88">
+                  <div class="confirm-info">
+                    <div class="confirm-title">Ushuaïa VIP Tables — €480 overdue</div>
+                    <div class="confirm-sub">12 guests · Apr 12 · 16 days outstanding · Contact: Ana T.</div>
+                  </div>
+                  <div class="confirm-actions">
+                    <button class="btn btn-red btn-sm" onclick="showToast('WhatsApp opened for Ana at Ushuaïa')">Chase →</button>
+                  </div>
+                </div>
+                <div class="confirm-card" style="border-color:#8A3A1A66">
+                  <div class="confirm-info">
+                    <div class="confirm-title">Pacha VIP — €3,000 overdue</div>
+                    <div class="confirm-sub">Private event · Apr 2 · 26 days outstanding · Contact: Carlos M.</div>
+                  </div>
+                  <div class="confirm-actions">
+                    <button class="btn btn-red btn-sm" onclick="showToast('WhatsApp opened for Carlos at Pacha')">Chase →</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-card">
+              <div class="table-head">
+                <span class="table-title">All Bookings</span>
+                <button class="btn btn-gold btn-sm" onclick="openLogModal()">+ Log Booking</button>
+              </div>
+              <table>
+                <thead><tr><th>Venue</th><th>Date</th><th>Detail</th><th>Commission</th><th>Status</th><th></th></tr></thead>
+                <tbody>
+                  <tr><td class="td-name">Nobu Ibiza Bay</td><td class="td-muted">Apr 17</td><td class="td-muted">4 covers · net F&B</td><td class="td-mono td-gold">€120</td><td><span class="badge badge-paid">Paid ✓</span></td><td></td></tr>
+                  <tr><td class="td-name">Ocean Beats Charter</td><td class="td-muted">Apr 16</td><td class="td-muted">6 pax · 6hr gross</td><td class="td-mono td-gold">€350</td><td><span class="badge badge-paid">Paid ✓</span></td><td></td></tr>
+                  <tr><td class="td-name">Atzaró Wellness</td><td class="td-muted">Apr 15</td><td class="td-muted">2 pax package</td><td class="td-mono td-gold">€90</td><td><span class="badge badge-confirmed">Confirmed</span></td><td></td></tr>
+                  <tr><td class="td-name">Sa Caleta Experience</td><td class="td-muted">Apr 14</td><td class="td-muted">8 covers · net F&B</td><td class="td-mono td-red">€200</td><td><span class="badge badge-overdue">Overdue</span></td><td><button class="btn btn-red btn-sm" onclick="showToast('Chasing Sa Caleta...')">Chase</button></td></tr>
+                  <tr><td class="td-name">Ushuaïa VIP</td><td class="td-muted">Apr 12</td><td class="td-muted">12 guests gross</td><td class="td-mono td-red">€480</td><td><span class="badge badge-overdue">Overdue</span></td><td><button class="btn btn-red btn-sm" onclick="showToast('Chasing Ushuaïa...')">Chase</button></td></tr>
+                  <tr><td class="td-name">Cala Bassa Beach Club</td><td class="td-muted">Apr 10</td><td class="td-muted">4 covers flat</td><td class="td-mono td-gold">€50</td><td><span class="badge badge-paid">Paid ✓</span></td><td></td></tr>
+                  <tr><td class="td-name">Beefbar Ibiza</td><td class="td-muted">Apr 8</td><td class="td-muted">6 covers net F&B</td><td class="td-mono td-gold">€240</td><td><span class="badge badge-confirmed">Confirmed</span></td><td></td></tr>
+                  <tr><td class="td-name">Pacha VIP Tables</td><td class="td-muted">Apr 2</td><td class="td-muted">Private event gross</td><td class="td-mono td-red">€3,000</td><td><span class="badge badge-overdue">Overdue</span></td><td><button class="btn btn-red btn-sm" onclick="showToast('Chasing Pacha...')">Chase</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- OPPORTUNITIES -->
+          <div id="v-opportunities" class="view">
+            <div style="margin-bottom:20px">
+              <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--muted);text-transform:uppercase;margin-bottom:6px">🟢 Live · Updated in real time</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);font-weight:300">Where the money is <span style="font-style:italic;color:var(--gold)">right now.</span></div>
+            </div>
+
+            <div style="margin-bottom:20px">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--red-bright);text-transform:uppercase;margin-bottom:10px">🔥 Live tonight</div>
+              <div class="opp-card hot">
+                <div class="opp-left">
+                  <div class="opp-title">Nobu Ibiza Bay — Boosted commission tonight</div>
+                  <div class="opp-sub">Tables of 4+ · Last-minute availability · Contact: Isabella R. · +34 971 xxx</div>
+                </div>
+                <div class="opp-right">
+                  <span class="opp-comm">15%</span>
+                  <span class="opp-basis">Net F&B · boosted from 10%</span>
+                </div>
+              </div>
+              <div class="opp-card hot">
+                <div class="opp-left">
+                  <div class="opp-title">Beefbar Ibiza — Private dining room available</div>
+                  <div class="opp-sub">Groups 8–14 · Full buyout available · Contact: Marco D.</div>
+                </div>
+                <div class="opp-right">
+                  <span class="opp-comm">€120</span>
+                  <span class="opp-basis">Flat per booking · net F&B</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:20px">
+              <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:10px">This week · highest paying</div>
+              <div class="opp-card">
+                <div class="opp-left">
+                  <div class="opp-title">Ocean Beats Charter</div>
+                  <div class="opp-sub">Weekend slots open · Full day & half day · Contact: James W.</div>
+                </div>
+                <div class="opp-right">
+                  <span class="opp-comm">12%</span>
+                  <span class="opp-basis">Gross charter value</span>
+                </div>
+              </div>
+              <div class="opp-card">
+                <div class="opp-left">
+                  <div class="opp-title">Atzaró Spa & Wellness</div>
+                  <div class="opp-sub">Signature retreat packages · 2 pax min · Contact: Elena B.</div>
+                </div>
+                <div class="opp-right">
+                  <span class="opp-comm">15%</span>
+                  <span class="opp-basis">Gross package value</span>
+                </div>
+              </div>
+              <div class="opp-card">
+                <div class="opp-left">
+                  <div class="opp-title">Salty Pelican Charters — New fleet</div>
+                  <div class="opp-sub">50ft catamarans · All week availability · Contact: Luke H.</div>
+                </div>
+                <div class="opp-right">
+                  <span class="opp-comm">12%</span>
+                  <span class="opp-basis">Gross charter value</span>
+                </div>
+              </div>
+              <div class="opp-card">
+                <div class="opp-left">
+                  <div class="opp-title">Pacha Ibiza — Midweek tables</div>
+                  <div class="opp-sub">Mon–Thu boosted rate · VIP tables · Contact: Carlos M.</div>
+                </div>
+                <div class="opp-right">
+                  <span class="opp-comm">20%</span>
+                  <span class="opp-basis">Gross table minimum</span>
+                </div>
+              </div>
+            </div>
+            <div style="background:var(--charcoal);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-top:4px">
+              <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Coming soon · Group bookings</div>
+              <div style="font-size:13px;color:var(--cream);font-weight:500;margin-bottom:4px">Travel agencies & tour operators</div>
+              <div style="font-size:12px;color:var(--muted);line-height:1.6">ISLA is expanding to cover group bookings via travel agencies and tour operators. Mallorca, Malaga, Madrid and beyond. If you manage group business, <span style="color:var(--gold)">join the waitlist →</span></div>
+            </div>
+          </div>
+
+          <!-- VENUES -->
+          <div id="v-venues" class="view">
+            <div style="background:var(--surface);border:1px solid var(--gold-dim);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;gap:10px;align-items:center">
+              <span style="font-size:16px">🔒</span>
+              <div>
+                <div style="font-size:13px;color:var(--cream);font-weight:500">Your private rates</div>
+                <div style="font-size:11px;color:var(--muted)">Commission rates shown are your personal negotiated rates. Other concierges may see different figures. Never share your ISLA rates externally.</div>
+              </div>
+            </div>
+            <div class="search-bar">
+              <input class="search-input" placeholder="Search venues..." id="venueSearch" oninput="filterVenues(this.value)">
+              <select class="filter-sel" onchange="filterVenues(document.getElementById('venueSearch').value, this.value)">
+                <option value="">All types</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="beach">Beach Club</option>
+                <option value="charter">Charter</option>
+                <option value="club">Nightclub</option>
+                <option value="wellness">Wellness</option>
+              </select>
+            </div>
+            <div class="venue-grid" id="venueGrid"></div>
+          </div>
+
+          <!-- PROFILE -->
+          <div id="v-profile" class="view">
+            <div style="max-width:520px">
+              <div class="table-card" style="padding:24px;margin-bottom:14px">
+                <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px">
+                  <div class="avatar" style="width:56px;height:56px;font-size:22px;background:linear-gradient(135deg,#7A5E32,#2A5F78)">S</div>
+                  <div>
+                    <div style="font-size:18px;color:var(--cream);font-family:'Cormorant Garamond',serif;margin-bottom:3px">Sofia Reyes</div>
+                    <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:0.1em">CONCIERGE · GRAN HOTEL MONTESOL</div>
+                    <div style="margin-top:8px;display:flex;gap:6px">
+                      <span class="badge badge-elite">⭐ Elite Verified</span>
+                      <span class="badge badge-new">Season 3</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+                  <div style="background:var(--charcoal);padding:12px;border-radius:4px;text-align:center">
+                    <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:300">€14.8K</div>
+                    <div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em">2026 owed</div>
+                  </div>
+                  <div style="background:var(--charcoal);padding:12px;border-radius:4px;text-align:center">
+                    <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:300">31</div>
+                    <div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em">Bookings</div>
+                  </div>
+                  <div style="background:var(--charcoal);padding:12px;border-radius:4px;text-align:center">
+                    <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);font-weight:300">3</div>
+                    <div style="font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:0.1em">Seasons</div>
+                  </div>
+                </div>
+                <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:12px">Season history</div>
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div class="mini-booking"><span class="mini-booking-name">Season 2026 — Ibiza</span><span class="mini-booking-val pending-val">€14,820 · ongoing</span></div>
+                  <div class="mini-booking"><span class="mini-booking-name">Season 2025 — Ibiza</span><span class="mini-booking-val paid">€9,920 ✓</span></div>
+                  <div class="mini-booking"><span class="mini-booking-name">Season 2024 — Ibiza</span><span class="mini-booking-val paid">€6,640 ✓</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ══ VENUE VIEWS ══ -->
+        <div id="vv" style="display:none">
+
+          <!-- VENUE DASHBOARD -->
+          <div id="vv-dashboard" class="view active">
+            <div class="exp-row">
+              <div class="exp-pill live">🟢 Ibiza · Live</div>
+              <div class="exp-pill soon">⏳ Mykonos</div>
+              <div class="exp-pill planned">📍 Dubai · 2027</div>
+            </div>
+
+            <!-- PENDING CONFIRMS -->
+            <div class="table-card" style="border-color:var(--gold-dim);margin-bottom:20px">
+              <div class="table-head">
+                <span class="table-title">⚡ Confirm Referrals</span>
+                <span class="badge badge-pending">2 awaiting</span>
+              </div>
+              <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px">
+                <div class="confirm-card">
+                  <div class="confirm-info">
+                    <div class="confirm-title">Sofia Reyes <span class="badge badge-elite" style="margin-left:6px">⭐ Elite</span></div>
+                    <div class="confirm-sub">Table of 8 · Tonight dinner · Est. commission €240 (net F&B · 10%) · paid direct</div>
+                  </div>
+                  <div class="confirm-actions">
+                    <button class="btn btn-green btn-sm" onclick="showToast('Confirmed ✓ Sofia notified. Pay €240 direct to Sofia.')">Confirm</button>
+                    <button class="btn btn-ghost btn-sm" onclick="showToast('Rejected. Sofia has been notified.')">Reject</button>
+                  </div>
+                </div>
+                <div class="confirm-card" style="border-color:var(--border)">
+                  <div class="confirm-info">
+                    <div class="confirm-title">Marco Delgado <span class="badge badge-confirmed" style="margin-left:6px">✓ Verified</span></div>
+                    <div class="confirm-sub">Table of 4 · Tomorrow lunch · Est. commission €120 (net F&B · 10%) · paid direct</div>
+                  </div>
+                  <div class="confirm-actions">
+                    <button class="btn btn-green btn-sm" onclick="showToast('Confirmed ✓ Marco notified. Pay €120 direct to Marco.')">Confirm</button>
+                    <button class="btn btn-ghost btn-sm" onclick="showToast('Rejected. Marco has been notified.')">Reject</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="money-header">
+              <div class="money-card confirmed-card">
+                <span class="money-card-label">Referrals this season</span>
+                <span class="money-card-val">34</span>
+                <span class="money-card-sub">Concierges sending business</span>
+              </div>
+              <div class="money-card total">
+                <span class="money-card-label">Total covers sent</span>
+                <span class="money-card-val">187</span>
+                <span class="money-card-sub">↑ 31% vs last season</span>
+              </div>
+              <div class="money-card confirmed-card">
+                <span class="money-card-label">Commission paid out</span>
+                <span class="money-card-val">€9.2K</span>
+                <span class="money-card-sub">Direct to concierges</span>
+              </div>
+            </div>
+
+            <div class="table-card">
+              <div class="table-head">
+                <span class="table-title">Top Concierge Partners</span>
+                <span class="badge badge-elite">Season 2026</span>
+              </div>
+              <table>
+                <thead><tr><th>Concierge</th><th>Tier</th><th>Property</th><th>Referrals</th><th>Reliability</th><th>Notes</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td class="td-name">Sofia Reyes</td>
+                    <td><span class="badge badge-elite">⭐ Elite</span></td>
+                    <td class="td-muted">Gran Hotel Montesol</td>
+                    <td class="td-mono td-gold">12</td>
+                    <td><div class="rel-dots"><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div></div></td>
+                    <td class="td-muted">WhatsApp · 48hr groups 6+</td>
+                  </tr>
+                  <tr>
+                    <td class="td-name">Marco Delgado</td>
+                    <td><span class="badge badge-verified">✓ Verified</span></td>
+                    <td class="td-muted">Atzaró Hotel</td>
+                    <td class="td-mono td-gold">9</td>
+                    <td><div class="rel-dots"><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot"></div></div></td>
+                    <td class="td-muted">Email preferred · UHNW only</td>
+                  </tr>
+                  <tr>
+                    <td class="td-name">Lucia Chen</td>
+                    <td><span class="badge badge-verified">✓ Verified</span></td>
+                    <td class="td-muted">Villa Lucia · Private</td>
+                    <td class="td-mono td-gold">7</td>
+                    <td><div class="rel-dots"><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div><div class="rel-dot on"></div></div></td>
+                    <td class="td-muted">Weekends only · high spend</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- VENUE LISTING -->
+          <div id="vv-listing" class="view">
+            <div style="max-width:580px">
+              <div class="table-card" style="padding:24px">
+                <div style="font-size:15px;color:var(--cream);font-weight:500;margin-bottom:18px">Your Listing</div>
+                <div class="form-group"><label class="form-label">Venue Name</label><input class="form-input" value="Nobu Ibiza Bay"></div>
+                <div class="two-col">
+                  <div class="form-group"><label class="form-label">Category</label><select class="form-input"><option>Restaurant</option><option>Beach Club</option><option>Charter</option><option>Nightclub</option><option>Wellness</option></select></div>
+                  <div class="form-group"><label class="form-label">Commission Rate</label><input class="form-input" value="10%"></div>
+                  <div class="form-group"><label class="form-label">Commission Basis</label><select class="form-input"><option>Net F&B · excl. service charge & IVA</option><option>Net F&B · excl. IVA only</option><option>Gross total</option><option>Flat fee per booking</option></select></div>
+                  <div class="form-group"><label class="form-label">Service Charge</label><select class="form-input"><option>Yes · 12%</option><option>Yes · 10%</option><option>No service charge</option></select></div>
+                </div>
+                <div class="form-group"><label class="form-label">Booking Contact & WhatsApp</label><input class="form-input" value="Isabella Ruiz · +34 971 xxx xxx"></div>
+                <div class="form-group"><label class="form-label">Booking Instructions (concierges only)</label><textarea class="form-input" style="height:72px;resize:vertical">Always book via WhatsApp min 24hrs ahead. Groups 8+ require 48hrs. Mention ISLA when booking.</textarea></div>
+
+                <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+                  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Post a live opportunity</div>
+                  <div class="form-group"><label class="form-label">Opportunity (e.g. last-minute tables, boosted commission)</label><input class="form-input" placeholder="Tonight only — tables of 4+ · boosted to 15%"></div>
+                  <button class="btn btn-gold" onclick="showToast('Live opportunity posted ✓ All verified concierges notified instantly')">Post to ISLA →</button>
+                </div>
+
+                <div style="margin-top:16px">
+                  <button class="btn btn-ghost" onclick="showToast('Listing saved successfully')">Save Listing</button>
+                <div style="margin-top:20px;padding:14px 16px;background:var(--charcoal);border:1px solid var(--gold-dim);border-radius:var(--radius);">
+                  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:6px">ISLA Venue Inspection</div>
+                  <div style="font-size:12px;color:var(--muted);line-height:1.6;">Every venue is inspected and approved by ISLA before going live. Concierges can also request a verified preview visit before sending clients. Your ISLA Verified badge signals quality to the entire community.</div>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG BOOKING MODAL -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal">
+    <h2>Log a Booking</h2>
+    <p class="modal-sub">10 seconds. Venue confirms it. Commission tracked automatically.</p>
+    <div class="form-group">
+      <label class="form-label">Venue</label>
+      <select class="form-input" id="logVenue">
+        <option>Nobu Ibiza Bay — 10% net F&B</option>
+        <option>Pacha Ibiza — 20% gross (Mon–Thu)</option>
+        <option>Ocean Beats Charter — 12% gross</option>
+        <option>Sa Caleta Experience — €25/cover net F&B</option>
+        <option>Ushuaïa Beach Hotel — €80 flat</option>
+        <option>Atzaró Spa & Wellness — 15% gross</option>
+        <option>Beefbar Ibiza — €80/table net F&B</option>
+      </select>
+    </div>
+    <div class="two-col">
+      <div class="form-group"><label class="form-label">Date</label><input class="form-input" type="date" id="logDate"></div>
+      <div class="form-group"><label class="form-label">Covers / Guests</label><input class="form-input" placeholder="e.g. 4 covers"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Notes (optional)</label><input class="form-input" placeholder="Birthday group · VIP · window table"></div>
+    <div class="commission-preview">
+      <span class="comm-preview-label">Estimated commission · paid direct by venue</span>
+      <span class="comm-preview-val">€120 – €240</span>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Based on 10% net F&B · Nobu · confirmed by venue after booking</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-gold" onclick="submitLog()">Log Booking →</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+const venues = [
+  {name:'Nobu Ibiza Bay',type:'restaurant',area:'Marina Botafoch',comm:'10%',basis:'Net F&B · excl. service & IVA',min:'€150/head',emoji:'🍣',tags:['Luxury','Sushi'],contact:'Isabella R.',rel:5},
+  {name:'Pacha Ibiza',type:'club',area:'Ibiza Town',comm:'15% / 20% Mon–Thu',basis:'Gross table min',min:'€500 table',emoji:'🍒',tags:['Nightclub','VIP'],contact:'Carlos M.',rel:3},
+  {name:'Ocean Beats Charter',type:'charter',area:'Ibiza Port',comm:'12%',basis:'Gross charter value',min:'No minimum',emoji:'🛥',tags:['Boat','Sunset'],contact:'James W.',rel:5},
+  {name:'Sa Caleta Experience',type:'restaurant',area:'South Ibiza',comm:'€25/cover',basis:'Net F&B · excl. IVA',min:'4 covers min',emoji:'🦐',tags:['Seafood','Lunch'],contact:'Maria S.',rel:2},
+  {name:'Ushuaïa Beach Hotel',type:'beach',area:'Playa d\'en Bossa',comm:'€80 flat',basis:'Gross · any spend',min:'€200/head',emoji:'🌅',tags:['Beach Club','Pool'],contact:'Ana T.',rel:4},
+  {name:'Atzaró Spa & Wellness',type:'wellness',area:'North Ibiza',comm:'15%',basis:'Gross package',min:'No minimum',emoji:'🧘',tags:['Spa','Retreat'],contact:'Elena B.',rel:5},
+  {name:'Cala Bassa Beach Club',type:'beach',area:'San Antonio',comm:'€50 flat',basis:'Flat fee',min:'€100/head',emoji:'🏖',tags:['Beach','Sunset'],contact:'Pedro L.',rel:4},
+  {name:'Beefbar Ibiza',type:'restaurant',area:'Marina Botafoch',comm:'€80/table',basis:'Net F&B · excl. service & IVA',min:'Table of 4',emoji:'🥩',tags:['Steakhouse','New 2026'],contact:'Marco D.',rel:5},
+  {name:'Salty Pelican Charters',type:'charter',area:'Ibiza Port',comm:'12%',basis:'Gross charter value',min:'No minimum',emoji:'⛵',tags:['Catamaran','Full day'],contact:'Luke H.',rel:5},
+];
+
+// ── STATE ──
+let role = 'concierge';
+let view = 'revenue';
+
+const cNav = [
+  {id:'revenue',icon:'💰',label:'My Revenue'},
+  {id:'opportunities',icon:'⚡',label:'Opportunities'},
+  {id:'venues',icon:'🗺',label:'All Venues'},
+  {id:'profile',icon:'◉',label:'My Profile'},
+];
+
+const vNav = [
+  {id:'dashboard',icon:'◎',label:'Dashboard'},
+  {id:'listing',icon:'✦',label:'Edit Listing'},
+  {id:'opportunities',icon:'⚡',label:'Post Opportunity'},
+];
+
+function renderNav() {
+  const items = role === 'concierge' ? cNav : vNav;
+  const prefix = role === 'concierge' ? 'v-' : 'vv-';
+  document.getElementById('sidebarNav').innerHTML =
+    `<div class="nav-section">Menu</div>` +
+    items.map(i =>
+      `<div class="nav-item ${view===i.id?'active':''}" onclick="switchView('${i.id}')">
+        <span class="nav-icon">${i.icon}</span>${i.label}
+      </div>`
+    ).join('');
+
+  document.getElementById('sidebarUser').innerHTML = role === 'concierge'
+    ? `<div class="avatar" style="background:linear-gradient(135deg,#7A5E32,#2A5F78)">S</div>
+       <div><div class="user-name">Sofia Reyes</div><div class="user-role">Elite · Gran Hotel Montesol</div></div>`
+    : `<div class="avatar" style="background:linear-gradient(135deg,#C9A96E,#7A5E32)">N</div>
+       <div><div class="user-name">Nobu Ibiza Bay</div><div class="user-role">Venue · Premium</div></div>`;
+}
+
+function renderVenues(filter='', type='') {
+  const f = venues.filter(v => {
+    const mt = !filter || v.name.toLowerCase().includes(filter.toLowerCase()) || v.area.toLowerCase().includes(filter.toLowerCase());
+    const mty = !type || v.type === type;
+    return mt && mty;
+  });
+
+  const dots = (n) => Array.from({length:5}, (_,i) =>
+    `<div class="rel-dot ${i<n?(n>=4?'on':'warn'):''}"></div>`
+  ).join('');
+
+  document.getElementById('venueGrid').innerHTML = f.map(v => `
+    <div class="venue-card">
+      <div style="font-size:28px;margin-bottom:8px">${v.emoji}</div>
+      <div class="venue-card-name">${v.name}</div>
+      <div class="venue-card-type">${v.type} · ${v.area}</div>
+      <div class="venue-comm-row">
+        <span class="vcr-label">Your rate</span>
+        <span class="vcr-val">${v.comm} ${v.elite ? '<span style="font-size:10px;color:var(--gold-dim);font-family:'DM Mono',monospace"> · Elite rate</span>' : ''}</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px">Basis: ${v.basis}</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Min: ${v.min} · ${v.contact}</div>
+      <div class="venue-reliability">
+        <span class="rel-label">Pays on time:</span>
+        <div class="rel-dots">${dots(v.rel)}</div>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function switchView(v) {
+  view = v;
+  const prefix = role === 'concierge' ? 'v-' : 'vv-';
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(prefix + v);
+  if (el) el.classList.add('active');
+  const titles = {revenue:'My Revenue',opportunities:'Opportunities',venues:'All Venues',profile:'My Profile',dashboard:'Dashboard',listing:'Edit Listing'};
+  document.getElementById('pageTitle').textContent = titles[v] || v;
+  renderNav();
+  if (v === 'venues') renderVenues();
+}
+
+function switchRole(r) {
+  role = r;
+  view = r === 'concierge' ? 'revenue' : 'dashboard';
+  document.getElementById('cv').style.display = r === 'concierge' ? 'block' : 'none';
+  document.getElementById('vv').style.display = r === 'venue' ? 'block' : 'none';
+  document.getElementById('btnConcierge').className = 'role-btn ' + (r === 'concierge' ? 'active' : '');
+  document.getElementById('btnVenue').className = 'role-btn ' + (r === 'venue' ? 'active' : '');
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  const prefix = r === 'concierge' ? 'v-' : 'vv-';
+  const el = document.getElementById(prefix + (r === 'concierge' ? 'revenue' : 'dashboard'));
+  if (el) el.classList.add('active');
+  document.getElementById('pageTitle').textContent = r === 'concierge' ? 'My Revenue' : 'Dashboard';
+  renderNav();
+}
+
+function openApp(r) {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  role = r;
+  view = r === 'concierge' ? 'revenue' : 'dashboard';
+  document.getElementById('cv').style.display = r === 'concierge' ? 'block' : 'none';
+  document.getElementById('vv').style.display = r === 'venue' ? 'block' : 'none';
+  document.getElementById('btnConcierge').className = 'role-btn ' + (r === 'concierge' ? 'active' : '');
+  document.getElementById('btnVenue').className = 'role-btn ' + (r === 'venue' ? 'active' : '');
+  renderNav();
+}
+
+function showLanding() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+}
+
+function openLogModal() {
+  document.getElementById('logDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('logModal').classList.add('open');
+}
+
+function closeModal() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeModal(); });
+});
+
+function submitLog() {
+  closeModal();
+  showToast('Booking logged ✓ Venue notified — commission tracked the moment they confirm');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function filterVenues(text, type) {
+  renderVenues(text, type || document.querySelector('.filter-sel')?.value || '');
+}
+
+// INIT
+renderNav();
+</script>
+</body>
+</html>
