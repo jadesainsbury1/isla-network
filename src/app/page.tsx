@@ -440,7 +440,7 @@ export default function LandingPage() {
       {/* ══ FOOTER ══ */}
       <div className="lp-footer">
         <div className="lp-footer-logo">ISLA</div>
-        <div className="lp-footer-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es</div>
+        <div className="lp-footer-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{ color: "inherit", opacity: 0.3, textDecoration: "none" }}>admin</a></div>
       </div>
 
     </div>
