@@ -823,3 +823,11 @@ tr:hover td { background: #1E1C1833; }
   margin-top: 3px;
   text-align: right;
 }
+
+.opp-card > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+.opp-card > div:last-child {
+  flex-shrink: 0;
+}
