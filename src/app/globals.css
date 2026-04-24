@@ -777,3 +777,49 @@ tr:hover td { background: #1E1C1833; }
   .lp-banner-btns { display:flex; gap:8px; flex-shrink:0; }
   .lp-nav-links .lp-nav-link { display: none; }
 }
+
+/* Opportunities */
+.opp-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+.opp-card.hot {
+  border-color: var(--gold);
+}
+.opp-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.opp-sub {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.opp-comm {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  font-family: Georgia, serif;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.opp-basis {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  font-family: monospace;
+  margin-top: 3px;
+  text-align: right;
+}
