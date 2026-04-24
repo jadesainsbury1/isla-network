@@ -835,3 +835,5 @@ tr:hover td { background: #1E1C1833; }
 .app-shell { display: flex; min-height: 100vh; }
 .sidebar { width: 260px; min-width: 260px; flex-shrink: 0; }
 .main-col { flex: 1; min-width: 0; overflow-x: hidden; }
+
+.main-col { margin-left: 260px; }
