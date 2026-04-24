@@ -1,448 +1,210 @@
 'use client'
-import { useState } from 'react'
 import Link from 'next/link'
+import { useState } from 'react'
 
-const FAQ_LEFT = [
-  {
-    q: 'Is ISLA really free for concierges?',
-    a: 'Yes. Free for concierges. Always. No hidden costs, no premium tier required to access commission data or log referrals. Venues pay — concierges never do. That\'s the model and it doesn\'t change.',
-  },
-  {
-    q: 'I already know all my venues. Why do I need ISLA?',
-    a: 'You know the venues you\'ve built relationships with. But new venues open every season — and right now you only find out when the brown envelope arrives. ISLA alerts you the moment a new venue goes live. Plus your commission history, outstanding payments, and reliability scores — all in one place you open every morning.',
-  },
-  {
-    q: 'Will venues be able to contact me or see my details?',
-    a: 'No. Your WhatsApp and email are never shown to venues. Concierges contact venues — not the other way around. Venues only see your name and tier when you have sent them a referral. There is no spam. ISLA is built to protect the concierge community.',
-  },
-  {
-    q: 'We already use SevenRooms. Why do we need ISLA on top?',
-    a: 'SevenRooms tracks your guests. The concierge who sent them is completely invisible in that system — they\'re not a guest, they\'re not a vendor. They exist in a gap between every tool you already have. ISLA fills that gap. SevenRooms tells you what happened at your tables. ISLA tells you why they\'re half empty.',
-  },
-  {
-    q: 'Can venues offer different rates to different concierges?',
-    a: 'Yes. ISLA supports private, individually negotiated commission rates per concierge. A senior partner can have a privately negotiated rate that others don\'t see. Each concierge sees only their own rate. This mirrors exactly how the industry already works.',
-  },
-]
-
-const FAQ_RIGHT = [
-  {
-    q: 'How does commission tracking work for restaurants?',
-    a: 'At launch, restaurants set a flat fee per cover or per booking — e.g. €25/cover or €80/table. No access to the final bill is required. This keeps it simple and unambiguous. Full percentage-of-bill commission tracking for restaurants comes in Phase 2 via SevenRooms and CoverManager integration.',
-  },
-  {
-    q: 'Is my commission data private?',
-    a: 'Completely. Commission rates are only visible to verified ISLA members — not the public, not Google, not competitor venues. The platform is closed and private by design. Your competitive information stays within the professional community it\'s intended for.',
-  },
-  {
-    q: 'What if a payment dispute arises?',
-    a: 'ISLA is a platform provider only — not a party to any commission agreement. All payment obligations exist directly between the venue and the concierge. ISLA provides the verified record of the agreement. Payment goes direct as it always has — ISLA is the record and trust layer, not the financial processor.',
-  },
-  {
-    q: 'When is ISLA expanding beyond Ibiza?',
-    a: 'Mykonos and St Tropez are next — launching before the end of 2026 season. Dubai and London in 2027. Marbella and Madrid to follow. Your ISLA profile and commission history travels with you to every market automatically.',
-  },
-  {
-    q: 'How do I get listed or join?',
-    a: 'Concierges: tap "Request Access" and complete your profile. Verification takes 24–48 hours. Venues: email hello@islanetwork.es and we\'ll set up your listing. Founding venues get locked-in pricing regardless of future price changes.',
-  },
-]
-
-function FAQItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false)
+export default function HomePage() {
+  const [open, setOpen] = useState(null)
+  const faqs = [
+    ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues.'],
+    ['How does the reference number system work?', 'Every referral generates a unique ISLA reference number. The venue records it when taking the booking. ISLA uses it to track confirmation and calculate commission.'],
+    ['What if a venue does not pay?', 'ISLA holds signed commission agreements. Non-payment triggers suspension of venue visibility. You have documentation and leverage.'],
+    ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations. ISLA manages concierge attribution and commission tracking. They work together.'],
+    ['How is commission calculated?', 'As a fixed percentage of net F&B spend, agreed in writing before the season. No ambiguity. No negotiation after the fact.'],
+    ['When is ISLA expanding beyond Ibiza?', 'Mykonos, St Tropez, and Dubai are next. Founding venue agreements travel with the platform.'],
+  ]
   return (
-    <div className="lp-qa-item">
-      <button className="lp-qa-question" onClick={() => setOpen(o => !o)}>
-        <span className="lp-qa-q-text">{q}</span>
-        <span className={`lp-qa-arrow${open ? ' open' : ''}`}>▶</span>
-      </button>
-      {open && <div className="lp-qa-answer">{a}</div>}
-    </div>
-  )
-}
-
-export default function LandingPage() {
-  const [bannerVisible, setBannerVisible] = useState(false)
-
-  return (
-    <div className="lp">
-
-      {/* ══ JOIN BANNER ══ */}
-      {bannerVisible && (
-        <div className="lp-banner">
-          <div className="lp-banner-logo">ISLA · The Concierge Network</div>
-          <h1 className="lp-banner-headline">
-            
-          </h1>
-          <p className="lp-banner-sub">
-            Track every euro you&apos;re owed. Find the highest-paying booking{' '}
-            <strong>right now.</strong> Free for concierges. Always.
-          </p>
-          <div className="lp-banner-btns">
-            <Link href="/auth/signup?role=concierge" className="lp-btn-primary" onClick={() => setBannerVisible(false)}>
-              Join as Concierge — Free
-            </Link>
-            <Link href="/auth/signup?role=venue" className="lp-btn-secondary" onClick={() => setBannerVisible(false)}>
-              List Your Venue
-            </Link>
-          </div>
-          <button className="lp-banner-dismiss" onClick={() => setBannerVisible(false)}>
-            Explore the platform ↓
-          </button>
-        </div>
-      )}
-
-      {/* ══ NAV ══ */}
-      <nav className="lp-nav">
-        <div>
-          <Link href="/" className="lp-logo">ISLA</Link>
-          <span className="lp-logo-sub">The Concierge Network</span>
-        </div>
-        <div className="lp-nav-links">
-          <a className="lp-nav-link" href="#concierges">Concierges</a>
-          <a className="lp-nav-link" href="#venues" style={{color:"var(--lp-gold)",fontWeight:500}}>· Venues</a>
-          <a className="lp-nav-link" href="#leaderboard">Leaderboard</a>
-          <a className="lp-nav-link" href="#faq">FAQ</a>
-          <a className="lp-nav-link" href="#pricing">Pricing</a>
-          <button className="lp-nav-btn" onClick={() => setBannerVisible(true)}>Join Now</button><a href="/demo" style={{padding:"9px 20px",background:"transparent",color:"#B8944A",fontFamily:"DM Mono,monospace",fontSize:"10px",letterSpacing:"0.15em",textTransform:"uppercase",border:"1px solid #B8944A44",textDecoration:"none",marginLeft:"8px"}}>See Demo</a>
-          <Link href="/auth/login" className="lp-nav-link" style={{ marginLeft: 8 }}>Sign In</Link>
+    <>
+      <style>{`
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0a0a0a; color: #f0ece4; font-family: Georgia, serif; }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; background: #0a0a0a; z-index: 100; }
+        .nav-logo { font-size: 20px; letter-spacing: 0.15em; color: #C9A96E; text-decoration: none; }
+        .nav-sub { font-size: 9px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 2px; }
+        .nav-actions { display: flex; gap: 12px; }
+        .nav-btn-p { padding: 10px 20px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 600; }
+        .nav-btn-s { padding: 10px 20px; border: 1px solid #333; color: #888; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+        .hero { padding: 100px 48px 80px; max-width: 900px; }
+        .hero-tag { font-size: 10px; letter-spacing: 0.3em; color: #C9A96E; text-transform: uppercase; margin-bottom: 24px; font-family: monospace; }
+        .hero-title { font-size: 56px; line-height: 1.1; font-weight: 400; margin-bottom: 24px; }
+        .hero-title em { font-style: italic; color: #C9A96E; }
+        .hero-sub { font-size: 18px; line-height: 1.6; color: #888; max-width: 600px; margin-bottom: 40px; }
+        .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-p { padding: 16px 32px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; }
+        .btn-s { padding: 16px 32px; border: 1px solid #333; color: #888; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; display: inline-block; }
+        .divider { border: none; border-top: 1px solid #1e1e1e; margin: 0 48px; }
+        .problem { padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
+        .problem-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 24px; }
+        .problem-title em { font-style: italic; color: #C9A96E; }
+        .txt { font-size: 15px; line-height: 1.7; color: #888; }
+        .plist { list-style: none; margin-top: 24px; }
+        .plist li { font-family: monospace; font-size: 12px; color: #666; padding: 10px 0; border-bottom: 1px solid #1a1a1a; display: flex; gap: 12px; }
+        .plist li span { color: #C9A96E; }
+        .auth-box { background: #111; border: 1px solid #222; padding: 32px; margin-top: 32px; }
+        .auth-text { font-size: 14px; line-height: 1.6; color: #888; font-style: italic; }
+        .auth-attr { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 12px; }
+        .how { padding: 80px 48px; background: #0d0d0d; }
+        .how-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; }
+        .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+        .how-num { font-family: monospace; font-size: 11px; color: #C9A96E; margin-bottom: 12px; }
+        .how-st { font-size: 16px; margin-bottom: 8px; }
+        .how-sb { font-size: 13px; line-height: 1.6; color: #666; }
+        .aud { display: grid; grid-template-columns: 1fr 1fr; }
+        .aud-v { background: #0d0d0d; padding: 80px 48px; border-right: 1px solid #1e1e1e; }
+        .aud-c { background: #C9A96E; padding: 80px 48px; }
+        .aud-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 20px; color: #555; }
+        .aud-title { font-size: 32px; line-height: 1.2; font-weight: 400; margin-bottom: 20px; }
+        .aud-body { font-size: 14px; line-height: 1.7; color: #888; margin-bottom: 32px; }
+        .aud-list { list-style: none; margin-bottom: 32px; }
+        .aud-list li { font-family: monospace; font-size: 11px; color: #666; padding: 8px 0; border-bottom: 1px solid #1a1a1a; }
+        .aud-c .aud-lbl { color: rgba(0,0,0,0.5); }
+        .aud-c .aud-title { color: #0a0a0a; }
+        .aud-c .aud-body { color: rgba(0,0,0,0.6); }
+        .aud-c .aud-list li { color: #0a0a0a; border-bottom-color: rgba(0,0,0,0.15); }
+        .aud-cta-v { display: inline-block; padding: 14px 28px; font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 700; background: #C9A96E; color: #0a0a0a; }
+        .aud-cta-c { display: inline-block; padding: 14px 28px; font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 700; background: #0a0a0a; color: #C9A96E; }
+        .aud-price { font-family: monospace; font-size: 11px; color: #555; margin-left: 12px; }
+        .scar { padding: 80px 48px; border-top: 1px solid #1e1e1e; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
+        .scar-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; color: #C9A96E; text-transform: uppercase; margin-bottom: 12px; }
+        .scar-title { font-size: 28px; font-weight: 400; }
+        .scar-sub { font-size: 14px; color: #666; margin-top: 8px; }
+        .faq { padding: 80px 48px; background: #0d0d0d; }
+        .faq-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; }
+        .faq-item { border-bottom: 1px solid #1e1e1e; }
+        .faq-q { width: 100%; text-align: left; background: none; border: none; color: #f0ece4; font-family: Georgia, serif; font-size: 16px; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-icon { color: #C9A96E; font-size: 18px; margin-left: 16px; }
+        .faq-a { font-size: 14px; line-height: 1.7; color: #888; padding-bottom: 20px; max-width: 700px; }
+        .cls { padding: 100px 48px; text-align: center; }
+        .cls-title { font-size: 48px; font-weight: 400; margin-bottom: 16px; }
+        .cls-title em { font-style: italic; color: #C9A96E; }
+        .cls-sub { font-size: 16px; color: #666; margin-bottom: 40px; }
+        .cls-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .foot { background: #050505; padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1a1a1a; }
+        .foot-logo { font-size: 16px; letter-spacing: 0.15em; color: #C9A96E; }
+        .foot-meta { font-family: monospace; font-size: 9px; letter-spacing: 0.15em; color: #333; text-transform: uppercase; }
+        @media (max-width: 768px) {
+          .nav { padding: 16px 20px; } .nav-btn-s { display: none; }
+          .hero { padding: 60px 20px 48px; } .hero-title { font-size: 36px; }
+          .problem { grid-template-columns: 1fr; gap: 40px; padding: 48px 20px; }
+          .how { padding: 48px 20px; } .how-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
+          .aud { grid-template-columns: 1fr; }
+          .aud-v { border-right: none; border-bottom: 1px solid #1e1e1e; padding: 48px 20px; }
+          .aud-c { padding: 48px 20px; }
+          .scar { flex-direction: column; gap: 24px; padding: 48px 20px; text-align: center; }
+          .faq { padding: 48px 20px; } .cls { padding: 60px 20px; } .cls-title { font-size: 32px; }
+          .foot { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+        }
+      `}</style>
+      <nav className="nav">
+        <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
+        <div className="nav-actions">
+          <Link href="/demo" className="nav-btn-s">See Demo</Link>
+          <Link href="/auth/signup" className="nav-btn-p">Apply as Venue</Link>
         </div>
       </nav>
-
-      {/* ══ HERO ══ */}
-      <div className="lp-hero">
-        <div className="lp-hero-inner">
-          <div className="lp-hero-tag">Verified · Ibiza 2026 · Expanding Globally</div>
-          <h1>
-            Never lose a commission <em>again.</em>
-          </h1>
-          <p className="lp-hero-sub">
-            Track every euro you&apos;re owed. Know who&apos;s paid. Know who hasn&apos;t.
-            Find the highest-paying booking <strong>right now.</strong>
-          </p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 44 }}>
-            {['Live commission rates', 'Payment tracking', 'Real-time opportunities'].map(p => (
-              <span key={p} className="lp-pill active">{p}</span>
-            ))}
-            <span className="lp-pill">Free for concierges</span>
+      <section className="hero">
+        <div className="hero-tag">Verified · Ibiza 2026 · Expanding Globally</div>
+        <h1 className="hero-title">Track every concierge booking.<br/><em>Eliminate commission chaos.</em></h1>
+        <p className="hero-sub">ISLA turns unstructured referrals into trackable revenue so venues never lose visibility, bookings, or commissions again.</p>
+        <div className="hero-ctas">
+          <Link href="/auth/signup" className="btn-p">Apply as a Founding Venue</Link>
+          <Link href="/demo" className="btn-s">See the Platform</Link>
+        </div>
+      </section>
+      <hr className="divider" />
+      <section className="problem">
+        <div>
+          <div className="lbl">The Problem</div>
+          <h2 className="problem-title">Concierge bookings are <em>invisible.</em></h2>
+          <p className="txt">Today, most concierge-driven bookings are untracked, miscommunicated, and lost between teams. Commissions are inconsistent, relationships are unclear, and revenue slips through the cracks. Every season.</p>
+          <ul className="plist">
+            <li><span>-</span>No record of who referred the booking</li>
+            <li><span>-</span>Commission terms agreed verbally, disputed later</li>
+            <li><span>-</span>Payments chased on WhatsApp, often never received</li>
+            <li><span>-</span>Staff turnover wipes out venue relationships</li>
+            <li><span>-</span>No data on which concierges drive real revenue</li>
+          </ul>
+        </div>
+        <div>
+          <div className="auth-box">
+            <p className="auth-text">Built by an Ibiza hospitality operator, not a tech startup. Every problem ISLA solves is one we lived from the inside.</p>
+            <p className="auth-attr">ISLA — The Concierge Network · Ibiza 2026</p>
           </div>
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 72 }}>
-            <button className="lp-btn-primary" onClick={() => setBannerVisible(true)}>Request Access — Free</button>
-            <Link href="/auth/login" className="lp-btn-secondary">Sign In</Link>
-          </div>
-          <div className="lp-hero-stats">
-            {[
-              { val: '2026', label: 'Founding season' },
-              { val: 'Island', label: 'Built for the commission economy' },
-              { val: '€0', label: 'Cost for concierges · always' },
-            ].map(({ val, label }) => (
-              <div key={label}>
-                <span className="lp-stat-val">{val}</span>
-                <span className="lp-stat-label">{label}</span>
-              </div>
-            ))}
-          </div>
+          <div className="lbl" style={{marginTop: 32}}>The Solution</div>
+          <p className="txt">ISLA creates a structured layer between concierges and venues. Every referral is tracked, documented, and reconciled automatically.</p>
+        </div>
+      </section>
+      <section className="how">
+        <div className="lbl">How It Works</div>
+        <h2 className="how-title">Four steps. Zero manual tracking.</h2>
+        <div className="how-steps">
+          <div><div className="how-num">01</div><div className="how-st">Concierge refers</div><div className="how-sb">A verified concierge submits a referral through ISLA with guest details and venue.</div></div>
+          <div><div className="how-num">02</div><div className="how-st">Reference generated</div><div className="how-sb">A unique ISLA reference number is created and sent to the venue GM via WhatsApp.</div></div>
+          <div><div className="how-num">03</div><div className="how-st">Booking confirmed</div><div className="how-sb">The venue records the reference. ISLA tracks confirmation and final bill value.</div></div>
+          <div><div className="how-num">04</div><div className="how-st">Commission calculated</div><div className="how-sb">Commission is calculated from the signed agreement. No disputes. No chasing.</div></div>
+        </div>
+      </section>
+      <div className="aud">
+        <div className="aud-v">
+          <div className="aud-lbl">For Venues and Operators</div>
+          <h2 className="aud-title">More bookings. Full control.</h2>
+          <p className="aud-body">Capture every concierge-driven booking. Track attribution clearly. Eliminate manual commission tracking entirely.</p>
+          <ul className="aud-list">
+            <li>Verified concierge directory</li>
+            <li>Every referral documented with a signed agreement</li>
+            <li>Payment reliability scores per concierge</li>
+            <li>Survives staff changes</li>
+            <li>Priority placement for founding venues</li>
+          </ul>
+          <Link href="/auth/signup" className="aud-cta-v">Apply as Founding Venue</Link>
+          <span className="aud-price">From 500 per year</span>
+        </div>
+        <div className="aud-c">
+          <div className="aud-lbl">For Concierges and GRMs</div>
+          <h2 className="aud-title">Never lose a commission again.</h2>
+          <p className="aud-body">See every venue rate live. Log referrals in seconds. Know who has paid and who has not.</p>
+          <ul className="aud-list">
+            <li>Full venue directory with live commission rates</li>
+            <li>Every referral logged with a unique reference number</li>
+            <li>Payment tracking confirmed, pending, overdue</li>
+            <li>Signed agreements mean you have leverage</li>
+            <li>Always free</li>
+          </ul>
+          <Link href="/auth/signup" className="aud-cta-c">Join Free</Link>
         </div>
       </div>
-      {/* == AUDIENCE SPLIT == */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, marginBottom: 2 }}>
-        <div style={{ background: 'var(--lp-gold)', padding: '40px 48px' }}>
-          <div style={{ fontFamily: 'DM Mono,monospace', fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--lp-ink)', opacity: 0.7, marginBottom: 12 }}>For Concierges & GRMs</div>
-          <div style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 32, fontWeight: 300, color: 'var(--lp-ink)', lineHeight: 1.1, marginBottom: 8 }}>Make more money. Starting today.</div>
-          <div style={{ fontSize: 13, color: 'var(--lp-ink)', opacity: 0.75, marginBottom: 24, lineHeight: 1.6 }}>Track every commission. See who pays. Find the highest-paying booking in seconds.</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <a href="/auth/signup?role=concierge" style={{ padding: '12px 28px', background: 'var(--lp-ink)', color: 'var(--lp-gold)', fontFamily: 'DM Mono,monospace', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>Join Free</a>
-            <span style={{ fontFamily: 'DM Mono,monospace', fontSize: 10, color: 'var(--lp-ink)', opacity: 0.6 }}>Always free</span>
+      <section className="scar">
+        <div>
+          <div className="scar-lbl">Founding Venues - Limited Places</div>
+          <h2 className="scar-title">Ibiza 2026 season now open.</h2>
+          <p className="scar-sub">ISLA is onboarding a limited number of founding venues per market. Founding venues receive priority placement and locked rates.</p>
+        </div>
+        <Link href="/auth/signup" className="btn-p">Apply Now</Link>
+      </section>
+      <section className="faq">
+        <div className="lbl">Questions and Answers</div>
+        <h2 className="faq-title">Everything you need to know.</h2>
+        {faqs.map(([q, a], i) => (
+          <div key={i} className="faq-item">
+            <button className="faq-q" onClick={() => setOpen(open === i ? null : i)}>
+              {q}<span className="faq-icon">{open === i ? "-" : "+"}</span>
+            </button>
+            {open === i && <p className="faq-a">{a}</p>}
           </div>
+        ))}
+      </section>
+      <section className="cls">
+        <h2 className="cls-title">The season is <em>already here.</em></h2>
+        <p className="cls-sub">Every week without ISLA is a week where bookings go untracked and commissions go unpaid.</p>
+        <div className="cls-ctas">
+          <Link href="/auth/signup" className="btn-p">Apply as a Founding Venue</Link>
+          <Link href="/auth/signup" className="btn-s">Join as Concierge Free</Link>
         </div>
-        <div style={{ background: '#1A1814', padding: '40px 48px', border: '1px solid #2A2620' }}>
-          <div style={{ fontFamily: 'DM Mono,monospace', fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--lp-gold)', opacity: 0.7, marginBottom: 12 }}>For Venues & Operators</div>
-          <div style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 32, fontWeight: 300, color: '#F5EFE6', lineHeight: 1.1, marginBottom: 8 }}>Better clients. Every season.</div>
-          <div style={{ fontSize: 13, color: '#9A8E82', marginBottom: 24, lineHeight: 1.6 }}>Stay visible to every top concierge on the island. Protect relationships. Stop losing revenue when staff leave.</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <a href="mailto:hello@islanetwork.es" style={{ padding: '12px 28px', background: 'var(--lp-gold)', color: 'var(--lp-ink)', fontFamily: 'DM Mono,monospace', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', textDecoration: 'none', fontWeight: 500 }}>List Your Venue</a>
-            <span style={{ fontFamily: 'DM Mono,monospace', fontSize: 10, color: '#6A6058' }}>€500/yr</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ══ FOR CONCIERGES ══ */}
-      <div id="concierges" style={{ borderTop: '1px solid var(--lp-border)' }}>
-        <div className="lp-section">
-          <div className="lp-two-col">
-            <div>
-              <span className="lp-section-tag">For Concierges &amp; GRMs · Always Free</span>
-              <h2 className="lp-headline">
-                Know where the money is.<br /><em>Right now. Today.</em>
-              </h2>
-              <p className="lp-body">
-                Not to organise. Not to manage. To make more money — today, not eventually.
-                Open ISLA the way a trader checks markets — to find the best opportunity available right now and act on it.
-              </p>
-              <ul className="lp-feature-list">
-                {[
-                  { title: 'The fastest way to find the highest-paying booking', desc: 'Every venue\'s commission rate, live. When a guest asks where to go tonight, you know in seconds — not after three WhatsApps.' },
-                  { title: 'Your personal revenue dashboard', desc: 'Total owed, confirmed, overdue at a glance. Every outstanding payment visible. Chase overdue commissions in one tap.' },
-                  { title: 'Live opportunities — last-minute, high-spend', desc: 'Venues post elevated commissions and last-minute availability directly to ISLA. You hear about them first.' },
-                  { title: 'Your income is protected', desc: 'Every venue verified. Commission terms documented upfront. Payment reliability scores before you refer. No more surprises.' },
-                  { title: 'Your profile travels with you', desc: 'Ibiza today. Dubai, London, Mykonos tomorrow. One verified profile. Every market. Season to season.' },
-                ].map(({ title, desc }, i) => (
-                  <li key={title} className="lp-feature-item">
-                    <span className="lp-fi-num">{i + 1}</span>
-                    <div>
-                      <div className="lp-fi-title">{title}</div>
-                      <div className="lp-fi-desc">{desc}</div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <button className="lp-btn-primary" style={{ marginTop: 28 }} onClick={() => setBannerVisible(true)}>
-                Join Free →
-              </button>
-            </div>
-            <div>
-              <div className="lp-mock">
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 16 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#7A5E32,#2A5F78)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Cormorant Garamond',serif", fontSize: 16, color: '#F2EDE4', flexShrink: 0 }}>S</div>
-                  <div>
-                    <div className="lp-mock-name">Sofia Reyes</div>
-                    <div className="lp-mock-role">Elite · Gran Hotel Montesol</div>
-                  </div>
-                </div>
-                <div className="lp-mock-stat-grid">
-                  <div className="lp-mock-stat"><span className="lp-mock-stat-val">€14,820</span><span className="lp-mock-stat-label">Total owed</span></div>
-                  <div className="lp-mock-stat"><span className="lp-mock-stat-val green">€11,140</span><span className="lp-mock-stat-label">Confirmed</span></div>
-                  <div className="lp-mock-stat"><span className="lp-mock-stat-val red">€3,680</span><span className="lp-mock-stat-label">Overdue</span></div>
-                </div>
-                <div className="lp-mock-row"><span className="lp-mock-label">Nobu Ibiza Bay · 4 covers</span><span className="lp-mock-val green">€120 ✓</span></div>
-                <div className="lp-mock-row"><span className="lp-mock-label">Ocean Beats · 6hr charter</span><span className="lp-mock-val green">€350 ✓</span></div>
-                <div className="lp-mock-row"><span className="lp-mock-label">Sa Caleta · 8 covers</span><span className="lp-mock-val red">€200 overdue</span></div>
-                <div className="lp-mock-row"><span className="lp-mock-label">Ushuaïa VIP · 12 guests</span><span className="lp-mock-val" style={{ color: '#C9A96E' }}>€480 pending</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══ LEADERBOARD ══ */}
-      <div id="leaderboard" style={{ background: 'var(--lp-bone)', borderTop: '1px solid var(--lp-border)' }}>
-        <div className="lp-section">
-          <span className="lp-section-tag">Competition · Season Leaderboard</span>
-          <h2 className="lp-headline">
-            The island&apos;s top earners.<br /><em>Every week.</em>
-          </h2>
-          <p className="lp-body" style={{ marginBottom: 40 }}>
-            ISLA tracks performance anonymously across the concierge community. Venues can run private leaderboards within their team. Healthy competition. Real rewards.
-          </p>
-          <div className="lp-two-col">
-            <div>
-              <div className="lp-leaderboard">
-                <div className="lp-lb-header">
-                  <span className="lp-lb-title">Island Leaderboard · This Week</span>
-                  <span className="lp-lb-badge">Live</span>
-                </div>
-                {[
-                  { rank: '1', rankColor: '#FFD700', name: 'Anonymous · Hotel Concierge', prop: 'Marina Botafoch', amount: '€3,240' },
-                  { rank: '2', rankColor: '#C0C0C0', name: 'Anonymous · Villa Manager', prop: 'North Ibiza', amount: '€2,180' },
-                  { rank: '3', rankColor: '#CD7F32', name: 'Anonymous · GRM', prop: 'Ibiza Town', amount: '€1,920' },
-                  { rank: '4', rankColor: 'var(--lp-gold)', name: 'Anonymous · Hotel Concierge', prop: 'Santa Eulalia', amount: '€1,640' },
-                ].map(({ rank, rankColor, name, prop, amount }) => (
-                  <div key={rank} className="lp-lb-row">
-                    <span className="lp-lb-rank" style={{ color: rankColor }}>{rank}</span>
-                    <div className="lp-lb-info">
-                      <div className="lp-lb-name">{name}</div>
-                      <div className="lp-lb-property">{prop}</div>
-                    </div>
-                    <span className="lp-lb-amount">{amount}</span>
-                  </div>
-                ))}
-                <div className="lp-lb-row lp-lb-you">
-                  <span className="lp-lb-rank" style={{ color: 'var(--lp-gold)' }}>?</span>
-                  <div className="lp-lb-info">
-                    <div className="lp-lb-name" style={{ color: 'var(--lp-gold-light)' }}>Your position</div>
-                    <div className="lp-lb-property" style={{ color: '#5A4A3A' }}>Join to see where you rank</div>
-                  </div>
-                  <button className="lp-lb-amount" style={{ color: 'var(--lp-gold)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Cormorant Garamond',serif", fontSize: 18, fontWeight: 300 }} onClick={() => setBannerVisible(true)}>
-                    Join →
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h3 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 24, fontWeight: 300, color: 'var(--lp-ink)', marginBottom: 16 }}>
-                For venues — team competition
-              </h3>
-              <p style={{ fontSize: 14, color: 'var(--lp-muted)', lineHeight: 1.7, marginBottom: 20 }}>
-                Create private leaderboards within your concierge team. Track who&apos;s sending the most business, reward top performers, and create healthy competition between your GRMs.
-              </p>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {[
-                  'Private team leaderboards',
-                  'Weekly and seasonal rankings',
-                  'Commission volume and conversion tracking',
-                  'Opt-in for concierges — private by default',
-                  'Available on Premium and Elite tiers',
-                ].map(item => (
-                  <li key={item} style={{ display: 'flex', gap: 10, fontSize: 13, color: 'var(--lp-text)' }}>
-                    <span style={{ color: 'var(--lp-gold)' }}>→</span>{item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══ FOR VENUES ══ */}
-      <div id="venues" style={{ borderTop: '1px solid var(--lp-border)', background: 'var(--lp-ink)' }}>
-        <div className="lp-section">
-          <span className="lp-section-tag" style={{ color: 'var(--lp-gold)' }}>For Venues · From €500/yr</span>
-          <h2 className="lp-headline" style={{ color: 'var(--lp-sand)' }}>
-            Stop losing your network<br /><em>every October.</em>
-          </h2>
-          <div className="lp-two-col" style={{ marginTop: 40 }}>
-            <ul className="lp-feature-list" style={{ marginTop: 0 }}>
-              {[
-                { title: 'In front of the whole community — day one', desc: 'Your listing is visible to every verified concierge on the island immediately. No coffee meetings. No brown envelopes.' },
-                { title: 'See who stopped referring', desc: 'Know exactly which concierges went quiet. The revenue you\'re losing is invisible without ISLA. With it, you see the change before thirty tables disappear.' },
-                { title: 'One source of truth for all departments', desc: 'GRM, reservations, and finance all see the same thing. The communication breakdown that costs you commissions disappears.' },
-                { title: 'Handover notes that survive October', desc: 'Store everything about each concierge. Your next GRM walks in on day one with the full picture — not a blank WhatsApp.' },
-                { title: 'Pay reliably. Get recommended first.', desc: 'Your payment reliability score is visible to every concierge. It becomes your competitive advantage.' },
-              ].map(({ title, desc }, i) => (
-                <li key={title} className="lp-feature-item" style={{ borderColor: '#2A2018', ...(i === 4 ? { borderBottom: 'none' } : {}) }}>
-                  <span className="lp-fi-num">{i + 1}</span>
-                  <div>
-                    <div className="lp-fi-title" style={{ color: '#F2EDE4' }}>{title}</div>
-                    <div className="lp-fi-desc">{desc}</div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <div>
-              <div className="lp-mock">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-                  <div>
-                    <div className="lp-mock-name">Nobu Ibiza Bay</div>
-                    <div className="lp-mock-role">Premium · Restaurant</div>
-                  </div>
-                  <span style={{ padding: '3px 10px', background: '#B8944A22', border: '1px solid #B8944A44', fontFamily: "'DM Mono',monospace", fontSize: 9, color: 'var(--lp-gold-light)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Verified</span>
-                </div>
-                <div className="lp-mock-stat-grid">
-                  <div className="lp-mock-stat"><span className="lp-mock-stat-val">34</span><span className="lp-mock-stat-label">Concierges</span></div>
-                  <div className="lp-mock-stat"><span className="lp-mock-stat-val">187</span><span className="lp-mock-stat-label">Covers sent</span></div>
-                  <div className="lp-mock-stat"><span className="lp-mock-stat-val green">€9.2K</span><span className="lp-mock-stat-label">Paid out</span></div>
-                </div>
-                <div style={{ fontSize: 11, color: '#5A4A3A', fontFamily: "'DM Mono',monospace", letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Pending confirmation</div>
-                <div className="lp-mock-row" style={{ background: '#1E1C18', border: '1px solid #B8944A44' }}>
-                  <div>
-                    <div className="lp-mock-name" style={{ fontSize: 12 }}>Sofia Reyes · Table of 8 · Tonight</div>
-                    <div style={{ fontSize: 10, color: '#5A4A3A' }}>Est. €240 · net F&amp;B · 10%</div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <span style={{ padding: '5px 12px', background: 'var(--lp-gold)', color: 'var(--lp-ink)', fontFamily: "'DM Mono',monospace", fontSize: 9, letterSpacing: '0.1em' }}>Confirm</span>
-                    <span style={{ padding: '5px 12px', background: 'transparent', color: '#5A4A3A', border: '1px solid #2A2018', fontFamily: "'DM Mono',monospace", fontSize: 9, letterSpacing: '0.1em' }}>Reject</span>
-                  </div>
-                </div>
-              </div>
-              <a href="mailto:hello@islanetwork.es" className="lp-btn-secondary" style={{ marginTop: 16, width: '100%', textAlign: 'center', borderColor: 'var(--lp-gold)', color: 'var(--lp-gold)', boxSizing: 'border-box' }}>
-                List Your Venue → hello@islanetwork.es
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══ PULL QUOTE ══ */}
-      <div className="lp-pull-quote">
-        <p className="lp-pull-quote-text">
-          &ldquo;The concierge doesn&apos;t cancel on you. They don&apos;t leave a bad review.
-          They just <em>quietly become someone else&apos;s best partner.</em>&rdquo;
-        </p>
-        <div className="lp-pull-quote-attr">ISLA · The Concierge Network · Ibiza 2026</div>
-      </div>
-
-      {/* ══ PRICING ══ */}
-      <div id="pricing" style={{ borderTop: '1px solid var(--lp-border)' }}>
-        <div className="lp-section-full">
-          <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-            <span className="lp-section-tag">Pricing</span>
-            <h2 className="lp-headline">Simple. <em>Transparent.</em></h2>
-            <div className="lp-pricing-grid">
-              {/* Concierge */}
-              <div className="lp-pricing-col">
-                <span className="lp-price-tier">For Concierges</span>
-                <span className="lp-price-val"><sup>€</sup>0</span>
-                <span className="lp-price-period">Always free · no hidden costs</span>
-                <ul className="lp-price-features">
-                  {['Full venue directory access', 'Commission rates and basis', 'Referral logging and tracking', 'Revenue dashboard', 'Verified professional profile', 'Leaderboard participation'].map(f => (
-                    <li key={f}><span className="lp-check">✓</span><span style={{ color: 'var(--lp-text)' }}>{f}</span></li>
-                  ))}
-                </ul>
-                <button className="lp-price-btn lp-price-btn-dark" onClick={() => setBannerVisible(true)}>Join Now →</button>
-              </div>
-              {/* Premium */}
-              <div className="lp-pricing-col featured">
-                <span className="lp-price-tier">Venue · Premium</span>
-                <span className="lp-price-val"><sup>€</sup>1,200</span>
-                <span className="lp-price-period">per year + 1.5% tracked commissions</span>
-                <ul className="lp-price-features">
-                  {['Verified venue listing', 'Referral confirmation dashboard', 'Full analytics and tracking', 'Handover notes per concierge', 'Payment reliability score', 'Team leaderboard feature', 'Priority placement'].map(f => (
-                    <li key={f}><span className="lp-check">✓</span>{f}</li>
-                  ))}
-                </ul>
-                <a href="mailto:hello@islanetwork.es" className="lp-price-btn lp-price-btn-gold" style={{ textAlign: 'center', display: 'block', textDecoration: 'none' }}>Start Premium →</a>
-              </div>
-              {/* Essential */}
-              <div className="lp-pricing-col">
-                <span className="lp-price-tier">Venue · Essential</span>
-                <span className="lp-price-val"><sup>€</sup>500</span>
-                <span className="lp-price-period">per year · no transaction fee</span>
-                <ul className="lp-price-features">
-                  {['Verified listing', 'Commission info published', 'Booking contact visible', 'Seasonal hours and notes', 'New opening announcement'].map(f => (
-                    <li key={f}><span className="lp-check">✓</span><span style={{ color: 'var(--lp-text)' }}>{f}</span></li>
-                  ))}
-                  {['Referral tracking', 'Leaderboard feature'].map(f => (
-                    <li key={f}><span className="lp-cross">—</span><span style={{ color: 'var(--lp-muted)' }}>{f}</span></li>
-                  ))}
-                </ul>
-                <a href="mailto:hello@islanetwork.es" className="lp-price-btn lp-price-btn-dark" style={{ textAlign: 'center', display: 'block', textDecoration: 'none' }}>Get Listed →</a>
-              </div>
-            </div>
-            <p style={{ textAlign: 'center', marginTop: 20, fontSize: 12, color: 'var(--lp-muted)', fontStyle: 'italic' }}>
-              Payment always goes direct from venue to concierge. ISLA is the record layer — not a payment processor.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ══ FAQ ══ */}
-      <div id="faq" className="lp-qa-section">
-        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <span className="lp-section-tag">Questions &amp; Answers</span>
-          <h2 className="lp-headline">Everything you need<br />to <em>know.</em></h2>
-          <div className="lp-qa-grid">
-            <div>{FAQ_LEFT.map(({ q, a }) => <FAQItem key={q} q={q} a={a} />)}</div>
-            <div>{FAQ_RIGHT.map(({ q, a }) => <FAQItem key={q} q={q} a={a} />)}</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ══ CLOSING ══ */}
-      <div className="lp-closing">
-        <h2>The season is<br /><em>already here.</em></h2>
-        <p>Every week you&apos;re not on ISLA is a week where opportunities are going to someone else. Join the island&apos;s private network.</p>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button className="lp-btn-primary" onClick={() => setBannerVisible(true)}>Request Access — Free</button>
-          <a href="mailto:hello@islanetwork.es" className="lp-btn-secondary" style={{ borderColor: 'var(--lp-border)', color: 'var(--lp-muted)' }}>List Your Venue</a>
-        </div>
-      </div>
-
-      {/* ══ FOOTER ══ */}
-      <div className="lp-footer">
-        <div className="lp-footer-logo">ISLA</div>
-        <div className="lp-footer-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{ color: "inherit", opacity: 0.3, textDecoration: "none" }}>admin</a></div>
-      </div>
-
-    </div>
+      </section>
+      <footer className="foot">
+        <div className="foot-logo">ISLA</div>
+        <div className="foot-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{color: "inherit", opacity: 0.4, textDecoration: "none"}}>admin</a></div>
+      </footer>
+    </>
   )
 }
