@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export default function HomePage() {
-  const [open, setOpen] = useState(null)
+  const [open, setOpen] = useState<number | null>(null)
   const faqs = [
     ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues who pay to be listed and verified.'],
     ['Will venues be able to contact me or see my details?', 'No. Your identity is never shared without your permission. Venues see referral data, not personal information.'],
