@@ -36,7 +36,6 @@ export default async function VenuesPage() {
 
   const allVenues = venues || []
 
-  // Group venues by category
   const grouped: Record<string, typeof allVenues> = {}
   for (const venue of allVenues) {
     const cat = venue.category || 'Other'
@@ -44,7 +43,6 @@ export default async function VenuesPage() {
     grouped[cat].push(venue)
   }
 
-  // Get categories in order
   const categories = [
     ...CATEGORY_ORDER.filter(c => grouped[c]),
     ...Object.keys(grouped).filter(c => !CATEGORY_ORDER.includes(c))
@@ -66,7 +64,6 @@ export default async function VenuesPage() {
 
   function waLink(venue: any, ref: string) {
     const contact = venue.contact || ''
-    // Extract phone number if present
     const phoneMatch = contact.match(/\+[\d\s]{8,15}/)
     const phone = phoneMatch ? phoneMatch[0].replace(/\s/g, '') : ''
     const msg = encodeURIComponent(
@@ -94,7 +91,6 @@ export default async function VenuesPage() {
           <>
             {categories.map(category => (
               <div key={category} style={{ marginBottom: 40 }}>
-                {/* Category header */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -119,7 +115,6 @@ export default async function VenuesPage() {
                   }}>· {grouped[category].length} {grouped[category].length === 1 ? 'venue' : 'venues'}</span>
                 </div>
 
-                {/* Venue cards */}
                 <div className="venue-grid">
                   {grouped[category].map(venue => {
                     const ref = refNum(venue.id)
@@ -142,7 +137,7 @@ export default async function VenuesPage() {
                         )}
 
                         <div className="venue-comm-row">
-                          <span className="vcr-label">Commission</span>
+                          <span className="vcr-label">Your rate</span>
                           <span className="vcr-val">{venue.commission_rate}</span>
                         </div>
 
@@ -152,15 +147,15 @@ export default async function VenuesPage() {
                           </div>
                         )}
 
-                        {venue.contact && (
-                          <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>
-                            Contact: {venue.contact}
-                          </div>
-                        )}
-
                         {venue.booking_instructions && (
                           <div style={{ fontSize: 11, color: 'var(--muted)', fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
                             {venue.booking_instructions}
+                          </div>
+                        )}
+
+                        {venue.contact && (
+                          <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>
+                            Contact: {venue.contact}
                           </div>
                         )}
 
@@ -169,7 +164,6 @@ export default async function VenuesPage() {
                           <div className="rel-dots">{dots(5)}</div>
                         </div>
 
-                        {/* Refer Now button */}
                         
                           href={wa}
                           target="_blank"
