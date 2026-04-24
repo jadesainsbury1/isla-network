@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /concierge
+Disallow: /venue
+
+Sitemap: https://islanetwork.es/sitemap.xml
