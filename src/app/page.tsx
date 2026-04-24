@@ -52,7 +52,27 @@ export default function HomePage() {
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0a0a; color: #f0ece4; font-family: Georgia, serif; }
+        body { background: #0a0a0a; color: #f0ece4; font-family: 'Cormorant Garamond', Georgia, serif; }
+        .fullhero { min-height: 100vh; background: #0a0a0a; display: flex; flex-direction: column; justify-content: space-between; padding: 48px 60px; position: relative; overflow: hidden; }
+        .fullhero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 75% 25%, rgba(185,148,74,0.06), transparent 55%); pointer-events: none; }
+        .fh-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1; }
+        .fh-logo { font-size: 12px; letter-spacing: 0.35em; color: #C9A96E; text-transform: uppercase; font-family: monospace; }
+        .fh-nav { display: flex; gap: 12px; }
+        .fh-btn-p { padding: 10px 20px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 600; font-family: monospace; }
+        .fh-btn-s { padding: 10px 20px; border: 1px solid #333; color: #aaa; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-family: monospace; }
+        .fh-body { position: relative; z-index: 1; }
+        .fh-eyebrow { font-size: 10px; letter-spacing: 0.4em; color: #C9A96E; text-transform: uppercase; margin-bottom: 28px; display: block; font-family: monospace; }
+        .fh-title { font-size: clamp(64px, 11vw, 128px); font-weight: 300; line-height: 0.92; letter-spacing: -0.02em; color: #f0ece4; margin-bottom: 28px; }
+        .fh-title em { font-style: italic; color: #C9A96E; }
+        .fh-sub { font-size: 17px; font-weight: 300; color: #888; max-width: 520px; line-height: 1.65; font-style: italic; margin-bottom: 48px; }
+        .fh-sub strong { color: #C9A96E; font-weight: 400; font-style: normal; }
+        .fh-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+        .fh-btn-primary { padding: 16px 36px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; font-family: monospace; }
+        .fh-btn-secondary { padding: 16px 36px; background: #1a1a1a; border: 1px solid #333; color: #aaa; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; display: inline-block; font-family: monospace; }
+        .fh-scroll { font-family: monospace; font-size: 9px; letter-spacing: 0.3em; color: #333; text-transform: uppercase; }
+        .fh-foot { display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1; }
+        .fh-tagline { font-family: monospace; font-size: 9px; letter-spacing: 0.25em; color: #333; text-transform: uppercase; }
+        @media (max-width: 768px) { .fullhero { padding: 32px 20px; } .fh-title { font-size: clamp(48px, 14vw, 80px); } .fh-nav .fh-btn-s { display: none; } .fh-foot { flex-direction: column; gap: 8px; } }
         .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; background: #0a0a0a; z-index: 100; }
         .nav-logo { font-size: 20px; letter-spacing: 0.15em; color: #C9A96E; text-decoration: none; }
         .nav-sub { font-size: 9px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 2px; }
@@ -167,31 +187,34 @@ export default function HomePage() {
         }
       `}</style>
 
-      <nav className="nav">
-        <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
-        <div className="nav-actions">
-          <Link href="/auth/signup" className="nav-btn-s">Join Free</Link>
-          <Link href="/auth/signup" className="nav-btn-p">List Your Venue</Link>
+      <div className="fullhero">
+        <div className="fh-top">
+          <div className="fh-logo">ISLA · The Concierge Network · Ibiza 2026</div>
+          <div className="fh-nav">
+            <Link href="/auth/signup" className="fh-btn-s">Join Free</Link>
+            <Link href="/auth/signup" className="fh-btn-p">List Your Venue</Link>
+          </div>
         </div>
-      </nav>
+        <div className="fh-body">
+          <span className="fh-eyebrow">Ibiza 2026 · Early Access Live · Expanding Globally</span>
+          <h1 className="fh-title">You are already<br/>losing <em>money.</em></h1>
+          <p className="fh-sub">The average Ibiza concierge loses <strong>€4,200 per season</strong> in untracked commissions. ISLA stops that.</p>
+          <div className="fh-ctas">
+            <Link href="/auth/signup" className="fh-btn-primary">Start Tracking — Free</Link>
+            <Link href="/auth/signup" className="fh-btn-secondary">List Your Venue</Link>
+          </div>
+        </div>
+        <div className="fh-foot">
+          <div className="fh-tagline">islanetwork.es · hello@islanetwork.es · {stats.venues} venues live · {stats.concierges} concierges</div>
+          <div className="fh-scroll">Explore the platform ↓</div>
+        </div>
+      </div>
 
       <div className="stats-bar">
         <div className="stat-item"><div className="stat-num">{stats.venues}</div><div className="stat-lbl">Venues Live</div></div>
         <div className="stat-item"><div className="stat-num">{stats.concierges}</div><div className="stat-lbl">Concierges</div></div>
         <div className="stat-item"><div className="stat-num">Ibiza</div><div className="stat-lbl">2026 Season</div></div>
       </div>
-
-      <section className="hero">
-        <div className="hero-tag">Verified · Ibiza 2026 · Expanding Globally</div>
-        <h1 className="hero-title">Never lose a commission <em>again.</em></h1>
-        <p className="hero-sub">Track every euro you are owed. Know who has paid and who has not. Find the highest-paying bookings in seconds.</p>
-        <div className="hero-ctas">
-          <Link href="/auth/signup" className="btn-p">Join Free — Concierges</Link>
-          <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
-        </div>
-      </section>
-
-      <hr className="divider" />
 
       <section className="problem">
         <div>
