@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export default function HomePage() {
-  const [open, setOpen] = useState<number | null>(null)
+  const [open, setOpen] = useState(null)
   const faqs = [
     ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues who pay to be listed and verified.'],
     ['Will venues be able to contact me or see my details?', 'No. Your identity is never shared without your permission. Venues see referral data, not personal information.'],
@@ -152,7 +152,7 @@ export default function HomePage() {
         <h2 className="how-title">Four steps. Zero manual tracking.</h2>
         <div className="how-steps">
           <div><div className="how-num">01</div><div className="how-st">Concierge refers</div><div className="how-sb">A verified concierge submits a referral through ISLA with guest details and venue.</div></div>
-          <div><div className="how-num">02</div><div className="how-st">Reference generated</div><div className="how-sb">A unique ISLA reference number is created and sent to the venue instantly.</div></div>
+          <div><div className="how-num">02</div><div className="how-st">Reference generated</div><div className="how-sb">A unique ISLA reference number is created and sent to the venue GM instantly.</div></div>
           <div><div className="how-num">03</div><div className="how-st">Booking confirmed</div><div className="how-sb">The venue records the reference. ISLA tracks confirmation and final bill value.</div></div>
           <div><div className="how-num">04</div><div className="how-st">Commission calculated</div><div className="how-sb">Commission is calculated from the signed agreement. No disputes. No chasing.</div></div>
         </div>
