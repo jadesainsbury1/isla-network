@@ -1,13 +1,1 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
-  "/auth/signup/page": "app/auth/signup/page.js",
-  "/auth/callback/route": "app/auth/callback/route.js",
-  "/page": "app/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/venue/listing/page": "app/venue/listing/page.js",
-  "/venue/dashboard/page": "app/venue/dashboard/page.js",
-  "/concierge/revenue/page": "app/concierge/revenue/page.js",
-  "/concierge/opportunities/page": "app/concierge/opportunities/page.js",
-  "/concierge/venues/page": "app/concierge/venues/page.js"
-}
+{}
