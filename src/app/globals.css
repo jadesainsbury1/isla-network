@@ -843,3 +843,21 @@ tr:hover td { background: #1E1C1833; }
   .lp-footer { flex-direction: column; gap: 12px; text-align: center; padding: 20px 24px; }
   .lp-nav-links { display: none; }
 }
+
+@media (max-width: 640px) {
+  .lp-qa-section { padding: 40px 20px; }
+  .lp-qa-item { padding: 16px 0; }
+  .lp-qa-question { font-size: 15px; line-height: 1.4; padding-right: 32px; }
+  .lp-pull-quote { padding: 40px 20px; font-size: 22px; line-height: 1.4; }
+  .lp-pull-quote-attr { font-size: 9px; margin-top: 16px; }
+  .lp-closing { padding: 60px 20px; text-align: center; }
+  .lp-closing h2 { font-size: 32px; }
+  .lp-hero { padding: 60px 20px 40px; }
+  .lp-hero-title { font-size: 38px; line-height: 1.15; }
+  .lp-hero-sub { font-size: 15px; }
+  .lp-section { padding: 48px 20px; }
+  .lp-section-full { padding: 48px 20px; }
+  .lp-price-card { padding: 32px 20px; }
+  .lp-features-grid { grid-template-columns: 1fr !important; }
+  .lp-stat-row { flex-direction: column; gap: 16px; }
+}
