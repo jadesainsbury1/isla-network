@@ -36,7 +36,7 @@ export default function HomePage() {
   ]
   return (
     <>
-      <style>{\`
+      <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: #0a0a0a; color: #f0ece4; font-family: 'Cormorant Garamond', Georgia, serif; }
         .fullhero { min-height: 100vh; background: #0a0a0a; display: flex; flex-direction: column; justify-content: space-between; padding: 48px 60px; position: relative; overflow: hidden; }
