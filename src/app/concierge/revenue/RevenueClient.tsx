@@ -59,7 +59,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
           </div>
           {bookings.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-state-icon">💰</div>
+              <div style={{fontFamily:"monospace",fontSize:10,letterSpacing:"0.3em",color:"var(--gold)",marginBottom:16}}>ISLA · REVENUE TRACKER</div>
               <div className="empty-state-title">Your commission dashboard starts here.</div>
               <div className="empty-state-sub">Every euro you refer — tracked, confirmed, chased automatically. Log your first booking in 10 seconds.</div>
               <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 20, flexWrap: 'wrap' }}>
