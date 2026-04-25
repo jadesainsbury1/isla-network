@@ -12,6 +12,11 @@ export default function HomePage() {
   const [open, setOpen] = useState<number | null>(null)
   const [tab, setTab] = useState<'concierge' | 'venue'>('concierge')
   const [demoStep, setDemoStep] = useState(0)
+  const [demoKey, setDemoKey] = useState(0)
+
+  useEffect(() => {
+    setDemoStep(0)
+  }, [])
 
   useEffect(() => {
     if (demoStep === 0 || demoStep >= 6) return
@@ -31,7 +36,7 @@ export default function HomePage() {
     ['How does ISLA make money if concierges are free?', 'Venues pay an annual listing fee to be visible and verified on the platform. Concierges are always free because they are the network.'],
     ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer — attribution, commission agreements, and payment tracking across venues.'],
     ['What if a venue does not pay?', 'ISLA holds signed commission agreements. Non-payment triggers suspension of venue visibility. You have documentation and leverage.'],
-    ['When is ISLA expanding beyond Ibiza?', 'Mykonos, St Tropez, and Dubai are next. Founding venue agreements travel with the platform.'],
+    ['When is ISLA expanding beyond Ibiza?', 'Marbella is next — launching Summer 2026. Mykonos and Dubai to follow. Founding venue agreements and concierge profiles travel with the platform to every new market.'],
     ['How do I get listed or join?', 'Venues apply via the site and go through an approval process. Concierges sign up free and are verified before accessing the full directory.'],
   ]
   return (
@@ -110,6 +115,18 @@ export default function HomePage() {
         .demo-total-label { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #888; text-transform: uppercase; }
         .demo-total-value { font-size: 20px; color: #C9A96E; }
         .demo-idle { font-family: monospace; font-size: 12px; color: #333; padding: 48px 20px; text-align: center; }
+        .demo-cta { margin-top: 48px; padding-top: 48px; border-top: 1px solid #1a1a1a; }
+        .demo-cta-title { font-size: 22px; font-weight: 300; color: #f0ece4; margin-bottom: 12px; }
+        .demo-cta-title em { font-style: italic; color: #C9A96E; }
+        .demo-cta-sub { font-size: 14px; color: #666; margin-bottom: 24px; }
+        .demo-cta-btn { display: inline-block; padding: 14px 32px; background: #C9A96E; color: #0a0a0a; font-family: monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; }
+        .testimonial { padding: 80px 48px; background: #0d0d0d; border-top: 1px solid #1a1a1a; }
+        .testimonial-inner { max-width: 700px; }
+        .testimonial-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 32px; }
+        .testimonial-quote { font-size: 26px; font-weight: 300; line-height: 1.4; color: #f0ece4; font-style: italic; margin-bottom: 28px; }
+        .testimonial-quote em { color: #C9A96E; font-style: italic; }
+        .testimonial-attr { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; }
+        .testimonial-attr strong { color: #C9A96E; font-weight: 400; }
         .aud { padding: 80px 48px; background: #0d0d0d; }
         .aud-lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
         .aud-tabs { display: flex; margin-bottom: 48px; border-bottom: 1px solid #1e1e1e; }
@@ -177,7 +194,7 @@ export default function HomePage() {
           .foot { flex-direction: column; gap: 16px; text-align: center; padding: 28px 20px; }
           .foot-meta { font-size: 10px; line-height: 1.9; }
         }
-      \`}</style>
+      `}</style>
       <div className="fullhero">
         <div className="fh-top">
           <div className="fh-logo">ISLA · The Concierge Network · Ibiza 2026</div>
@@ -204,9 +221,51 @@ export default function HomePage() {
       <div className="season-bar">
         <div className="season-item"><div className="season-val">Founding Season</div><div className="season-lbl">Ibiza 2026</div></div>
         <div className="season-item"><div className="season-val">Early Access</div><div className="season-lbl">Now Open</div></div>
-        <div className="season-item"><div className="season-val">Expanding</div><div className="season-lbl">Mykonos · Dubai · St Tropez</div></div>
+        <div className="season-item"><div className="season-val">Expanding</div><div className="season-lbl">Marbella · Mykonos · Dubai</div></div>
       </div>
 
+
+      <section style={{padding: '64px 48px', background: '#0d0d0d', borderBottom: '1px solid #1a1a1a'}}>
+        <div style={{maxWidth: 900, margin: '0 auto'}}>
+          <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.35em', color: '#555', textTransform: 'uppercase', marginBottom: 8}}>Updated in real-time inside ISLA</div>
+          <h2 style={{fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300, color: '#f0ece4', marginBottom: 8}}>Where the money <em style={{fontStyle: 'italic', color: '#C9A96E'}}>is.</em></h2>
+          <p style={{fontSize: 14, color: '#666', marginBottom: 40, fontStyle: 'italic'}}>Live visibility on commission rates and opportunities across the network.</p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 2}}>
+            <div style={{background: '#111', border: '1px solid #1e1e1e', padding: 24}}>
+              <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.3em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16}}>Top Commission Venues</div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div><div style={{fontSize: 13, color: '#f0ece4'}}>My Island Essential</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>Dining · Groups</div></div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>10%</div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div><div style={{fontSize: 13, color: '#f0ece4'}}>Premium Beach Club</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>High spend · Day</div></div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>12%</div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}>
+                <div><div style={{fontSize: 13, color: '#f0ece4'}}>High-Volume Restaurant</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>Consistent · Volume</div></div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>8%</div>
+              </div>
+              <div style={{fontFamily: 'monospace', fontSize: 8, color: '#333', marginTop: 12, letterSpacing: '0.1em'}}>Illustrative data — live rates visible inside ISLA</div>
+            </div>
+            <div style={{background: '#111', border: '1px solid #1e1e1e', padding: 24}}>
+              <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.3em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16}}>Live Opportunities</div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div style={{fontSize: 13, color: '#f0ece4'}}>VIP table available tonight</div>
+                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0}}></div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div style={{fontSize: 13, color: '#f0ece4'}}>Last-minute booking — high spend</div>
+                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0}}></div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}>
+                <div style={{fontSize: 13, color: '#f0ece4'}}>Group booking — 8 pax</div>
+                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#C9A96E', flexShrink: 0}}></div>
+              </div>
+              <div style={{fontFamily: 'monospace', fontSize: 8, color: '#333', marginTop: 12, letterSpacing: '0.1em'}}>Illustrative data — live opportunities visible inside ISLA</div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="problem">
         <div>
           <div className="lbl">The Problem</div>
@@ -267,7 +326,7 @@ export default function HomePage() {
                   {demoStep >= 2 && <span className="demo-ref">ISLA-2026-0041</span>}
                 </div>
                 <div className="demo-body">
-                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Venue</span><span className="demo-field-value">Casa Jondal</span></div>}
+                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Venue</span><span className="demo-field-value">Venue A · Ibiza</span></div>}
                   {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Date</span><span className="demo-field-value">Sat 14 June 2026</span></div>}
                   {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Party</span><span className="demo-field-value">4 guests · Dinner</span></div>}
                   {demoStep >= 2 && <div className="demo-field"><span className="demo-field-label">Reference</span><span className="demo-field-value gold">ISLA-2026-0041</span></div>}
@@ -289,6 +348,20 @@ export default function HomePage() {
               </>
             )}
           </div>
+        </div>
+      </section>
+
+      <div className="demo-cta" style={{padding: "0 48px 80px", background: "#0a0a0a"}}>
+        <h3 className="demo-cta-title">Ready to track your <em>first commission?</em></h3>
+        <p className="demo-cta-sub">Join free. No card required. Your first referral logged in under 60 seconds.</p>
+        <Link href="/auth/signup" className="demo-cta-btn">Start Tracking — Free</Link>
+      </div>
+
+      <section className="testimonial">
+        <div className="testimonial-inner">
+          <div className="testimonial-lbl">Early Access · Founding Member</div>
+          <p className="testimonial-quote">"ISLA solves something I have dealt with every season for years. Commissions disappearing into WhatsApp threads, venues disputing amounts, relationships lost when staff change. <em>This is the infrastructure the industry has always needed.</em>"</p>
+          <div className="testimonial-attr"><strong>Island Essential</strong> · Ibiza Concierge &amp; Villa Service · Founding Member 2026</div>
         </div>
       </section>
 
