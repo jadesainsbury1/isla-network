@@ -1,18 +1,17 @@
 'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function AdminLogin() {
   const [pwd, setPwd] = useState('')
   const [error, setError] = useState(false)
-  const router = useRouter()
 
   function handleSubmit() {
     if (pwd === 'islaibiza26') {
       document.cookie = 'admin_auth=islaibiza26; path=/; max-age=86400'
-      router.push('/admin')
+      window.location.href = '/admin'
     } else {
       setError(true)
+      setPwd('')
     }
   }
 
@@ -27,6 +26,7 @@ export default function AdminLogin() {
           onChange={e => { setPwd(e.target.value); setError(false) }}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           placeholder="Password"
+          autoFocus
           style={{ width: '100%', padding: '10px 12px', background: '#111', border: '1px solid #333', borderRadius: 2, color: '#f5f0e8', fontSize: 13, marginBottom: 12, boxSizing: 'border-box' }}
         />
         {error && <div style={{ color: '#e05555', fontSize: 12, marginBottom: 12 }}>Incorrect password</div>}
