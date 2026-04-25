@@ -36,7 +36,7 @@ export default function HomePage() {
     ['How does ISLA make money if concierges are free?', 'Venues pay an annual listing fee to be visible and verified on the platform. Concierges are always free because they are the network.'],
     ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer — attribution, commission agreements, and payment tracking across venues.'],
     ['What if a venue does not pay?', 'ISLA holds signed commission agreements. Non-payment triggers suspension of venue visibility. You have documentation and leverage.'],
-    ['When is ISLA expanding beyond Ibiza?', 'Mykonos, St Tropez, and Dubai are next. Founding venue agreements travel with the platform.'],
+    ['When is ISLA expanding beyond Ibiza?', 'Marbella is next — launching Summer 2026. Mykonos and Dubai to follow. Founding venue agreements and concierge profiles travel with the platform to every new market.'],
     ['How do I get listed or join?', 'Venues apply via the site and go through an approval process. Concierges sign up free and are verified before accessing the full directory.'],
   ]
   return (
@@ -221,7 +221,7 @@ export default function HomePage() {
       <div className="season-bar">
         <div className="season-item"><div className="season-val">Founding Season</div><div className="season-lbl">Ibiza 2026</div></div>
         <div className="season-item"><div className="season-val">Early Access</div><div className="season-lbl">Now Open</div></div>
-        <div className="season-item"><div className="season-val">Expanding</div><div className="season-lbl">Mykonos · Dubai · St Tropez</div></div>
+        <div className="season-item"><div className="season-val">Expanding</div><div className="season-lbl">Marbella · Mykonos · Dubai</div></div>
       </div>
 
       <section className="problem">
