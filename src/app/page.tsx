@@ -224,6 +224,48 @@ export default function HomePage() {
         <div className="season-item"><div className="season-val">Expanding</div><div className="season-lbl">Marbella · Mykonos · Dubai</div></div>
       </div>
 
+
+      <section style={{padding: '64px 48px', background: '#0d0d0d', borderBottom: '1px solid #1a1a1a'}}>
+        <div style={{maxWidth: 900, margin: '0 auto'}}>
+          <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.35em', color: '#555', textTransform: 'uppercase', marginBottom: 8}}>Updated in real-time inside ISLA</div>
+          <h2 style={{fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300, color: '#f0ece4', marginBottom: 8}}>Where the money <em style={{fontStyle: 'italic', color: '#C9A96E'}}>is.</em></h2>
+          <p style={{fontSize: 14, color: '#666', marginBottom: 40, fontStyle: 'italic'}}>Live visibility on commission rates and opportunities across the network.</p>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 2}}>
+            <div style={{background: '#111', border: '1px solid #1e1e1e', padding: 24}}>
+              <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.3em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16}}>Top Commission Venues</div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div><div style={{fontSize: 13, color: '#f0ece4'}}>My Island Essential</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>Dining · Groups</div></div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>10%</div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div><div style={{fontSize: 13, color: '#f0ece4'}}>Premium Beach Club</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>High spend · Day</div></div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>12%</div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}>
+                <div><div style={{fontSize: 13, color: '#f0ece4'}}>High-Volume Restaurant</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>Consistent · Volume</div></div>
+                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>8%</div>
+              </div>
+              <div style={{fontFamily: 'monospace', fontSize: 8, color: '#333', marginTop: 12, letterSpacing: '0.1em'}}>Illustrative data — live rates visible inside ISLA</div>
+            </div>
+            <div style={{background: '#111', border: '1px solid #1e1e1e', padding: 24}}>
+              <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.3em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16}}>Live Opportunities</div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div style={{fontSize: 13, color: '#f0ece4'}}>VIP table available tonight</div>
+                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0}}></div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
+                <div style={{fontSize: 13, color: '#f0ece4'}}>Last-minute booking — high spend</div>
+                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0}}></div>
+              </div>
+              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}>
+                <div style={{fontSize: 13, color: '#f0ece4'}}>Group booking — 8 pax</div>
+                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#C9A96E', flexShrink: 0}}></div>
+              </div>
+              <div style={{fontFamily: 'monospace', fontSize: 8, color: '#333', marginTop: 12, letterSpacing: '0.1em'}}>Illustrative data — live opportunities visible inside ISLA</div>
+            </div>
+          </div>
+        </div>
+      </section>
       <section className="problem">
         <div>
           <div className="lbl">The Problem</div>
