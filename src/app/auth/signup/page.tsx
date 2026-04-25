@@ -37,8 +37,7 @@ function SignupForm() {
     })
     if (signupError) { setError(signupError.message); setLoading(false); return }
     if (data.user) {
-      const { error: profileError } = await supabase.from('profiles').insert({ id: data.user.id, full_name: displayName, role, property: role === 'concierge' ? (property || null) : (venueName || null) })
-      if (profileError && !profileError.message.includes('duplicate')) { setError(profileError.message); setLoading(false); return }
+
       if (data.session) { router.push('/dashboard'); router.refresh() } else { setSuccess(true) }
     }
     setLoading(false)
