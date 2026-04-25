@@ -12,6 +12,11 @@ export default function HomePage() {
   const [open, setOpen] = useState<number | null>(null)
   const [tab, setTab] = useState<'concierge' | 'venue'>('concierge')
   const [demoStep, setDemoStep] = useState(0)
+  const [demoKey, setDemoKey] = useState(0)
+
+  useEffect(() => {
+    setDemoStep(0)
+  }, [])
 
   useEffect(() => {
     if (demoStep === 0 || demoStep >= 6) return
@@ -267,7 +272,7 @@ export default function HomePage() {
                   {demoStep >= 2 && <span className="demo-ref">ISLA-2026-0041</span>}
                 </div>
                 <div className="demo-body">
-                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Venue</span><span className="demo-field-value">Casa Jondal</span></div>}
+                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Venue</span><span className="demo-field-value">Venue A · Ibiza</span></div>}
                   {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Date</span><span className="demo-field-value">Sat 14 June 2026</span></div>}
                   {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Party</span><span className="demo-field-value">4 guests · Dinner</span></div>}
                   {demoStep >= 2 && <div className="demo-field"><span className="demo-field-label">Reference</span><span className="demo-field-value gold">ISLA-2026-0041</span></div>}
