@@ -115,6 +115,18 @@ export default function HomePage() {
         .demo-total-label { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #888; text-transform: uppercase; }
         .demo-total-value { font-size: 20px; color: #C9A96E; }
         .demo-idle { font-family: monospace; font-size: 12px; color: #333; padding: 48px 20px; text-align: center; }
+        .demo-cta { margin-top: 48px; padding-top: 48px; border-top: 1px solid #1a1a1a; }
+        .demo-cta-title { font-size: 22px; font-weight: 300; color: #f0ece4; margin-bottom: 12px; }
+        .demo-cta-title em { font-style: italic; color: #C9A96E; }
+        .demo-cta-sub { font-size: 14px; color: #666; margin-bottom: 24px; }
+        .demo-cta-btn { display: inline-block; padding: 14px 32px; background: #C9A96E; color: #0a0a0a; font-family: monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; }
+        .testimonial { padding: 80px 48px; background: #0d0d0d; border-top: 1px solid #1a1a1a; }
+        .testimonial-inner { max-width: 700px; }
+        .testimonial-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 32px; }
+        .testimonial-quote { font-size: 26px; font-weight: 300; line-height: 1.4; color: #f0ece4; font-style: italic; margin-bottom: 28px; }
+        .testimonial-quote em { color: #C9A96E; font-style: italic; }
+        .testimonial-attr { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; }
+        .testimonial-attr strong { color: #C9A96E; font-weight: 400; }
         .aud { padding: 80px 48px; background: #0d0d0d; }
         .aud-lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
         .aud-tabs { display: flex; margin-bottom: 48px; border-bottom: 1px solid #1e1e1e; }
@@ -294,6 +306,20 @@ export default function HomePage() {
               </>
             )}
           </div>
+        </div>
+      </section>
+
+      <div className="demo-cta" style={{padding: "0 48px 80px", background: "#0a0a0a"}}>
+        <h3 className="demo-cta-title">Ready to track your <em>first commission?</em></h3>
+        <p className="demo-cta-sub">Join free. No card required. Your first referral logged in under 60 seconds.</p>
+        <Link href="/auth/signup" className="demo-cta-btn">Start Tracking — Free</Link>
+      </div>
+
+      <section className="testimonial">
+        <div className="testimonial-inner">
+          <div className="testimonial-lbl">Early Access · Founding Member</div>
+          <p className="testimonial-quote">"ISLA solves something I have dealt with every season for years. Commissions disappearing into WhatsApp threads, venues disputing amounts, relationships lost when staff change. <em>This is the infrastructure the industry has always needed.</em>"</p>
+          <div className="testimonial-attr"><strong>Island Essential</strong> · Ibiza Concierge &amp; Villa Service · Founding Member 2026</div>
         </div>
       </section>
 
