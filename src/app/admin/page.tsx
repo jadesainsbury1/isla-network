@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 export default async function AdminPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/auth/login")
+  if (!user) redirect("/admin/login")
   const { data: venues } = await supabase.from("venues").select("*").order("created_at", { ascending: false })
   const allVenues = venues || []
   const pending = allVenues.filter(v => !v.is_active)
