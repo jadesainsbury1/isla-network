@@ -4,9 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 import SignOutButton from '@/components/SignOutButton'
 
 const navItems = [
-  { id: 'revenue', href: '/concierge/revenue', icon: '💰', label: 'My Revenue' },
-  { id: 'opportunities', href: '/concierge/opportunities', icon: '⚡', label: 'Opportunities' },
-  { id: 'venues', href: '/concierge/venues', icon: '🗺', label: 'All Venues' },
+  { id: 'revenue', href: '/concierge/revenue', icon: '—', label: 'My Revenue' },
+  { id: 'opportunities', href: '/concierge/opportunities', icon: '—', label: 'Opportunities' },
+  { id: 'venues', href: '/concierge/venues', icon: '—', label: 'All Venues' },
 ]
 
 export default async function ConciergeLayout({
@@ -37,7 +37,7 @@ export default async function ConciergeLayout({
         </div>
 
         <div className="sidebar-user">
-          <div className="avatar" style={{ background: 'linear-gradient(135deg, #7A5E32, #2A5F78)' }}>
+          <div className="avatar" style={{ background: '#1a1a1a' }}>
             {initials}
           </div>
           <div>
