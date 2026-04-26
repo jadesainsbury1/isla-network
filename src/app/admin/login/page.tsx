@@ -6,6 +6,7 @@ export default function AdminLogin() {
   const [error, setError] = useState(false)
 
   function handleSubmit() {
+    if (pwd !== 'islaibiza26') { setError(true); return }
     if (pwd === 'islaibiza26') {
       document.cookie = 'admin_auth=islaibiza26; path=/; max-age=86400'
       window.location.href = '/admin'

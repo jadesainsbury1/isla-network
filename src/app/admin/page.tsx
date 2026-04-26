@@ -1,10 +1,13 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 
 export default async function AdminPage() {
+  const cookieStore = await cookies()
+  const adminAuth = cookieStore.get('admin_auth')
+  if (!adminAuth || adminAuth.value !== 'islaibiza26') redirect("/admin/login")
+
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/admin/login")
   const { data: venues } = await supabase.from("venues").select("*").order("created_at", { ascending: false })
   const allVenues = venues || []
   const pending = allVenues.filter(v => !v.is_active)
