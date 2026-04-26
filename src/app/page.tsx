@@ -11,284 +11,278 @@ const supabase = createClient(
 export default function HomePage() {
   const [open, setOpen] = useState<number | null>(null)
   const [tab, setTab] = useState<'concierge' | 'venue'>('concierge')
+  const [stats, setStats] = useState({ venues: 0, concierges: 0 })
   const [demoStep, setDemoStep] = useState(0)
-  const [faqTab, setFaqTab] = useState<'Concierges' | 'Venues' | 'Expansion'>('Concierges')
-
-  const faqsByTab = {
-    Concierges: [
-      ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues who pay to be listed and verified.'],
-      ['Will venues be able to contact me or see my details?', 'No. Your identity is never shared without your permission. Venues see referral data, not personal information.'],
-      ['How do I get listed or join?', 'Concierges sign up free and are verified before accessing the full directory. Apply via the site — we review every application personally.'],
-    ],
-    Venues: [
-      ['How does ISLA make money if concierges are free?', 'Venues pay an annual listing fee to be visible and verified on the platform. Concierges are always free because they are the network.'],
-      ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer — the part that lives outside your system.'],
-      ['What if a venue does not pay?', 'ISLA holds signed commission agreements. Non-payment triggers suspension of venue visibility. You have documentation and leverage.'],
-      ['How do I get listed?', 'Venues apply via the site and go through an approval process. Once approved you receive payment links for your chosen plan.'],
-    ],
-    Expansion: [
-      ['When is ISLA expanding beyond Ibiza?', 'Marbella is next — launching late 2026. Mykonos and Dubai to follow.'],
-    ],
-  }
-  const [demoKey, setDemoKey] = useState(0)
 
   useEffect(() => {
-    setDemoStep(0)
+    async function fetchStats() {
+      const [{ count: venues }, { count: concierges }] = await Promise.all([
+        supabase.from('venues').select('*', { count: 'exact', head: true }),
+        supabase.from('profiles').select('*', { count: 'exact', head: true }),
+      ])
+      setStats({ venues: venues || 0, concierges: concierges || 0 })
+    }
+    fetchStats()
   }, [])
 
   useEffect(() => {
-    if (demoStep === 0 || demoStep >= 6) return
-    const t = setTimeout(() => setDemoStep(s => s + 1), 1600)
+    if (demoStep === 0 || demoStep >= 4) return
+    const t = setTimeout(() => setDemoStep(s => s + 1), 1800)
     return () => clearTimeout(t)
   }, [demoStep])
-
-  const spend = 3200
-  const rate = 0.12
-  const commission = spend * rate
-  const iva = commission * 0.21
-  const total = commission + iva
 
   const faqs = [
     ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues who pay to be listed and verified.'],
     ['Will venues be able to contact me or see my details?', 'No. Your identity is never shared without your permission. Venues see referral data, not personal information.'],
     ['How does ISLA make money if concierges are free?', 'Venues pay an annual listing fee to be visible and verified on the platform. Concierges are always free because they are the network.'],
-    ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer — attribution, commission agreements, and payment tracking across venues.'],
+    ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer.'],
     ['What if a venue does not pay?', 'ISLA holds signed commission agreements. Non-payment triggers suspension of venue visibility. You have documentation and leverage.'],
-    ['When is ISLA expanding beyond Ibiza?', 'Marbella is next — launching Summer 2026. Mykonos and Dubai to follow. Founding venue agreements and concierge profiles travel with the platform to every new market.'],
+    ['When is ISLA expanding beyond Ibiza?', 'Marbella is next — launching late 2026. Mykonos and Dubai to follow.'],
     ['How do I get listed or join?', 'Venues apply via the site and go through an approval process. Concierges sign up free and are verified before accessing the full directory.'],
   ]
+
+  const demoSteps = [
+    { label: 'Referral submitted', detail: 'Casa Jondal · 4 guests · dinner', color: '#C9A96E' },
+    { label: 'Reference generated', detail: 'ISLA-2026-0041', color: '#C9A96E' },
+    { label: 'Booking confirmed', detail: '3200 spend · 12% commission', color: '#4ade80' },
+    { label: 'Commission tracked', detail: '384 pending payment', color: '#facc15' },
+  ]
+
   return (
     <>
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #0a0a0a; color: #f0ece4; font-family: 'Cormorant Garamond', Georgia, serif; }
-        .fullhero { min-height: 100vh; background: #0a0a0a; display: flex; flex-direction: column; justify-content: space-between; padding: 48px 60px; position: relative; overflow: hidden; }
-        .fullhero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 70% at 75% 25%, rgba(185,148,74,0.06), transparent 55%); pointer-events: none; }
-        .fh-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 1; }
-        .fh-logo { font-size: 12px; letter-spacing: 0.35em; color: #C9A96E; text-transform: uppercase; font-family: monospace; }
-        .fh-nav { display: flex; gap: 12px; }
-        .fh-btn-p { padding: 10px 20px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 600; font-family: monospace; }
-        .fh-btn-s { padding: 10px 20px; border: 1px solid #333; color: #aaa; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-family: monospace; }
-        .fh-body { position: relative; z-index: 1; }
-        .fh-eyebrow { font-size: 10px; letter-spacing: 0.4em; color: #C9A96E; text-transform: uppercase; margin-bottom: 28px; display: block; font-family: monospace; }
-        .fh-title { font-size: clamp(64px, 11vw, 128px); font-weight: 300; line-height: 0.92; letter-spacing: -0.02em; color: #f0ece4; margin-bottom: 28px; }
-        .fh-title em { font-style: italic; color: #C9A96E; }
-        .fh-sub { font-size: 17px; font-weight: 300; color: #888; max-width: 520px; line-height: 1.65; font-style: italic; margin-bottom: 48px; }
-        .fh-sub strong { color: #C9A96E; font-weight: 400; font-style: normal; }
-        .fh-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
-        .fh-btn-primary { padding: 16px 36px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; font-family: monospace; }
-        .fh-btn-secondary { padding: 16px 36px; background: #1a1a1a; border: 1px solid #333; color: #aaa; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; display: inline-block; font-family: monospace; }
-        .fh-foot { display: flex; justify-content: space-between; align-items: flex-end; position: relative; z-index: 1; }
-        .fh-tagline { font-family: monospace; font-size: 9px; letter-spacing: 0.25em; color: #333; text-transform: uppercase; }
-        .fh-scroll { font-family: monospace; font-size: 9px; letter-spacing: 0.3em; color: #333; text-transform: uppercase; }
-        .season-bar { display: flex; justify-content: center; gap: 64px; padding: 18px 48px; border-bottom: 1px solid #1e1e1e; background: #0d0d0d; }
-        .season-item { text-align: center; }
-        .season-val { font-family: monospace; font-size: 11px; letter-spacing: 0.2em; color: #C9A96E; text-transform: uppercase; }
-        .season-lbl { font-family: monospace; font-size: 9px; letter-spacing: 0.2em; color: #444; text-transform: uppercase; margin-top: 3px; }
-        .problem { padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; background: #F5EFE6; }
-        .lbl { font-size: 10px; letter-spacing: 0.3em; color: #9A8A78; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
-        .problem-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 24px; color: #12100E; }
-        .problem-title em { font-style: italic; color: #8A6A2E; }
-        .txt { font-size: 15px; line-height: 1.7; color: #5A4A38; }
+        body { background: #0a0a0a; color: #f0ece4; font-family: Georgia, serif; }
+        .urgency-bar { background: #ef4444; padding: 10px 48px; display: flex; justify-content: center; align-items: center; gap: 32px; flex-wrap: wrap; }
+        .urgency-bar-text { font-family: monospace; font-size: 10px; letter-spacing: 0.25em; color: #fff; text-transform: uppercase; }
+        .urgency-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.4); flex-shrink: 0; }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; background: #0a0a0a; z-index: 100; }
+        .nav-logo { font-size: 20px; letter-spacing: 0.15em; color: #C9A96E; }
+        .nav-sub { font-size: 9px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 2px; }
+        .nav-actions { display: flex; gap: 12px; }
+        .nav-btn-p { padding: 10px 20px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 600; }
+        .nav-btn-s { padding: 10px 20px; border: 1px solid #333; color: #aaa; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+        .stats-bar { display: flex; justify-content: center; gap: 64px; padding: 20px 48px; border-bottom: 1px solid #1e1e1e; background: #0d0d0d; }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 22px; color: #C9A96E; font-weight: 400; }
+        .stat-lbl { font-family: monospace; font-size: 9px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 2px; }
+        .hero { padding: 100px 48px 80px; max-width: 900px; }
+        .hero-tag { font-size: 10px; letter-spacing: 0.3em; color: #ef4444; text-transform: uppercase; margin-bottom: 24px; font-family: monospace; }
+        .hero-title { font-size: 56px; line-height: 1.1; font-weight: 400; margin-bottom: 24px; }
+        .hero-title em { font-style: italic; color: #C9A96E; }
+        .hero-sub { font-size: 18px; line-height: 1.6; color: #aaa; max-width: 600px; margin-bottom: 40px; }
+        .hero-sub strong { color: #C9A96E; font-weight: 400; }
+        .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-p { padding: 16px 32px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; }
+        .btn-s { padding: 16px 32px; border: 1px solid #444; color: #aaa; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; display: inline-block; }
+        .divider { border: none; border-top: 1px solid #1e1e1e; margin: 0 48px; }
+        .money-block { padding: 56px 48px; background: #111; border-bottom: 1px solid #1e1e1e; }
+        .money-inner { max-width: 900px; margin: 0 auto; }
+        .money-lbl { font-family: monospace; font-size: 9px; letter-spacing: 0.35em; color: #555; text-transform: uppercase; margin-bottom: 8px; }
+        .money-title { font-size: clamp(22px, 3vw, 32px); font-weight: 400; color: #f0ece4; margin-bottom: 6px; }
+        .money-title em { font-style: italic; color: #C9A96E; }
+        .money-sub { font-size: 14px; color: #555; font-style: italic; margin-bottom: 32px; }
+        .money-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .money-card { padding: 28px 24px; background: #0d0d0d; border: 1px solid #1e1e1e; }
+        .money-card-label { font-family: monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 12px; }
+        .money-card-label.pending { color: #C9A96E; }
+        .money-card-label.paid { color: #4ade80; }
+        .money-card-label.overdue { color: #ef4444; }
+        .money-card-amount { font-size: 40px; font-weight: 400; line-height: 1; margin-bottom: 8px; }
+        .money-card-amount.pending { color: #C9A96E; }
+        .money-card-amount.paid { color: #4ade80; }
+        .money-card-amount.overdue { color: #ef4444; }
+        .money-card-desc { font-family: monospace; font-size: 10px; color: #444; letter-spacing: 0.1em; }
+        .money-cta { margin-top: 24px; font-family: monospace; font-size: 11px; color: #555; letter-spacing: 0.1em; }
+        .money-cta strong { color: #C9A96E; }
+        .problem { padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
+        .problem-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 24px; }
+        .problem-title em { font-style: italic; color: #C9A96E; }
+        .txt { font-size: 15px; line-height: 1.7; color: #aaa; }
         .plist { list-style: none; margin-top: 24px; }
-        .plist li { font-family: monospace; font-size: 12px; color: #7A6A5A; padding: 10px 0; border-bottom: 1px solid #E0D8C8; display: flex; gap: 12px; }
-        .plist li span { color: #B8944A; }
-        .auth-box { background: #12100E; border: 1px solid #2A2018; padding: 32px; margin-top: 32px; }
-        .auth-text { font-size: 14px; line-height: 1.6; color: #B0A090; font-style: italic; }
+        .plist li { font-family: monospace; font-size: 12px; color: #777; padding: 10px 0; border-bottom: 1px solid #1a1a1a; display: flex; gap: 12px; }
+        .plist li span { color: #C9A96E; }
+        .shock-stat { background: #111; border-left: 3px solid #ef4444; padding: 20px 24px; margin: 24px 0; }
+        .shock-number { font-size: 52px; font-weight: 400; color: #ef4444; line-height: 1; }
+        .shock-label { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #777; text-transform: uppercase; margin-top: 6px; }
+        .auth-box { background: #111; border: 1px solid #222; padding: 32px; margin-top: 32px; }
+        .auth-text { font-size: 14px; line-height: 1.6; color: #aaa; font-style: italic; }
         .auth-attr { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 12px; }
         .how { padding: 80px 48px; background: #0d0d0d; }
-        .how-lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
-        .how-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; color: #f0ece4; }
+        .how-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; }
         .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
         .how-num { font-family: monospace; font-size: 11px; color: #C9A96E; margin-bottom: 12px; }
-        .how-st { font-size: 16px; margin-bottom: 8px; color: #f0ece4; }
+        .how-st { font-size: 16px; margin-bottom: 8px; }
         .how-sb { font-size: 13px; line-height: 1.6; color: #777; }
-        .demo { padding: 80px 48px; background: #0a0a0a; border-top: 1px solid #1a1a1a; }
-        .demo-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-        .demo-lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
-        .demo-title { font-size: 36px; font-weight: 400; margin-bottom: 16px; color: #f0ece4; }
+        .demo { padding: 80px 48px; border-top: 1px solid #1e1e1e; border-bottom: 1px solid #1e1e1e; }
+        .demo-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .demo-title { font-size: 36px; font-weight: 400; margin-bottom: 16px; }
         .demo-title em { font-style: italic; color: #C9A96E; }
-        .demo-sub { font-size: 15px; line-height: 1.7; color: #777; margin-bottom: 32px; }
+        .demo-sub { font-size: 15px; line-height: 1.7; color: #aaa; margin-bottom: 32px; }
         .demo-btn { padding: 14px 28px; background: #C9A96E; color: #0a0a0a; font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; border: none; cursor: pointer; font-weight: 700; }
-        .demo-btn:disabled { opacity: 0.4; cursor: default; }
-        .demo-reset { padding: 14px 28px; background: none; border: 1px solid #333; color: #666; font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; margin-left: 12px; }
-        .demo-card { background: #111; border: 1px solid #222; overflow: hidden; }
-        .demo-status-bar { display: flex; }
-        .demo-status-step { flex: 1; padding: 8px 4px; text-align: center; font-family: monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; background: #1a1a1a; color: #333; border-right: 1px solid #222; transition: all 0.4s ease; }
-        .demo-status-step:last-child { border-right: none; }
-        .demo-status-step.active { background: #C9A96E; color: #0a0a0a; }
-        .demo-status-step.done { background: #1e1e12; color: #C9A96E; }
-        .demo-card-header { background: #1a1a1a; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; }
-        .demo-card-title { font-family: monospace; font-size: 10px; letter-spacing: 0.25em; color: #555; text-transform: uppercase; }
-        .demo-ref { font-family: monospace; font-size: 11px; color: #C9A96E; letter-spacing: 0.1em; }
-        .demo-body { padding: 4px 0; }
-        .demo-field { display: flex; justify-content: space-between; align-items: center; padding: 11px 20px; border-bottom: 1px solid #1a1a1a; }
-        .demo-field:last-child { border-bottom: none; }
-        .demo-field-label { font-family: monospace; font-size: 10px; letter-spacing: 0.15em; color: #555; text-transform: uppercase; }
-        .demo-field-value { font-size: 14px; color: #f0ece4; }
-        .demo-field-value.gold { color: #C9A96E; font-family: monospace; }
-        .demo-field-value.green { color: #4ade80; font-family: monospace; }
-        .demo-divider { border: none; border-top: 1px solid #2a2a2a; margin: 4px 20px; }
-        .demo-total { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #1a1a1a; border-top: 2px solid #C9A96E; }
-        .demo-total-label { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #888; text-transform: uppercase; }
-        .demo-total-value { font-size: 20px; color: #C9A96E; }
-        .demo-idle { font-family: monospace; font-size: 12px; color: #333; padding: 48px 20px; text-align: center; }
-        .demo-cta { margin-top: 48px; padding-top: 48px; border-top: 1px solid #1a1a1a; }
-        .demo-cta-title { font-size: 22px; font-weight: 300; color: #f0ece4; margin-bottom: 12px; }
-        .demo-cta-title em { font-style: italic; color: #C9A96E; }
-        .demo-cta-sub { font-size: 14px; color: #666; margin-bottom: 24px; }
-        .demo-cta-btn { display: inline-block; padding: 14px 32px; background: #C9A96E; color: #0a0a0a; font-family: monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; }
-        .testimonial { padding: 80px 48px; background: #0d0d0d; border-top: 1px solid #1a1a1a; }
-        .testimonial-inner { max-width: 700px; }
-        .testimonial-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 32px; }
-        .testimonial-quote { font-size: 26px; font-weight: 300; line-height: 1.4; color: #f0ece4; font-style: italic; margin-bottom: 28px; }
-        .testimonial-quote em { color: #C9A96E; font-style: italic; }
-        .testimonial-attr { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; }
-        .testimonial-attr strong { color: #C9A96E; font-weight: 400; }
+        .demo-btn:disabled { opacity: 0.5; cursor: default; }
+        .demo-reset { padding: 14px 28px; background: none; border: 1px solid #444; color: #aaa; font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; margin-left: 12px; }
+        .demo-panel { background: #111; border: 1px solid #222; padding: 24px; }
+        .demo-panel-title { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 20px; }
+        .demo-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid #1a1a1a; opacity: 0; transition: opacity 0.5s ease; }
+        .demo-row.visible { opacity: 1; }
+        .demo-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #333; transition: background 0.5s ease; }
+        .demo-row-label { font-size: 14px; flex: 1; }
+        .demo-row-detail { font-family: monospace; font-size: 11px; color: #666; }
+        .demo-idle { font-family: monospace; font-size: 12px; color: #444; padding: 20px 0; text-align: center; }
         .aud { padding: 80px 48px; background: #0d0d0d; }
-        .aud-lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
         .aud-tabs { display: flex; margin-bottom: 48px; border-bottom: 1px solid #1e1e1e; }
         .aud-tab { padding: 14px 32px; font-family: monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; background: none; border: none; color: #555; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
         .aud-tab.active { color: #C9A96E; border-bottom-color: #C9A96E; }
         .aud-content { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-        .aud-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 20px; color: #f0ece4; }
+        .aud-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 20px; }
         .aud-body { font-size: 15px; line-height: 1.7; color: #aaa; margin-bottom: 32px; }
         .aud-list { list-style: none; margin-bottom: 32px; }
         .aud-list li { font-family: monospace; font-size: 12px; color: #777; padding: 10px 0; border-bottom: 1px solid #1a1a1a; display: flex; gap: 12px; }
         .aud-list li span { color: #C9A96E; }
         .aud-cta { display: inline-block; padding: 14px 28px; font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 700; background: #C9A96E; color: #0a0a0a; }
         .aud-price { font-family: monospace; font-size: 11px; color: #555; margin-top: 12px; display: block; }
-        .aud-panel { background: #111; border: 1px solid #1e1e1e; overflow: hidden; }
-        .aud-panel-header { background: #1a1a1a; padding: 14px 20px; border-bottom: 1px solid #222; font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; }
-        .aud-stat { padding: 14px 20px; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+        .aud-panel { background: #111; border: 1px solid #1e1e1e; padding: 32px; }
+        .aud-panel-title { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-bottom: 20px; }
+        .aud-stat { padding: 16px 0; border-bottom: 1px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
         .aud-stat:last-child { border-bottom: none; }
         .aud-stat-label { font-size: 13px; color: #aaa; }
         .aud-stat-value { font-family: monospace; font-size: 13px; color: #C9A96E; }
         .aud-stat-value.overdue { color: #ef4444; }
         .aud-stat-value.paid { color: #4ade80; }
-        .scar { padding: 80px 48px; background: #F5EFE6; display: flex; justify-content: space-between; align-items: center; }
-        .scar-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; color: #B8944A; text-transform: uppercase; margin-bottom: 12px; }
-        .scar-title { font-size: 28px; font-weight: 400; color: #12100E; }
-        .scar-sub { font-size: 14px; color: #7A6A5A; margin-top: 8px; max-width: 500px; }
-        .scar-btn { padding: 16px 32px; background: #12100E; color: #C9A96E; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; font-family: monospace; white-space: nowrap; }
-        .faq { padding: 80px 48px; background: #F5EFE6; border-top: 1px solid #E0D8C8; }
-        .faq-lbl { font-size: 10px; letter-spacing: 0.3em; color: #9A8A78; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
-        .faq-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; color: #12100E; }
-        .faq-item { border-bottom: 1px solid #D8D0C0; }
-        .faq-q { width: 100%; text-align: left; background: none; border: none; color: #12100E; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 17px; padding: 22px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .faq-icon { color: #B8944A; font-size: 24px; margin-left: 16px; flex-shrink: 0; font-family: monospace; font-weight: 300; line-height: 1; }
-        .faq-a { font-size: 14px; line-height: 1.8; color: #5A4A38; padding-bottom: 20px; max-width: 700px; }
+        .pricing { padding: 80px 48px; border-top: 1px solid #1e1e1e; }
+        .pricing-title { font-size: 36px; font-weight: 400; margin-bottom: 8px; }
+        .pricing-title em { font-style: italic; color: #C9A96E; }
+        .pricing-sub { font-size: 14px; color: #555; font-style: italic; margin-bottom: 48px; }
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .pricing-card { background: #111; border: 1px solid #1e1e1e; padding: 32px 28px; position: relative; }
+        .pricing-card.featured { background: #141410; border-color: #C9A96E; }
+        .pricing-badge { font-family: monospace; font-size: 8px; letter-spacing: 0.3em; color: #0a0a0a; background: #C9A96E; padding: 4px 10px; text-transform: uppercase; position: absolute; top: -1px; right: 24px; }
+        .pricing-tier { font-family: monospace; font-size: 9px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 16px; }
+        .pricing-price { font-size: 48px; font-weight: 400; color: #f0ece4; line-height: 1; margin-bottom: 4px; }
+        .pricing-period { font-family: monospace; font-size: 10px; color: #444; letter-spacing: 0.1em; margin-bottom: 20px; }
+        .pricing-hook { font-size: 14px; color: #C9A96E; font-style: italic; margin-bottom: 20px; line-height: 1.5; border-left: 2px solid #C9A96E; padding-left: 12px; }
+        .pricing-features { list-style: none; margin-bottom: 28px; }
+        .pricing-features li { font-family: monospace; font-size: 11px; color: #666; padding: 8px 0; border-bottom: 1px solid #1a1a1a; display: flex; gap: 10px; }
+        .pricing-features li span { color: #C9A96E; }
+        .pricing-cta { display: block; padding: 12px 20px; background: #C9A96E; color: #0a0a0a; font-family: monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; text-align: center; }
+        .scar { padding: 80px 48px; border-top: 1px solid #1e1e1e; border-bottom: 1px solid #1e1e1e; display: flex; justify-content: space-between; align-items: center; }
+        .scar-lbl { font-family: monospace; font-size: 10px; letter-spacing: 0.3em; color: #C9A96E; text-transform: uppercase; margin-bottom: 12px; }
+        .scar-title { font-size: 28px; font-weight: 400; }
+        .scar-sub { font-size: 14px; color: #777; margin-top: 8px; max-width: 500px; }
+        .faq { padding: 80px 48px; }
+        .faq-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; }
+        .faq-item { border-bottom: 1px solid #1e1e1e; }
+        .faq-q { width: 100%; text-align: left; background: none; border: none; color: #f0ece4; font-family: Georgia, serif; font-size: 16px; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-icon { color: #C9A96E; font-size: 18px; margin-left: 16px; flex-shrink: 0; }
+        .faq-a { font-size: 14px; line-height: 1.7; color: #aaa; padding-bottom: 20px; max-width: 700px; }
         .cls { padding: 100px 48px; text-align: center; background: #0d0d0d; }
-        .cls-title { font-size: 48px; font-weight: 400; margin-bottom: 16px; color: #f0ece4; }
+        .cls-title { font-size: 48px; font-weight: 400; margin-bottom: 16px; }
         .cls-title em { font-style: italic; color: #C9A96E; }
-        .cls-sub { font-size: 16px; color: #666; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cls-sub { font-size: 16px; color: #888; margin-bottom: 12px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cls-urgency { font-family: monospace; font-size: 11px; color: #ef4444; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 40px; }
         .cls-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-        .btn-p { padding: 16px 32px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; font-family: monospace; }
-        .btn-s { padding: 16px 32px; border: 1px solid #333; color: #888; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; display: inline-block; font-family: monospace; }
         .foot { background: #050505; padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1a1a1a; }
-        .foot-logo { font-size: 16px; letter-spacing: 0.15em; color: #C9A96E; font-family: monospace; }
-        .foot-meta { font-family: monospace; font-size: 10px; letter-spacing: 0.12em; color: #999; text-transform: uppercase; }
+        .foot-logo { font-size: 16px; letter-spacing: 0.15em; color: #C9A96E; }
+        .foot-meta { font-family: monospace; font-size: 10px; letter-spacing: 0.12em; color: #777; text-transform: uppercase; }
         @media (max-width: 768px) {
-          .fullhero { padding: 32px 20px; }
-          .fh-title { font-size: clamp(48px, 14vw, 80px); }
-          .fh-nav .fh-btn-s { display: none; }
-          .fh-foot { flex-direction: column; gap: 8px; }
-          .season-bar { gap: 24px; padding: 16px 20px; flex-wrap: wrap; }
+          .urgency-bar { gap: 12px; padding: 10px 20px; }
+          .nav { padding: 16px 20px; }
+          .nav-btn-s { display: none; }
+          .stats-bar { gap: 32px; padding: 16px 20px; }
+          .hero { padding: 60px 20px 48px; }
+          .hero-title { font-size: 36px; }
+          .money-block { padding: 40px 20px; }
+          .money-cards { grid-template-columns: 1fr; }
           .problem { grid-template-columns: 1fr; gap: 40px; padding: 48px 20px; }
           .how { padding: 48px 20px; }
           .how-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
           .demo { padding: 48px 20px; }
           .demo-inner { grid-template-columns: 1fr; gap: 32px; }
-          .demo-status-step { font-size: 7px; padding: 6px 2px; }
           .aud { padding: 48px 20px; }
           .aud-content { grid-template-columns: 1fr; gap: 32px; }
           .aud-tabs { overflow-x: auto; }
+          .pricing { padding: 48px 20px; }
+          .pricing-grid { grid-template-columns: 1fr; }
           .scar { flex-direction: column; gap: 24px; padding: 48px 20px; text-align: center; }
-          .scar-sub { margin: 8px auto 0; }
           .faq { padding: 48px 20px; }
-          .faq-q { font-size: 15px; }
           .cls { padding: 60px 20px; }
           .cls-title { font-size: 32px; }
           .foot { flex-direction: column; gap: 16px; text-align: center; padding: 28px 20px; }
-          .foot-meta { font-size: 10px; line-height: 1.9; }
+          .divider { margin: 0 20px; }
         }
       `}</style>
-      <div className="fullhero">
-        <div className="fh-top">
-          <div className="fh-logo">ISLA · The Concierge Network · Ibiza 2026</div>
-          <div className="fh-nav">
-            <Link href="/auth/signup" className="fh-btn-s">Join Free</Link>
-            <Link href="/auth/signup" className="fh-btn-p">List Your Venue</Link>
-          </div>
-        </div>
-        <div className="fh-body">
-          <span className="fh-eyebrow">Ibiza 2026 · Early Access Live · Expanding Globally</span>
-          <h1 className="fh-title">You are already<br/>losing <em>money.</em></h1>
-          <p className="fh-sub">The average Ibiza concierge loses <strong>€4,200 per season</strong> in untracked commissions. ISLA stops that.</p>
-          <div className="fh-ctas">
-            <Link href="/auth/signup" className="fh-btn-primary">Start Tracking — Free</Link>
-            <Link href="/auth/signup" className="fh-btn-secondary">List Your Venue</Link>
-          </div>
-        </div>
-        <div className="fh-foot">
-          <div className="fh-tagline">islanetwork.es · hello@islanetwork.es · Ibiza 2026</div>
-          <div className="fh-scroll">Explore the platform ↓</div>
-        </div>
+
+      <div className="urgency-bar">
+        <span className="urgency-bar-text">Season is live now</span>
+        <span className="urgency-dot" />
+        <span className="urgency-bar-text">Every week you wait = lost bookings</span>
+        <span className="urgency-dot" />
+        <span className="urgency-bar-text">Founding venues — limited places</span>
       </div>
 
-      <div className="season-bar">
-        <div className="season-item"><div className="season-val">Founding Season</div><div className="season-lbl">Ibiza 2026</div></div>
-        <div className="season-item"><div className="season-val">Early Access</div><div className="season-lbl">Now Open</div></div>
-        <div className="season-item"><div className="season-val">Expanding</div><div className="season-lbl">Marbella · Mykonos · Dubai</div></div>
+      <nav className="nav">
+        <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
+        <div className="nav-actions">
+          <Link href="/auth/signup" className="nav-btn-s">Join Free</Link>
+          <Link href="/auth/signup" className="nav-btn-p">Get Access Now</Link>
+        </div>
+      </nav>
+
+      <div className="stats-bar">
+        <div className="stat-item"><div className="stat-num">{stats.venues}</div><div className="stat-lbl">Venues Live</div></div>
+        <div className="stat-item"><div className="stat-num">{stats.concierges}</div><div className="stat-lbl">Concierges</div></div>
+        <div className="stat-item"><div className="stat-num">Ibiza</div><div className="stat-lbl">2026 Season</div></div>
       </div>
 
-
-      <section style={{padding: '64px 48px', background: '#0d0d0d', borderBottom: '1px solid #1a1a1a'}}>
-        <div style={{maxWidth: 900, margin: '0 auto'}}>
-          <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.35em', color: '#555', textTransform: 'uppercase', marginBottom: 8}}>Updated in real-time inside ISLA</div>
-          <h2 style={{fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 300, color: '#f0ece4', marginBottom: 8}}>Where the money <em style={{fontStyle: 'italic', color: '#C9A96E'}}>is.</em></h2>
-          <p style={{fontSize: 14, color: '#666', marginBottom: 40, fontStyle: 'italic'}}>Live visibility on commission rates and opportunities across the network.</p>
-          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 2}}>
-            <div style={{background: '#111', border: '1px solid #1e1e1e', padding: 24}}>
-              <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.3em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16}}>Top Commission Venues</div>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
-                <div><div style={{fontSize: 13, color: '#f0ece4'}}>My Island Essential</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>Dining · Groups</div></div>
-                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>10%</div>
-              </div>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
-                <div><div style={{fontSize: 13, color: '#f0ece4'}}>Premium Beach Club</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>High spend · Day</div></div>
-                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>12%</div>
-              </div>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}>
-                <div><div style={{fontSize: 13, color: '#f0ece4'}}>High-Volume Restaurant</div><div style={{fontFamily: 'monospace', fontSize: 9, color: '#555', marginTop: 2}}>Consistent · Volume</div></div>
-                <div style={{fontFamily: 'monospace', fontSize: 13, color: '#C9A96E'}}>8%</div>
-              </div>
-              <div style={{fontFamily: 'monospace', fontSize: 8, color: '#333', marginTop: 12, letterSpacing: '0.1em'}}>Illustrative data — live rates visible inside ISLA</div>
-            </div>
-            <div style={{background: '#111', border: '1px solid #1e1e1e', padding: 24}}>
-              <div style={{fontFamily: 'monospace', fontSize: 9, letterSpacing: '0.3em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16}}>Live Opportunities</div>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
-                <div style={{fontSize: 13, color: '#f0ece4'}}>VIP table available tonight</div>
-                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0}}></div>
-              </div>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #1a1a1a'}}>
-                <div style={{fontSize: 13, color: '#f0ece4'}}>Last-minute booking — high spend</div>
-                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#4ade80', flexShrink: 0}}></div>
-              </div>
-              <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0'}}>
-                <div style={{fontSize: 13, color: '#f0ece4'}}>Group booking — 8 pax</div>
-                <div style={{width: 6, height: 6, borderRadius: '50%', background: '#C9A96E', flexShrink: 0}}></div>
-              </div>
-              <div style={{fontFamily: 'monospace', fontSize: 8, color: '#333', marginTop: 12, letterSpacing: '0.1em'}}>Illustrative data — live opportunities visible inside ISLA</div>
-            </div>
-          </div>
+      <section className="hero">
+        <div className="hero-tag">Season already running — every week offline costs you</div>
+        <h1 className="hero-title">You are already<br/>losing <em>money.</em></h1>
+        <p className="hero-sub">The average Ibiza concierge loses <strong>4,200 per season</strong> in commissions nobody tracked. The season is open now. ISLA stops that — free, forever.</p>
+        <div className="hero-ctas">
+          <Link href="/auth/signup" className="btn-p">Get Access Now — Free</Link>
+          <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
         </div>
       </section>
+
+      <hr className="divider" />
+
+      <section className="money-block">
+        <div className="money-inner">
+          <div className="money-lbl">Without ISLA — right now — this season</div>
+          <h2 className="money-title">This is what <em>untracked</em> looks like.</h2>
+          <p className="money-sub">Every one of these numbers exists in someones WhatsApp. Not yours.</p>
+          <div className="money-cards">
+            <div className="money-card">
+              <div className="money-card-label pending">Pending</div>
+              <div className="money-card-amount pending">2,400</div>
+              <div className="money-card-desc">Owed — no record — no leverage</div>
+            </div>
+            <div className="money-card">
+              <div className="money-card-label paid">Paid</div>
+              <div className="money-card-amount paid">1,800</div>
+              <div className="money-card-desc">Tracked — confirmed — protected</div>
+            </div>
+            <div className="money-card">
+              <div className="money-card-label overdue">Overdue</div>
+              <div className="money-card-amount overdue">600</div>
+              <div className="money-card-desc">Past due — ISLA flags it — you have proof</div>
+            </div>
+          </div>
+          <p className="money-cta">Inside ISLA you see this in real time. <strong>Without ISLA, you see nothing.</strong></p>
+        </div>
+      </section>
+
       <section className="problem">
         <div>
           <div className="lbl">The Problem</div>
-          <h2 className="problem-title">Concierge bookings are <em>invisible.</em></h2>
-          <p className="txt">Most concierge-driven bookings are untracked, miscommunicated, and lost between teams. Commissions are inconsistent, relationships unclear, and revenue slips through every season.</p>
+          <h2 className="problem-title">4,200. Every season. <em>Gone.</em></h2>
+          <p className="txt">The average Ibiza concierge loses 4,200 per season in commissions they earned and never tracked. Not because venues will not pay — because there is no record. No record means no leverage. No leverage means no money.</p>
+          <div className="shock-stat">
+            <div className="shock-number">4,200</div>
+            <div className="shock-label">Lost per concierge per season untracked</div>
+          </div>
           <ul className="plist">
             <li><span>—</span>No record of who referred the booking</li>
             <li><span>—</span>Commission terms agreed verbally, disputed later</li>
@@ -302,89 +296,49 @@ export default function HomePage() {
             <p className="auth-text">Built by an Ibiza hospitality operator, not a tech startup. Every problem ISLA solves is one we lived from the inside.</p>
             <p className="auth-attr">ISLA — The Concierge Network · Ibiza 2026</p>
           </div>
-          <div className="lbl" style={{marginTop: 32}}>The Solution</div>
-          <p className="txt">ISLA creates a structured layer between concierges and venues. Every referral is tracked, documented, and reconciled automatically. Payments go direct — ISLA is the record layer that enforces everything.</p>
+          <div className="lbl" style={{marginTop: 32}}>The Fix</div>
+          <p className="txt">ISLA creates a structured layer between concierges and venues. Every referral is tracked, documented, and reconciled. Signed agreements. Payment status in real time. If they do not pay — you have proof.</p>
         </div>
       </section>
 
       <section className="how">
-        <div className="how-lbl">How It Works</div>
+        <div className="lbl">How It Works</div>
         <h2 className="how-title">Four steps. Zero manual tracking.</h2>
         <div className="how-steps">
-          <div><div className="how-num">01</div><div className="how-st">Concierge refers</div><div className="how-sb">A verified concierge submits a referral through ISLA with guest details and venue selection.</div></div>
-          <div><div className="how-num">02</div><div className="how-st">Reference generated</div><div className="how-sb">A unique ISLA reference is created instantly and shared with the venue via the platform.</div></div>
-          <div><div className="how-num">03</div><div className="how-st">Booking confirmed</div><div className="how-sb">The venue records the reference. ISLA tracks confirmation, covers, and final spend.</div></div>
-          <div><div className="how-num">04</div><div className="how-st">Commission calculated</div><div className="how-sb">Commission calculated from the signed agreement including IVA. No disputes. No chasing.</div></div>
+          <div><div className="how-num">01</div><div className="how-st">Concierge refers</div><div className="how-sb">A verified concierge submits a referral through ISLA with guest details and venue.</div></div>
+          <div><div className="how-num">02</div><div className="how-st">Reference generated</div><div className="how-sb">A unique ISLA reference number is created and sent to the venue instantly.</div></div>
+          <div><div className="how-num">03</div><div className="how-st">Booking confirmed</div><div className="how-sb">The venue records the reference. ISLA tracks confirmation and final bill value.</div></div>
+          <div><div className="how-num">04</div><div className="how-st">Commission calculated</div><div className="how-sb">Commission is calculated from the signed agreement. No disputes. No chasing.</div></div>
         </div>
       </section>
 
       <section className="demo">
         <div className="demo-inner">
           <div>
-            <div className="demo-lbl">Live Demo</div>
-            <h2 className="demo-title">Watch a commission <em>get tracked.</em></h2>
-            <p className="demo-sub">From referral to payment in six steps. A real booking including the commission breakdown and IVA calculation.</p>
-            <button className="demo-btn" onClick={() => setDemoStep(1)} disabled={demoStep > 0 && demoStep < 6}>
-              {demoStep === 0 ? 'Run Demo' : demoStep < 6 ? 'Processing...' : 'Complete'}
+            <div className="lbl">Live Demo</div>
+            <h2 className="demo-title">See a referral <em>happen.</em></h2>
+            <p className="demo-sub">Watch what happens from the moment a concierge submits a booking to the moment commission is tracked. No manual steps. No WhatsApp chains.</p>
+            <button className="demo-btn" onClick={() => setDemoStep(1)} disabled={demoStep > 0 && demoStep < 4}>
+              {demoStep === 0 ? 'Run Demo' : demoStep < 4 ? 'Running...' : 'Done'}
             </button>
-            {demoStep >= 6 && <button className="demo-reset" onClick={() => setDemoStep(0)}>Reset</button>}
+            {demoStep === 4 && <button className="demo-reset" onClick={() => setDemoStep(0)}>Reset</button>}
           </div>
-          <div className="demo-card">
-            <div className="demo-status-bar">
-              {['Submitted','Reference','Confirmed','Spend','Commission','Due'].map((s, i) => (
-                <div key={i} className={`demo-status-step ${demoStep > i + 1 ? 'done' : demoStep === i + 1 ? 'active' : ''}`}>{s}</div>
-              ))}
-            </div>
-            {demoStep === 0 ? (
-              <div className="demo-idle">Press Run Demo to see a real referral tracked</div>
-            ) : (
-              <>
-                <div className="demo-card-header">
-                  <span className="demo-card-title">ISLA Referral Record</span>
-                  {demoStep >= 2 && <span className="demo-ref">ISLA-2026-0041</span>}
-                </div>
-                <div className="demo-body">
-                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Venue</span><span className="demo-field-value">Venue A · Ibiza</span></div>}
-                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Date</span><span className="demo-field-value">Sat 14 June 2026</span></div>}
-                  {demoStep >= 1 && <div className="demo-field"><span className="demo-field-label">Party</span><span className="demo-field-value">4 guests · Dinner</span></div>}
-                  {demoStep >= 2 && <div className="demo-field"><span className="demo-field-label">Reference</span><span className="demo-field-value gold">ISLA-2026-0041</span></div>}
-                  {demoStep >= 3 && <div className="demo-field"><span className="demo-field-label">Status</span><span className="demo-field-value green">Booking Confirmed ✓</span></div>}
-                  {demoStep >= 4 && <div className="demo-field"><span className="demo-field-label">Total Spend</span><span className="demo-field-value gold">€{spend.toLocaleString()}</span></div>}
-                  {demoStep >= 5 && (<>
-                    <div className="demo-divider" />
-                    <div className="demo-field"><span className="demo-field-label">Commission Rate</span><span className="demo-field-value">12% (agreed)</span></div>
-                    <div className="demo-field"><span className="demo-field-label">Commission</span><span className="demo-field-value gold">€{commission.toFixed(2)}</span></div>
-                    <div className="demo-field"><span className="demo-field-label">IVA 21%</span><span className="demo-field-value">€{iva.toFixed(2)}</span></div>
-                  </>)}
-                </div>
-                {demoStep >= 6 && (
-                  <div className="demo-total">
-                    <span className="demo-total-label">Total Due to Concierge</span>
-                    <span className="demo-total-value">€{total.toFixed(2)}</span>
-                  </div>
-                )}
-              </>
-            )}
+          <div className="demo-panel">
+            <div className="demo-panel-title">ISLA · Referral Flow</div>
+            {demoStep === 0 && <div className="demo-idle">Press Run Demo to start</div>}
+            {demoSteps.map((s, i) => (
+              <div key={i} className={`demo-row ${demoStep > i ? 'visible' : ''}`}>
+                <div className="demo-dot" style={{background: demoStep > i ? s.color : '#333'}} />
+                <div className="demo-row-label">{s.label}</div>
+                <div className="demo-row-detail">{s.detail}</div>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
-
-      <div className="demo-cta" style={{padding: "0 48px 80px", background: "#0a0a0a"}}>
-        <h3 className="demo-cta-title">Ready to track your <em>first commission?</em></h3>
-        <p className="demo-cta-sub">Join free. No card required. Your first referral logged in under 60 seconds.</p>
-        <Link href="/auth/signup" className="demo-cta-btn">Start Tracking — Free</Link>
-      </div>
-
-      <section className="testimonial">
-        <div className="testimonial-inner">
-          <div className="testimonial-lbl">Early Access · Founding Member</div>
-          <p className="testimonial-quote">"ISLA solves something I have dealt with every season for years. Commissions disappearing into WhatsApp threads, venues disputing amounts, relationships lost when staff change. <em>This is the infrastructure the industry has always needed.</em>"</p>
-          <div className="testimonial-attr"><strong>Island Essential</strong> · Ibiza Concierge &amp; Villa Service · Founding Member 2026</div>
         </div>
       </section>
 
       <section className="aud">
-        <div className="aud-lbl">Who It Is For</div>
+        <div className="lbl">Who It Is For</div>
         <div className="aud-tabs">
           <button className={`aud-tab ${tab === 'concierge' ? 'active' : ''}`} onClick={() => setTab('concierge')}>For Concierges and GRMs</button>
           <button className={`aud-tab ${tab === 'venue' ? 'active' : ''}`} onClick={() => setTab('venue')}>For Venues and Operators</button>
@@ -392,71 +346,116 @@ export default function HomePage() {
         {tab === 'concierge' && (
           <div className="aud-content">
             <div>
-              <h2 className="aud-title">Make more money. Starting today.</h2>
-              <p className="aud-body">See every venue rate live. Log referrals in seconds. Know exactly who has paid and who has not — with full commission breakdowns including IVA. Always free.</p>
+              <h2 className="aud-title">Stop losing money you already earned.</h2>
+              <p className="aud-body">You did the work. You sent the client. ISLA makes sure you get paid for it. See every venue rate live. Log referrals in seconds. Chase nothing. Always free.</p>
               <ul className="aud-list">
                 <li><span>—</span>Full venue directory with live commission rates</li>
                 <li><span>—</span>Every referral logged with a unique ISLA reference</li>
-                <li><span>—</span>Commission tracked with IVA breakdown</li>
                 <li><span>—</span>Payment status — confirmed, pending, overdue</li>
                 <li><span>—</span>Signed agreements give you legal leverage</li>
                 <li><span>—</span>Always free</li>
               </ul>
-              <Link href="/auth/signup" className="aud-cta">Join Free</Link>
+              <Link href="/auth/signup" className="aud-cta">Get Access Now — Free</Link>
             </div>
             <div className="aud-panel">
-              <div className="aud-panel-header">Your Commission Dashboard · Season 2026</div>
-              <div className="aud-stat"><span className="aud-stat-label">Venue A · 12%</span><span className="aud-stat-value">€464 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Venue B · 10%</span><span className="aud-stat-value paid">€254 paid</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Venue C · 8%</span><span className="aud-stat-value">€194 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Venue D · 15%</span><span className="aud-stat-value overdue">€653 overdue</span></div>
-              <div className="aud-stat" style={{background:'#1a1a1a'}}><span className="aud-stat-label" style={{color:'#777'}}>Season total tracked</span><span className="aud-stat-value" style={{fontSize:'16px'}}>€1,565</span></div>
+              <div className="aud-panel-title">Your Commission Dashboard · Season 2026</div>
+              <div className="aud-stat"><span className="aud-stat-label">Casa Jondal · 12%</span><span className="aud-stat-value">464 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Nobu Ibiza · 10%</span><span className="aud-stat-value paid">254 paid</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Beachhouse · 8%</span><span className="aud-stat-value">194 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Heart Ibiza · 15%</span><span className="aud-stat-value overdue">653 overdue</span></div>
             </div>
           </div>
         )}
         {tab === 'venue' && (
           <div className="aud-content">
             <div>
-              <h2 className="aud-title">Turn concierge relationships into tracked revenue.</h2>
-              <p className="aud-body">Stop losing bookings to invisible referrals. ISLA gives your whole team one source of truth — bookings, attribution, commissions — that survives every October.</p>
+              <h2 className="aud-title">If you are not visible, someone else is.</h2>
+              <p className="aud-body">Every concierge in Ibiza checks ISLA before deciding where to send their client. If your venue is not listed, you do not exist to them. One booking covers the annual cost.</p>
               <ul className="aud-list">
-                <li><span>—</span>Verified concierge directory</li>
+                <li><span>—</span>Visible to every verified concierge on ISLA</li>
                 <li><span>—</span>Every referral documented with a signed agreement</li>
-                <li><span>—</span>Payment reliability scores per concierge</li>
-                <li><span>—</span>Relationships survive staff changes</li>
-                <li><span>—</span>Priority placement for founding venues</li>
+                <li><span>—</span>Know exactly which concierges drive your revenue</li>
+                <li><span>—</span>Relationships survive staff changes every October</li>
+                <li><span>—</span>One booking covers the annual cost</li>
               </ul>
-              <Link href="/auth/signup" className="aud-cta">Apply as Founding Venue</Link>
-              <span className="aud-price">From €500 per year · Less than one table booking</span>
+              <Link href="/auth/signup" className="aud-cta">List Your Venue Now</Link>
+              <span className="aud-price">From 500/yr · Founding rate locked for life</span>
             </div>
             <div className="aud-panel">
-              <div className="aud-panel-header">Venue Dashboard · June 2026</div>
+              <div className="aud-panel-title">Venue Dashboard · Season 2026</div>
               <div className="aud-stat"><span className="aud-stat-label">Referrals this month</span><span className="aud-stat-value">23</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Total tracked spend</span><span className="aud-stat-value">€48,200</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Commissions due</span><span className="aud-stat-value">€5,780</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Total tracked spend</span><span className="aud-stat-value">48,200</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Commissions due</span><span className="aud-stat-value">5,780</span></div>
               <div className="aud-stat"><span className="aud-stat-label">Top concierge</span><span className="aud-stat-value">12 referrals</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Gone quiet this week</span><span className="aud-stat-value overdue">3 concierges</span></div>
             </div>
           </div>
         )}
       </section>
 
+      <section className="pricing">
+        <div className="lbl">Venue Pricing · Ibiza 2026</div>
+        <h2 className="pricing-title">Less than one table booking. <em>Per year.</em></h2>
+        <p className="pricing-sub">Every tier pays for itself the moment a concierge sends your first table.</p>
+        <div className="pricing-grid">
+          <div className="pricing-card">
+            <div className="pricing-tier">Essential</div>
+            <div className="pricing-price">500</div>
+            <div className="pricing-period">per year · founding rate locked</div>
+            <div className="pricing-hook">One average dinner table covers this. Every booking after is pure upside.</div>
+            <ul className="pricing-features">
+              <li><span>—</span>Listed in the ISLA concierge directory</li>
+              <li><span>—</span>Commission agreements on record</li>
+              <li><span>—</span>Referral tracking per concierge</li>
+              <li><span>—</span>Payment status dashboard</li>
+            </ul>
+            <Link href="/auth/signup" className="pricing-cta">Apply Now</Link>
+          </div>
+          <div className="pricing-card featured">
+            <div className="pricing-badge">Most chosen</div>
+            <div className="pricing-tier">Premium</div>
+            <div className="pricing-price">1,200</div>
+            <div className="pricing-period">per year · founding rate locked</div>
+            <div className="pricing-hook">Featured placement means concierges see you first. More visibility means more bookings. Pays back in one weekend.</div>
+            <ul className="pricing-features">
+              <li><span>—</span>Everything in Essential</li>
+              <li><span>—</span>Featured placement — seen before others</li>
+              <li><span>—</span>Full analytics — top concierges, spend trends</li>
+              <li><span>—</span>Priority support</li>
+            </ul>
+            <Link href="/auth/signup" className="pricing-cta">Apply Now</Link>
+          </div>
+          <div className="pricing-card">
+            <div className="pricing-tier">Elite</div>
+            <div className="pricing-price">3,700</div>
+            <div className="pricing-period">per year · founding rate locked</div>
+            <div className="pricing-hook">Top placement always. Control your commission terms. Every concierge sees you first. Built for venues where one booking is worth thousands.</div>
+            <ul className="pricing-features">
+              <li><span>—</span>Everything in Premium</li>
+              <li><span>—</span>Top of directory — always</li>
+              <li><span>—</span>Custom commission term control</li>
+              <li><span>—</span>Verified Partner badge</li>
+            </ul>
+            <Link href="/auth/signup" className="pricing-cta">Apply Now</Link>
+          </div>
+        </div>
+      </section>
+
       <section className="scar">
         <div>
           <div className="scar-lbl">Founding Venues — Limited Places</div>
-          <h2 className="scar-title">Ibiza 2026 season now open.</h2>
-          <p className="scar-sub">ISLA is onboarding a limited number of founding venues. Priority placement, locked rates, and early access to the full concierge network. Less than one table booking per year.</p>
+          <h2 className="scar-title">Season is already running.</h2>
+          <p className="scar-sub">Every week you are not on ISLA is a week where concierges are sending bookings somewhere else. Founding rate locked for life — but the season does not wait.</p>
         </div>
-        <Link href="/auth/signup" className="scar-btn">Apply Now</Link>
+        <Link href="/auth/signup" className="btn-p">List Your Venue Now</Link>
       </section>
 
       <section className="faq">
-        <div className="faq-lbl">Questions and Answers</div>
+        <div className="lbl">Questions and Answers</div>
         <h2 className="faq-title">Everything you need to know.</h2>
         {faqs.map(([q, a], i) => (
           <div key={i} className="faq-item">
             <button className="faq-q" onClick={() => setOpen(open === i ? null : i)}>
-              {q}<span className="faq-icon">{open === i ? '−' : '+'}</span>
+              {q}<span className="faq-icon">{open === i ? '-' : '+'}</span>
             </button>
             {open === i && <p className="faq-a">{a}</p>}
           </div>
@@ -465,16 +464,17 @@ export default function HomePage() {
 
       <section className="cls">
         <h2 className="cls-title">The season is <em>already here.</em></h2>
-        <p className="cls-sub">Every week you are not on ISLA is a week where opportunities go to someone else.</p>
+        <p className="cls-sub">Every week you are not on ISLA is a week where bookings go somewhere else.</p>
+        <p className="cls-urgency">Do not wait — the season is live now</p>
         <div className="cls-ctas">
-          <Link href="/auth/signup" className="btn-p">Join Free — Concierges</Link>
+          <Link href="/auth/signup" className="btn-p">Get Access Now — Free</Link>
           <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
         </div>
       </section>
 
       <footer className="foot">
         <div className="foot-logo">ISLA</div>
-        <div className="foot-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{color: 'inherit', opacity: 0.6, textDecoration: 'none'}}>admin</a></div>
+        <div className="foot-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{color: 'inherit', opacity: 0.5, textDecoration: 'none'}}>admin</a></div>
       </footer>
     </>
   )
