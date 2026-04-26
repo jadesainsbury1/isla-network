@@ -12,6 +12,24 @@ export default function HomePage() {
   const [open, setOpen] = useState<number | null>(null)
   const [tab, setTab] = useState<'concierge' | 'venue'>('concierge')
   const [demoStep, setDemoStep] = useState(0)
+  const [faqTab, setFaqTab] = useState<'Concierges' | 'Venues' | 'Expansion'>('Concierges')
+
+  const faqsByTab = {
+    Concierges: [
+      ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues who pay to be listed and verified.'],
+      ['Will venues be able to contact me or see my details?', 'No. Your identity is never shared without your permission. Venues see referral data, not personal information.'],
+      ['How do I get listed or join?', 'Concierges sign up free and are verified before accessing the full directory. Apply via the site — we review every application personally.'],
+    ],
+    Venues: [
+      ['How does ISLA make money if concierges are free?', 'Venues pay an annual listing fee to be visible and verified on the platform. Concierges are always free because they are the network.'],
+      ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer — the part that lives outside your system.'],
+      ['What if a venue does not pay?', 'ISLA holds signed commission agreements. Non-payment triggers suspension of venue visibility. You have documentation and leverage.'],
+      ['How do I get listed?', 'Venues apply via the site and go through an approval process. Once approved you receive payment links for your chosen plan.'],
+    ],
+    Expansion: [
+      ['When is ISLA expanding beyond Ibiza?', 'Marbella is next — launching late 2026. Mykonos and Dubai to follow.'],
+    ],
+  }
   const [demoKey, setDemoKey] = useState(0)
 
   useEffect(() => {
