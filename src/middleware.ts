@@ -34,6 +34,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
+  // Check concierge approval
+  if (user && (path.startsWith('/dashboard') || path.startsWith('/concierge'))) {
+    const { createClient } = await import('@supabase/supabase-js')
+    const adminClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+    const { data: profile } = await adminClient
+      .from('profiles')
+      .select('role, is_approved')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.role === 'concierge' && !profile?.is_approved && path !== '/pending') {
+      return NextResponse.redirect(new URL('/pending', request.url))
+    }
+  }
+
   return supabaseResponse
 }
 
