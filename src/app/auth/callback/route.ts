@@ -10,15 +10,9 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
       const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role, is_approved')
-          .eq('id', user.id)
-          .single()
-        if (profile?.role === 'concierge' && !profile?.is_approved) {
-          return NextResponse.redirect(`${origin}/pending`)
-        }
+      const role = user?.user_metadata?.role
+      if (role === 'concierge') {
+        return NextResponse.redirect(`${origin}/pending`)
       }
       return NextResponse.redirect(`${origin}/dashboard`)
     }
