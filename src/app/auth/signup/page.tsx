@@ -65,7 +65,13 @@ function SignupForm() {
     return (
       <div style={{ textAlign: 'center' }}>
         <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 300, color: 'var(--cream)', marginBottom: 12 }}>Check your email</h2>
-        <p style={{ color: 'var(--muted)', lineHeight: 1.7, marginBottom: 24, fontSize: 14 }}>Confirmation link sent to <strong style={{ color: 'var(--text)' }}>{email}</strong>.</p>
+          <p style={{ color: 'var(--muted)', lineHeight: 1.7, marginBottom: 16, fontSize: 14 }}>A confirmation link has been sent to <strong style={{ color: 'var(--text)' }}>{email}</strong>.</p>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 20px', textAlign: 'left', marginBottom: 16 }}>
+            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.2em', color: 'var(--gold)', textTransform: 'uppercase', marginBottom: 10 }}>What happens next</div>
+            <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 6 }}>1. Click the link in your email to verify your address</p>
+            <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 6 }}>2. Your application goes to the ISLA team for review</p>
+            <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7 }}>3. We will be in touch within 24 hours to confirm your access</p>
+          </div>
         <Link href="/auth/login" className="btn btn-ghost">Back to Sign In</Link>
       </div>
     )
