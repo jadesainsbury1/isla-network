@@ -1,14 +1,15 @@
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
 
 export async function POST(req: NextRequest) {
+  const { createClient } = await import('@supabase/supabase-js')
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
   const data = await req.formData()
   const profileId = data.get('profileId') as string
   const email = data.get('email') as string
@@ -36,12 +37,7 @@ export async function POST(req: NextRequest) {
       'Authorization': 'Bearer ' + process.env.RESEND_API_KEY,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      from: 'ISLA Network <hello@islanetwork.es>',
-      to: email,
-      subject,
-      html,
-    }),
+    body: JSON.stringify({ from: 'ISLA Network <hello@islanetwork.es>', to: email, subject, html }),
   })
 
   return NextResponse.redirect(new URL('/admin', req.url))
