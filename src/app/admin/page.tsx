@@ -1,4 +1,3 @@
-'use client'
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
