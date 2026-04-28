@@ -42,7 +42,7 @@ export default function HomePage() {
   ]
 
   const demoSteps = [
-    { label: 'Referral submitted', detail: 'Casa Jondal · 4 guests · dinner', color: '#C9A96E' },
+    { label: 'Referral submitted', detail: 'Beach Club · 4 guests · dinner', color: '#C9A96E' },
     { label: 'Reference generated', detail: 'ISLA-2026-0041', color: '#C9A96E' },
     { label: 'Booking confirmed', detail: '3200 spend · 12% commission', color: '#4ade80' },
     { label: 'Commission tracked', detail: '384 pending payment', color: '#facc15' },
