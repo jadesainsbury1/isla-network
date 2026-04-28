@@ -38,8 +38,7 @@ function SignupForm() {
     if (signupError) { setError(signupError.message); setLoading(false); return }
     if (data.user) {
       if (role === "venue") {
-        const supabaseAdmin = createClient()
-        await supabaseAdmin.from("venues").insert([{ user_id: data.user.id, name: venueName, category: venueCategory || "Restaurant", area: venueLocation || "", is_active: false, commission_rate: "10%", contact_email: email }])
+        await fetch("/api/venue/create", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ userId: data.user.id, venueName, venueCategory, venueLocation, email }) })
       }
 
       if (data.session) { router.push('/dashboard'); router.refresh() } else { setSuccess(true) }
