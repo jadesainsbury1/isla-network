@@ -359,10 +359,10 @@ export default function HomePage() {
             </div>
             <div className="aud-panel">
               <div className="aud-panel-title">Your Commission Dashboard · Season 2026</div>
-              <div className="aud-stat"><span className="aud-stat-label">Casa Jondal · 12%</span><span className="aud-stat-value">464 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Nobu Ibiza · 10%</span><span className="aud-stat-value paid">254 paid</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Beachhouse · 8%</span><span className="aud-stat-value">194 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Heart Ibiza · 15%</span><span className="aud-stat-value overdue">653 overdue</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Beach Club · 12%</span><span className="aud-stat-value">464 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Restaurant · 10%</span><span className="aud-stat-value paid">254 paid</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Beach Bar · 8%</span><span className="aud-stat-value">194 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Nightclub · 15%</span><span className="aud-stat-value overdue">653 overdue</span></div>
             </div>
           </div>
         )}
