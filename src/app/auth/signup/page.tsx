@@ -41,7 +41,7 @@ function SignupForm() {
         await fetch("/api/venue/create", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ userId: data.user.id, venueName, venueCategory, venueLocation, email }) })
       }
 
-      if (data.session) { router.push('/dashboard'); router.refresh() } else { setSuccess(true) }
+      if (role === "venue") { setSuccess(true) } else if (data.session) { router.push('/dashboard'); router.refresh() } else { setSuccess(true) }
     }
     setLoading(false)
   }
