@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import ReferralActions from '@/components/ReferralActions'
+import BillUpload from '@/components/BillUpload'
 import type { Booking, Profile } from '@/lib/types'
 
 export default async function VenueDashboardPage() {
@@ -98,7 +99,16 @@ export default async function VenueDashboardPage() {
                       {b.notes ? ` · ${b.notes}` : ''}
                     </div>
                   </div>
-                  <ReferralActions bookingId={b.id} />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+                    <ReferralActions bookingId={b.id} />
+                    <BillUpload
+                      bookingId={b.id}
+                      venueName={venue.name}
+                      venueEmail={venue.contact_email || ''}
+                      commissionRate={venue.commission_rate || '10%'}
+                      concierge={concierge?.full_name || 'Concierge'}
+                    />
+                  </div>
                 </div>
               )
             })
@@ -120,7 +130,9 @@ export default async function VenueDashboardPage() {
                   <th>Date</th>
                   <th>Covers</th>
                   <th>Status</th>
-                  <th>Notes</th>
+                  <th>Bill</th>
+                  <th>Commission</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,7 +149,9 @@ export default async function VenueDashboardPage() {
                       <td>
                         <span className={`badge badge-${b.status}`}>{b.status}</span>
                       </td>
-                      <td className="td-muted">{b.notes || '—'}</td>
+                      <td className="td-mono">{b.bill_amount ? '€' + b.bill_amount.toLocaleString() : '—'}</td>
+                      <td className="td-mono" style={{ color: 'var(--gold)' }}>{b.commission_amount ? '€' + Number(b.commission_amount).toFixed(2) : '—'}</td>
+                      <td><span className={b.commission_status ? 'badge badge-' + b.commission_status : ''}>{b.commission_status || '—'}</span></td>
                     </tr>
                   )
                 })}
