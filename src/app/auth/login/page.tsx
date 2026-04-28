@@ -8,8 +8,21 @@ export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [forgotSent, setForgotSent] = useState(false)
+  const [forgotLoading, setForgotLoading] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  async function handleForgotPassword() {
+    if (!email) { setError('Please enter your email address first'); return }
+    setForgotLoading(true)
+    const supabase = createClient()
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://islanetwork.es/auth/reset-password'
+    })
+    setForgotSent(true)
+    setForgotLoading(false)
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
@@ -71,7 +84,13 @@ export default function LoginPage() {
               />
             </div>
 
-            {error && <div className="form-error" style={{ marginBottom: 16 }}>{error}</div>}
+            {forgotSent && <div style={{ fontSize: 12, color: '#4ade80', marginBottom: 12 }}>Reset link sent — check your email</div>}
+          <div style={{ textAlign: 'right', marginBottom: 12, marginTop: -8 }}>
+            <button type="button" onClick={handleForgotPassword} disabled={forgotLoading} style={{ background: 'none', border: 'none', color: 'var(--gold)', fontSize: 12, cursor: 'pointer', padding: 0 }}>
+              {forgotLoading ? 'Sending...' : 'Forgot password?'}
+            </button>
+          </div>
+          {error && <div className="form-error" style={{ marginBottom: 16 }}>{error}</div>}
 
             <button type="submit" className="btn btn-gold btn-full" disabled={loading}>
               {loading ? 'Signing in…' : 'Sign In →'}
