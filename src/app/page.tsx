@@ -225,8 +225,9 @@ export default function HomePage() {
       <nav className="nav">
         <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
         <div className="nav-actions">
+          <Link href="/auth/signup" className="nav-btn-s">For Venues</Link>
           <Link href="/auth/signup" className="nav-btn-s">Join Free</Link>
-          <Link href="/auth/signup" className="nav-btn-p">Get Access Now</Link>
+          <Link href="/auth/signup" className="nav-btn-p">List Your Venue</Link>
         </div>
       </nav>
 
@@ -241,7 +242,60 @@ export default function HomePage() {
         </div>
       </section>
 
-      <hr className="divider" />
+      <section className="aud">
+        <div className="lbl">Who It Is For</div>
+        <div className="aud-tabs">
+          <button className={`aud-tab ${tab === 'concierge' ? 'active' : ''}`} onClick={() => setTab('concierge')}>For Concierges and GRMs</button>
+          <button className={`aud-tab ${tab === 'venue' ? 'active' : ''}`} onClick={() => setTab('venue')}>For Venues and Operators</button>
+        </div>
+        {tab === 'concierge' && (
+          <div className="aud-content">
+            <div>
+              <h2 className="aud-title">Stop losing money you already earned.</h2>
+              <p className="aud-body">You did the work. You sent the client. ISLA makes sure you get paid for it. See every venue rate live. Log referrals in seconds. Chase nothing. Always free.</p>
+              <ul className="aud-list">
+                <li><span>—</span>Full venue directory with live commission rates</li>
+                <li><span>—</span>Every referral logged with a unique ISLA reference</li>
+                <li><span>—</span>Payment status — confirmed, pending, overdue</li>
+                <li><span>—</span>Signed agreements give you legal leverage</li>
+                <li><span>—</span>Always free</li>
+              </ul>
+              <Link href="/auth/signup" className="aud-cta">Get Access Now — Free</Link>
+            </div>
+            <div className="aud-panel">
+              <div className="aud-panel-title">Your Commission Dashboard · Season 2026</div>
+              <div className="aud-stat"><span className="aud-stat-label">Beach Club · 12%</span><span className="aud-stat-value">464 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Restaurant · 10%</span><span className="aud-stat-value paid">254 paid</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Beach Bar · 8%</span><span className="aud-stat-value">194 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Nightclub · 15%</span><span className="aud-stat-value overdue">653 overdue</span></div>
+            </div>
+          </div>
+        )}
+        {tab === 'venue' && (
+          <div className="aud-content">
+            <div>
+              <h2 className="aud-title">Every concierge checks ISLA before deciding where to send their client. Be there when they do.</h2>
+              <p className="aud-body">Every concierge in Ibiza checks ISLA before deciding where to send their client. If your venue is not listed, you do not exist to them. One booking covers the annual cost.</p>
+              <ul className="aud-list">
+                <li><span>—</span>Visible to every verified concierge on ISLA</li>
+                <li><span>—</span>Every referral documented with a signed agreement</li>
+                <li><span>—</span>Know exactly which concierges drive your revenue</li>
+                <li><span>—</span>Relationships survive staff changes every October</li>
+                <li><span>—</span>One booking covers the annual cost</li>
+              </ul>
+              <Link href="/auth/signup" className="aud-cta">List Your Venue Now</Link>
+              <span className="aud-price">From 500/yr · Founding rate locked for life</span>
+            </div>
+            <div className="aud-panel">
+              <div className="aud-panel-title">Venue Dashboard · Season 2026</div>
+              <div className="aud-stat"><span className="aud-stat-label">Referrals this month</span><span className="aud-stat-value">23</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Total tracked spend</span><span className="aud-stat-value">48,200</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Commissions due</span><span className="aud-stat-value">5,780</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Top concierge</span><span className="aud-stat-value">12 referrals</span></div>
+            </div>
+          </div>
+        )}
+      </section>
 
       <section className="money-block">
         <div className="money-inner">
@@ -268,6 +322,10 @@ export default function HomePage() {
           <p className="money-cta">Inside ISLA you see this in real time. <strong>Without ISLA, you see nothing.</strong></p>
         </div>
       </section>
+
+      <hr className="divider" />
+
+
 
       <section className="problem">
         <div>
@@ -332,60 +390,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="aud">
-        <div className="lbl">Who It Is For</div>
-        <div className="aud-tabs">
-          <button className={`aud-tab ${tab === 'concierge' ? 'active' : ''}`} onClick={() => setTab('concierge')}>For Concierges and GRMs</button>
-          <button className={`aud-tab ${tab === 'venue' ? 'active' : ''}`} onClick={() => setTab('venue')}>For Venues and Operators</button>
-        </div>
-        {tab === 'concierge' && (
-          <div className="aud-content">
-            <div>
-              <h2 className="aud-title">Stop losing money you already earned.</h2>
-              <p className="aud-body">You did the work. You sent the client. ISLA makes sure you get paid for it. See every venue rate live. Log referrals in seconds. Chase nothing. Always free.</p>
-              <ul className="aud-list">
-                <li><span>—</span>Full venue directory with live commission rates</li>
-                <li><span>—</span>Every referral logged with a unique ISLA reference</li>
-                <li><span>—</span>Payment status — confirmed, pending, overdue</li>
-                <li><span>—</span>Signed agreements give you legal leverage</li>
-                <li><span>—</span>Always free</li>
-              </ul>
-              <Link href="/auth/signup" className="aud-cta">Get Access Now — Free</Link>
-            </div>
-            <div className="aud-panel">
-              <div className="aud-panel-title">Your Commission Dashboard · Season 2026</div>
-              <div className="aud-stat"><span className="aud-stat-label">Beach Club · 12%</span><span className="aud-stat-value">464 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Restaurant · 10%</span><span className="aud-stat-value paid">254 paid</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Beach Bar · 8%</span><span className="aud-stat-value">194 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Nightclub · 15%</span><span className="aud-stat-value overdue">653 overdue</span></div>
-            </div>
-          </div>
-        )}
-        {tab === 'venue' && (
-          <div className="aud-content">
-            <div>
-              <h2 className="aud-title">Every concierge checks ISLA before deciding where to send their client. Be there when they do.</h2>
-              <p className="aud-body">Every concierge in Ibiza checks ISLA before deciding where to send their client. If your venue is not listed, you do not exist to them. One booking covers the annual cost.</p>
-              <ul className="aud-list">
-                <li><span>—</span>Visible to every verified concierge on ISLA</li>
-                <li><span>—</span>Every referral documented with a signed agreement</li>
-                <li><span>—</span>Know exactly which concierges drive your revenue</li>
-                <li><span>—</span>Relationships survive staff changes every October</li>
-                <li><span>—</span>One booking covers the annual cost</li>
-              </ul>
-              <Link href="/auth/signup" className="aud-cta">List Your Venue Now</Link>
-              <span className="aud-price">From 500/yr · Founding rate locked for life</span>
-            </div>
-            <div className="aud-panel">
-              <div className="aud-panel-title">Venue Dashboard · Season 2026</div>
-              <div className="aud-stat"><span className="aud-stat-label">Referrals this month</span><span className="aud-stat-value">23</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Total tracked spend</span><span className="aud-stat-value">48,200</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Commissions due</span><span className="aud-stat-value">5,780</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Top concierge</span><span className="aud-stat-value">12 referrals</span></div>
-            </div>
-          </div>
-        )}
-      </section>
+
 
       <section className="pricing">
         <div className="lbl">Venue Pricing · Ibiza 2026</div>
