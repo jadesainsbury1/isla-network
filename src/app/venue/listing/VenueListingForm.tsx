@@ -62,9 +62,9 @@ export default function VenueListingForm({ userId, existingVenue, defaultName }:
     if (err) {
       setError(err.message)
     } else {
+      if (!existingVenue) { fetch("/api/notify-venue-application", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ name, area, category, contact }) }).catch(console.error) }
       setSaved(true)
       router.refresh()
-      if (!existingVenue) { fetch('/api/notify-venue-application', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ name, area, category, contact }) }).catch(console.error) }
     }
     setLoading(false)
   }
