@@ -37,6 +37,10 @@ function SignupForm() {
     })
     if (signupError) { setError(signupError.message); setLoading(false); return }
     if (data.user) {
+      if (role === "venue") {
+        const supabaseAdmin = createClient()
+        await supabaseAdmin.from("venues").insert([{ user_id: data.user.id, name: venueName, category: venueCategory || "Restaurant", area: venueLocation || "", is_active: false, commission_rate: "10%", contact_email: email }])
+      }
 
       if (data.session) { router.push('/dashboard'); router.refresh() } else { setSuccess(true) }
     }
