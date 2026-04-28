@@ -132,9 +132,9 @@ export default function HomePage() {
         .demo-row-detail { font-family: monospace; font-size: 11px; color: #666; }
         .demo-idle { font-family: monospace; font-size: 12px; color: #444; padding: 20px 0; text-align: center; }
         .aud { padding: 80px 48px; background: #0d0d0d; }
-        .aud-tabs { display: flex; margin-bottom: 48px; border-bottom: 1px solid #1e1e1e; }
-        .aud-tab { padding: 14px 32px; font-family: monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; background: none; border: none; color: #555; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-        .aud-tab.active { color: #C9A96E; border-bottom-color: #C9A96E; }
+        .aud-tabs { display: flex; margin-bottom: 32px; flex-wrap: wrap; border-bottom: none; }
+        .aud-tab { padding: 12px 28px; font-family: monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; background: #1a1a1a; border: 1px solid #2a2a2a; color: #666; cursor: pointer; margin-right: 8px; margin-bottom: 24px; border-radius: 2px; }
+        .aud-tab.active { color: #0a0a0a; background: #C9A96E; border-color: #C9A96E; font-weight: 700; }
         .aud-content { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
         .aud-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 20px; }
         .aud-body { font-size: 15px; line-height: 1.7; color: #aaa; margin-bottom: 32px; }
@@ -234,8 +234,8 @@ export default function HomePage() {
 
       <section className="hero">
         <div className="hero-tag">Private network · Ibiza 2026 · Founding members now</div>
-        <h1 className="hero-title">Concierges decide where<br/>money goes in Ibiza.<br/><em>ISLA decides who<br/>they send it to.</em></h1>
-        <p className="hero-sub">If you are not on ISLA, you are not in the conversation. The network is forming now — founding venues and concierges only.</p>
+        <h1 className="hero-title">The network that decides<br/>where Ibiza's money goes.<br/><em>Are you in it?</em></h1>
+        <p className="hero-sub">Concierges use ISLA to track every commission they earn. Venues use ISLA to be visible to every concierge sending clients in Ibiza. One network. Both sides win.</p>
         <div className="hero-ctas">
           <Link href="/auth/signup" className="btn-p">Get Access Now — Free</Link>
           <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
