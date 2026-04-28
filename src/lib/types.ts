@@ -35,6 +35,12 @@ export interface Booking {
   status: BookingStatus
   estimated_commission: number | null
   actual_commission: number | null
+  bill_amount: number | null
+  bill_photo_url: string | null
+  commission_amount: number | null
+  commission_status: string | null
+  payment_status: string | null
+  payment_due_at: string | null
   created_at: string
   venue?: Venue
   concierge?: Profile
