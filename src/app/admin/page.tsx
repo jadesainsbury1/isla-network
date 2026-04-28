@@ -1,6 +1,8 @@
+'use client'
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
+import ApproveButton from "@/components/ApproveButton"
 
 export default async function AdminPage() {
   const cookieStore = await cookies()
@@ -34,7 +36,7 @@ export default async function AdminPage() {
               <div style={{ fontSize: 11, color: "#888" }}>{concierge.email}</div>
               {concierge.property && <div style={{ fontSize: 11, color: "#666", marginTop: 2 }}>{concierge.property}</div>}
             </div>
-            <button onClick={async () => { await fetch('/api/admin/approve-concierge', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ profileId: concierge.id, email: concierge.email, name: concierge.full_name }) }); window.location.reload() }} style={{ padding: "8px 16px", background: "#C9A96E", color: "#000", border: "none", borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Approve</button>
+            <ApproveButton profileId={concierge.id} email={concierge.email || ""} name={concierge.full_name || ""} />
           </div>
         ))}
       </div>
