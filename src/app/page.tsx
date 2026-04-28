@@ -272,10 +272,10 @@ export default function HomePage() {
       <section className="problem">
         <div>
           <div className="lbl">The Problem</div>
-          <h2 className="problem-title">4,200. Every season. <em>Gone.</em></h2>
-          <p className="txt">The average Ibiza concierge loses 4,200 per season in commissions they earned and never tracked. Not because venues will not pay — because there is no record. No record means no leverage. No leverage means no money.</p>
+          <h2 className="problem-title">Every season. <em>Gone.</em></h2>
+          <p className="txt">Ibiza concierges lose thousands every season in commissions they earned and never tracked. Not because venues will not pay — because there is no record. No record means no leverage. No leverage means no money.</p>
           <div className="shock-stat">
-            <div className="shock-number">4,200</div>
+            <div className="shock-number">Thousands</div>
             <div className="shock-label">Lost per concierge per season untracked</div>
           </div>
           <ul className="plist">
