@@ -10,10 +10,7 @@ export async function POST(req: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
-  const data = await req.formData()
-  const profileId = data.get('profileId') as string
-  const email = data.get('email') as string
-  const name = data.get('name') as string
+  const { profileId, email, name } = await req.json()
 
   await supabase
     .from('profiles')
@@ -40,5 +37,5 @@ export async function POST(req: NextRequest) {
     body: JSON.stringify({ from: 'ISLA Network <hello@islanetwork.es>', to: email, subject, html }),
   })
 
-  return NextResponse.redirect(new URL('/admin', req.url))
+  return NextResponse.json({ ok: true })
 }
