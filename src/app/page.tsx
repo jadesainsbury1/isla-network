@@ -232,9 +232,9 @@ export default function HomePage() {
 
 
       <section className="hero">
-        <div className="hero-tag">Season already running — every week offline costs you</div>
-        <h1 className="hero-title">You are already<br/>losing <em>money.</em></h1>
-        <p className="hero-sub">The average Ibiza concierge loses <strong>4,200 per season</strong> in commissions nobody tracked. The season is open now. ISLA stops that — free, forever.</p>
+        <div className="hero-tag">Private network · Ibiza 2026 · Founding members now</div>
+        <h1 className="hero-title">Concierges decide where<br/>money goes in Ibiza.<br/><em>ISLA decides who<br/>they send it to.</em></h1>
+        <p className="hero-sub">If you are not on ISLA, you are not in the conversation. The network is forming now — founding venues and concierges only.</p>
         <div className="hero-ctas">
           <Link href="/auth/signup" className="btn-p">Get Access Now — Free</Link>
           <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
