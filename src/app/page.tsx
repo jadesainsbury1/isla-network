@@ -226,8 +226,8 @@ export default function HomePage() {
         <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
         <div className="nav-actions">
           <Link href="/auth/signup" className="nav-btn-s">For Venues</Link>
-          <Link href="/auth/signup" className="nav-btn-s">Join Free</Link>
-          <Link href="/auth/signup" className="nav-btn-p">List Your Venue</Link>
+          <Link href="/auth/signup?role=concierge" className="nav-btn-s">Join Free</Link>
+          <Link href="/auth/signup?role=venue" className="nav-btn-p">List Your Venue</Link>
         </div>
       </nav>
 
@@ -260,7 +260,7 @@ export default function HomePage() {
                 <li><span>—</span>Signed agreements give you legal leverage</li>
                 <li><span>—</span>Always free</li>
               </ul>
-              <Link href="/auth/signup" className="aud-cta">Get Access Now — Free</Link>
+              <Link href="/auth/signup?role=concierge" className="aud-cta">Get Access Now — Free</Link>
             </div>
             <div className="aud-panel">
               <div className="aud-panel-title">Your Commission Dashboard · Season 2026</div>
@@ -283,7 +283,7 @@ export default function HomePage() {
                 <li><span>—</span>Relationships survive staff changes every October</li>
                 <li><span>—</span>One booking covers the annual cost</li>
               </ul>
-              <Link href="/auth/signup" className="aud-cta">List Your Venue Now</Link>
+              <Link href="/auth/signup?role=venue" className="aud-cta">List Your Venue Now</Link>
               <span className="aud-price">From 500/yr · Founding rate locked for life</span>
             </div>
             <div className="aud-panel">
@@ -408,7 +408,7 @@ export default function HomePage() {
               <li><span>—</span>Referral tracking per concierge</li>
               <li><span>—</span>Payment status dashboard</li>
             </ul>
-            <Link href="/auth/signup" className="pricing-cta">Apply Now</Link>
+            <Link href="/auth/signup?role=venue" className="pricing-cta">Apply Now</Link>
           </div>
           <div className="pricing-card featured">
             <div className="pricing-badge">Most chosen</div>
@@ -422,7 +422,7 @@ export default function HomePage() {
               <li><span>—</span>Full analytics — top concierges, spend trends</li>
               <li><span>—</span>Priority support</li>
             </ul>
-            <Link href="/auth/signup" className="pricing-cta">Apply Now</Link>
+            <Link href="/auth/signup?role=venue" className="pricing-cta">Apply Now</Link>
           </div>
           <div className="pricing-card">
             <div className="pricing-tier">Elite</div>
@@ -435,7 +435,7 @@ export default function HomePage() {
               <li><span>—</span>Custom commission term control</li>
               <li><span>—</span>Verified Partner badge</li>
             </ul>
-            <Link href="/auth/signup" className="pricing-cta">Apply Now</Link>
+            <Link href="/auth/signup?role=venue" className="pricing-cta">Apply Now</Link>
           </div>
         </div>
       </section>
@@ -446,7 +446,7 @@ export default function HomePage() {
           <h2 className="scar-title">Season is already running.</h2>
           <p className="scar-sub">Every week you are not on ISLA is a week where concierges are sending bookings somewhere else. Founding rate locked for life — but the season does not wait.</p>
         </div>
-        <Link href="/auth/signup" className="btn-p">List Your Venue Now</Link>
+        <Link href="/auth/signup?role=venue" className="btn-p">List Your Venue Now</Link>
       </section>
 
       <section className="faq">
