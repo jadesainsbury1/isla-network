@@ -11,7 +11,7 @@ export default async function AdminPage() {
 
   const { data: venues } = await supabase.from("venues").select("*").order("created_at", { ascending: false })
   const allVenues = venues || []
-  const pending = allVenues.filter(v => !v.is_active)
+  const pending = allVenues.filter(v => !v.is_active && !v.is_paid)
   const active = allVenues.filter(v => v.is_active)
 
   const { data: concierges } = await supabase.from("profiles").select("*").eq("role", "concierge").eq("is_approved", false).order("created_at", { ascending: false })
