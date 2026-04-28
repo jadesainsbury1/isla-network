@@ -292,7 +292,7 @@ export default function HomePage() {
             <p className="auth-attr">ISLA — The Concierge Network · Ibiza 2026</p>
           </div>
           <div className="lbl" style={{marginTop: 32}}>The Fix</div>
-          <p className="txt">ISLA creates a structured layer between concierges and venues. Every referral is tracked, documented, and reconciled. Signed agreements. Payment status in real time. If they do not pay — you have proof.</p>
+          <p className="txt">ISLA is becoming the operating system for concierge relationships in Ibiza. Every referral documented. Every commission enforced. Signed agreements with legal weight. The concierges who use ISLA get paid. The rest chase WhatsApp threads and hope for the best.</p>
         </div>
       </section>
 
@@ -364,7 +364,7 @@ export default function HomePage() {
         {tab === 'venue' && (
           <div className="aud-content">
             <div>
-              <h2 className="aud-title">If you are not visible, someone else is.</h2>
+              <h2 className="aud-title">Every concierge checks ISLA before deciding where to send their client. Be there when they do.</h2>
               <p className="aud-body">Every concierge in Ibiza checks ISLA before deciding where to send their client. If your venue is not listed, you do not exist to them. One booking covers the annual cost.</p>
               <ul className="aud-list">
                 <li><span>—</span>Visible to every verified concierge on ISLA</li>
@@ -458,7 +458,7 @@ export default function HomePage() {
       </section>
 
       <section className="cls">
-        <h2 className="cls-title">The season is <em>already here.</em></h2>
+        <h2 className="cls-title">The network is <em>forming now.</em></h2>
         <p className="cls-sub">Every week you are not on ISLA is a week where bookings go somewhere else.</p>
         <p className="cls-urgency">Do not wait — the season is live now</p>
         <div className="cls-ctas">
