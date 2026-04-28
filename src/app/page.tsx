@@ -230,11 +230,6 @@ export default function HomePage() {
         </div>
       </nav>
 
-      <div className="stats-bar">
-        <div className="stat-item"><div className="stat-num">{stats.venues}</div><div className="stat-lbl">Venues Live</div></div>
-        <div className="stat-item"><div className="stat-num">{stats.concierges}</div><div className="stat-lbl">Concierges</div></div>
-        <div className="stat-item"><div className="stat-num">Ibiza</div><div className="stat-lbl">2026 Season</div></div>
-      </div>
 
       <section className="hero">
         <div className="hero-tag">Season already running — every week offline costs you</div>
