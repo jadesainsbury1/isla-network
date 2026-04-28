@@ -17,6 +17,6 @@ export async function POST(req: NextRequest) {
     commission_rate: '10%',
     contact_email: email
   }])
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+  if (error) { console.error("VENUE CREATE ERROR:", JSON.stringify(error)); return NextResponse.json({ error: error.message, details: error }, { status: 400 }) }
   return NextResponse.json({ ok: true })
 }
