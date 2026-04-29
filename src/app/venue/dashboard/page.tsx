@@ -93,14 +93,14 @@ export default async function VenueDashboardPage() {
             <div style={{ width: "100%" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 <div style={{ fontSize: 13, color: "#f44336", fontWeight: 600 }}>
-                  {unpaidBookings.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} commissions ready to pay — {fmt(totalCommissionOwed)} total due
+                  {allBookings.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} commissions ready to pay — {fmt(totalCommissionOwed)} total due
                 </div>
                 <div style={{ fontSize: 11, color: "#888", fontFamily: "monospace" }}>Pay each concierge directly</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {(() => {
                   const owedMap = new Map<string, { name: string, amount: number, id: string }>()
-                  unpaidBookings
+                  allBookings
                     .filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid")
                     .forEach((b: any) => {
                       const c = (b.concierge as any)
