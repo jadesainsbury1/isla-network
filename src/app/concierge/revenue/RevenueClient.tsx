@@ -77,15 +77,50 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
       </div>
       <div className="body">
 
-        <div className="money-header" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-          <div className="money-box">
-            <span className="money-val gold">{fmt(totals.totalEarned)}</span>
-            <span className="money-label gold">Total earned</span>
+        {/* Earnings Summary */}
+        <div style={{ background: "linear-gradient(135deg, #0d0d0d 0%, #1a1500 100%)", border: "1px solid #2a2000", borderRadius: 12, padding: "28px 32px", marginBottom: 24 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
+            <div>
+              <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.25em", color: "#888", textTransform: "uppercase", marginBottom: 6 }}>Season earnings</div>
+              <div style={{ fontSize: 40, fontWeight: 700, color: "#C9A96E", lineHeight: 1 }}>{fmt(totals.totalEarned)}</div>
+              <div style={{ fontSize: 12, color: "#555", marginTop: 6, fontFamily: "monospace" }}>
+                {fmt(totals.totalPaid)} paid · {fmt(totals.totalUnpaid > 0 ? totals.totalUnpaid : 0)} outstanding
+              </div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              {(() => {
+                const totalFnB = bookings.reduce((s: number, b: any) => s + (Number(b.total_amount) || 0), 0)
+                const uniqueVenues = new Set(bookings.map((b: any) => b.venue_id)).size
+                const avgBooking = bookings.length > 0 ? totalFnB / bookings.length : 0
+                return (
+                  <div style={{ display: "flex", gap: 32 }}>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: 22, fontWeight: 600, color: "var(--cream)" }}>{fmt(totalFnB)}</div>
+                      <div style={{ fontSize: 10, fontFamily: "monospace", color: "#666", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 4 }}>F&B driven</div>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: 22, fontWeight: 600, color: "var(--cream)" }}>{bookings.length}</div>
+                      <div style={{ fontSize: 10, fontFamily: "monospace", color: "#666", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 4 }}>Bookings</div>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: 22, fontWeight: 600, color: "var(--cream)" }}>{uniqueVenues}</div>
+                      <div style={{ fontSize: 10, fontFamily: "monospace", color: "#666", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 4 }}>Venues</div>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: 22, fontWeight: 600, color: "var(--cream)" }}>{fmt(avgBooking)}</div>
+                      <div style={{ fontSize: 10, fontFamily: "monospace", color: "#666", textTransform: "uppercase", letterSpacing: "0.15em", marginTop: 4 }}>Avg booking</div>
+                    </div>
+                  </div>
+                )
+              })()}
+            </div>
           </div>
-          <div className="money-box">
-            <span className="money-val green">{fmt(totals.totalPaid)}</span>
-            <span className="money-label green">Paid to me</span>
-          </div>
+          {totals.totalUnpaid > 0 && (
+            <div style={{ borderTop: "1px solid #2a2000", paddingTop: 14, fontSize: 12, color: "#f44336", fontFamily: "monospace" }}>
+              {fmt(totals.totalUnpaid)} approved and awaiting payment from venues
+            </div>
+          )}
+        </div>
           <div className="money-box">
             <span className="money-val" style={{ color: totals.totalUnpaid > 0 ? '#f44336' : 'var(--cream)' }}>{fmt(totals.totalUnpaid)}</span>
             <span className="money-label" style={{ color: 'var(--muted)' }}>Due from ISLA</span>
