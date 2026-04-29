@@ -119,7 +119,7 @@ export default async function VenueDashboardPage() {
                     </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end" }}>
-                    <ReferralActions bookingId={b.id} />
+                    
                     <BillUpload bookingId={b.id} venueName={venue.name} venueEmail={venue.contact_email || ""} commissionRate={venue.commission_rate || "10%"} concierge={concierge?.full_name || "Concierge"} />
                   </div>
                 </div>
