@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import VenueListingForm from './VenueListingForm'
+import VenuePackages from '@/components/VenuePackages'
 
 export default async function VenueListingPage() {
   const supabase = await createClient()
