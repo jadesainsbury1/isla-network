@@ -11,7 +11,7 @@ interface Totals {
 }
 
 interface Props {
-  bookings: any[]
+  bookings: any[]]
   venues: any[]
   conciergeId: string
   totals: Totals
