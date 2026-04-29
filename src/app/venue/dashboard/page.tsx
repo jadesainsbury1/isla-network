@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import ReferralActions from '@/components/ReferralActions'
+import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
 import type { Booking, Profile } from '@/lib/types'
 
@@ -162,9 +163,11 @@ export default async function VenueDashboardPage() {
                       <td>
                         {b.payment_status === "paid"
                           ? <span className="badge badge-paid">Paid to ISLA ✓</span>
-                          : commAmt > 0
-                            ? <span className="badge badge-pending">Outstanding</span>
-                            : <span style={{ color: "var(--muted)", fontSize: 11 }}>—</span>
+                          : commAmt > 0 && b.commission_status === "approved"
+                            ? <VenuePayButton bookingId={b.id} />
+                            : commAmt > 0
+                              ? <span className="badge badge-pending">Awaiting approval</span>
+                              : <span style={{ color: "var(--muted)", fontSize: 11 }}>—</span>
                         }
                       </td>
                     </tr>
