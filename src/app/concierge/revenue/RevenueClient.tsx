@@ -24,6 +24,11 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [nationality, setNationality] = useState('')
+  const [occasion, setOccasion] = useState('')
+  const [dietary, setDietary] = useState('')
+  const [vipNotes, setVipNotes] = useState('')
+  const [spendProfile, setSpendProfile] = useState('')
 
   const fmt = (n: number) => '\u20ac' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
@@ -51,6 +56,13 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
       status: 'pending',
       commission_status: 'pending',
       payment_status: 'unpaid',
+      guest_profile: {
+        nationality: nationality || null,
+        occasion: occasion || null,
+        dietary: dietary || null,
+        vip_notes: vipNotes || null,
+        spend_profile: spendProfile || null,
+      }
     })
     setLoading(false)
     setSuccess(true)
@@ -114,6 +126,36 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 <div className="form-group">
                   <label className="form-label">Notes (optional)</label>
                   <input className="form-input" placeholder="Birthday dinner, champagne on arrival" value={notes} onChange={e => setNotes(e.target.value)} />
+                </div>
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>Guest Profile — visible to venue before arrival</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div className="form-group">
+                    <label className="form-label">Nationality</label>
+                    <input className="form-input" placeholder="e.g. German, Dutch, British" value={nationality} onChange={e => setNationality(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Special occasion</label>
+                    <input className="form-input" placeholder="e.g. Birthday, Anniversary, Honeymoon" value={occasion} onChange={e => setOccasion(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Dietary requirements</label>
+                    <input className="form-input" placeholder="e.g. Halal, Vegan, Nut allergy" value={dietary} onChange={e => setDietary(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Spend profile</label>
+                    <select className="form-input" value={spendProfile} onChange={e => setSpendProfile(e.target.value)}>
+                      <option value="">Select</option>
+                      <option value="standard">Standard — under 2,000</option>
+                      <option value="premium">Premium — 2,000 to 5,000</option>
+                      <option value="uhnw">UHNW — 5,000+</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="form-group" style={{ marginTop: 12 }}>
+                  <label className="form-label">VIP notes — private to venue</label>
+                  <input className="form-input" placeholder="e.g. Guest is a regular at Nobu. Prefers window table. Has young children." value={vipNotes} onChange={e => setVipNotes(e.target.value)} />
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
