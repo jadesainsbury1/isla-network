@@ -27,7 +27,7 @@ export default function VenuePayButton({ bookingId }: { bookingId: string }) {
       disabled={loading}
       style={{ background: "transparent", border: "1px solid #C9A96E", color: "#C9A96E", padding: "4px 12px", borderRadius: 4, fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase", cursor: "pointer", whiteSpace: "nowrap" }}
     >
-      {loading ? "..." : "Mark Paid to ISLA"}
+      {loading ? "..." : "Mark Paid to Concierge"}
     </button>
   )
 }

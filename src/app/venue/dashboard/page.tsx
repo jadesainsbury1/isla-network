@@ -186,7 +186,7 @@ export default async function VenueDashboardPage() {
                       <td><span className={b.commission_status ? "badge badge-" + b.commission_status : ""}>{b.commission_status || "pending"}</span></td>
                       <td>
                         {b.payment_status === "paid"
-                          ? <span className="badge badge-paid">Paid to ISLA ✓</span>
+                          ? <span className="badge badge-paid">Paid to concierge ✓</span>
                           : commAmt > 0 && b.commission_status === "approved"
                             ? <VenuePayButton bookingId={b.id} />
                             : commAmt > 0
@@ -201,7 +201,7 @@ export default async function VenueDashboardPage() {
             </table>
             {totalCommissionPaid > 0 && (
               <div style={{ padding: "12px 16px", borderTop: "1px solid var(--border)", fontSize: 12, color: "var(--muted)", display: "flex", justifyContent: "space-between" }}>
-                <span>Total paid to ISLA to date</span>
+                <span>Total paid to concierge to date</span>
                 <span style={{ color: "#4caf50", fontWeight: 600 }}>{fmt(totalCommissionPaid)}</span>
               </div>
             )}
