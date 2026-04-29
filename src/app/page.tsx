@@ -229,7 +229,7 @@ export default function HomePage() {
           <Link href="/auth/signup?role=concierge" className="nav-btn-s">Join Free</Link>
           <Link href="/auth/signup?role=venue" className="nav-btn-p">List Your Venue</Link>
         </div>
-      </nav>
+      <a href="/auth/login" style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", textDecoration: "none" }}>Sign In</a></nav>
 
 
       <section className="hero">
