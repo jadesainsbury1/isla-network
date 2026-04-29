@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import BookingMessage from '@/components/BookingMessage'
+import ConciergeProfileForm from '@/components/ConciergeProfileForm'
 import { createClient } from '@/lib/supabase/client'
 
 interface Totals {
@@ -177,6 +178,10 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
             <button onClick={() => setShowLog(true)} className="btn btn-gold">Log Your First Referral</button>
           </div>
         )}
+      <div style={{ marginTop: 32 }}>
+        <div className="mono" style={{ fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 16 }}>My Client Profile</div>
+        <ConciergeProfileForm userId={conciergeId} />
+      </div>
       </div>
     </>
   )
