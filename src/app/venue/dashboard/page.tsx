@@ -90,11 +90,34 @@ export default async function VenueDashboardPage() {
         {/* Commission owed banner */}
         {totalCommissionOwed > 0 && (
           <div style={{ background: "#1a0f0f", border: "1px solid #f44336", borderRadius: 8, padding: "16px 20px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <div style={{ fontSize: 13, color: "#f44336", fontWeight: 600, marginBottom: 4 }}>Commission outstanding: {fmt(totalCommissionOwed)}</div>
-              <div style={{ fontSize: 12, color: "#888" }}>These commissions are approved and ready to pay. Contact each concierge directly to arrange payment.</div>
+            <div style={{ width: "100%" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+                <div style={{ fontSize: 13, color: "#f44336", fontWeight: 600 }}>
+                  {unpaidBookings.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} commissions ready to pay — {fmt(totalCommissionOwed)} total due
+                </div>
+                <div style={{ fontSize: 11, color: "#888", fontFamily: "monospace" }}>Pay each concierge directly</div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {(() => {
+                  const owedMap = new Map<string, { name: string, amount: number, id: string }>()
+                  unpaidBookings
+                    .filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid")
+                    .forEach((b: any) => {
+                      const c = (b.concierge as any)
+                      if (!c) return
+                      const existing = owedMap.get(b.concierge_id) || { name: c.full_name, amount: 0, id: b.concierge_id }
+                      existing.amount += Number(b.commission_amount) || 0
+                      owedMap.set(b.concierge_id, existing)
+                    })
+                  return Array.from(owedMap.values()).map(({ name, amount, id }) => (
+                    <div key={id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 12px", background: "rgba(244,67,54,0.06)", borderRadius: 4, border: "1px solid rgba(244,67,54,0.15)" }}>
+                      <a href={`/venue/concierge/${id}`} style={{ fontSize: 12, color: "var(--cream)", textDecoration: "none", fontWeight: 500 }}>{name}</a>
+                      <span style={{ fontSize: 12, color: "#f44336", fontFamily: "monospace", fontWeight: 600 }}>{fmt(amount)}</span>
+                    </div>
+                  ))
+                })()}
+              </div>
             </div>
-            <a href="mailto:hello@islanetwork.es?subject=Commission Payment" style={{ background: "#C9A96E", color: "#000", padding: "8px 16px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", fontWeight: 700, whiteSpace: "nowrap" }}>Contact ISLA</a>
           </div>
         )}
 
