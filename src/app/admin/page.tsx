@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
 import ApproveButton from "@/components/ApproveButton"
+import VenueApproveButton from "@/components/VenueApproveButton"
+import ConciergeTierBadge from "@/components/ConciergeTierBadge"
 
 export default async function AdminPage() {
   const cookieStore = await cookies()
