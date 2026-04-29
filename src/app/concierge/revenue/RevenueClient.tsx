@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
 import BookingMessage from '@/components/BookingMessage'
-import ConciergeProfileForm from '@/components/ConciergeProfileForm'
 import { createClient } from '@/lib/supabase/client'
 
 interface Totals {
