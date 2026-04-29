@@ -71,8 +71,6 @@ export default async function VenuesPage() {
                 </div>
                 <div className="venue-grid">
                   {grouped[category].map(venue => {
-                    const ref = refNum(venue.id)
-                    const wa = waLink(venue, ref)
                     return (
                       <div key={venue.id} className="venue-card">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 8 }}>
@@ -92,10 +90,9 @@ export default async function VenuesPage() {
                           <span className="rel-label">Pays on time:</span>
                           <div className="rel-dots">{dots(5)}</div>
                         </div>
-                        <a href={wa} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', padding: '10px 0', background: 'var(--gold)', color: 'var(--ink)', fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', textAlign: 'center', textDecoration: 'none', borderRadius: 4, fontWeight: 600, marginBottom: 6 }}>
+                        <a href={`/concierge/venue/${venue.id}`} style={{ display: 'block', width: '100%', padding: '10px 0', background: 'var(--gold)', color: 'var(--ink)', fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', textAlign: 'center', textDecoration: 'none', borderRadius: 4, fontWeight: 600 }}>
                           Refer Now
                         </a>
-                        <div style={{ fontSize: 9, color: 'var(--muted)', fontFamily: 'monospace', letterSpacing: '0.1em', textAlign: 'center' }}>Ref: {ref}</div>
                       </div>
                     )
                   })}
