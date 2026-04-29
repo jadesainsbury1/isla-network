@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import BookingMessage from '@/components/BookingMessage'
 import { createClient } from '@/lib/supabase/client'
 
 interface Totals {
@@ -26,7 +25,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
-  const fmt = (n: number) => '€' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+  const fmt = (n: number) => '\u20ac' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
   const badge = (status: string) => {
     const map: Record<string, string> = {
@@ -42,8 +41,6 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
     e.preventDefault()
     setLoading(true)
     const supabase = createClient()
-    const selectedVenue = venues.find(v => v.id === venueId)
-    const rate = parseFloat((selectedVenue?.commission_rate || '10%').replace('%', '')) / 100
 
     await supabase.from('bookings').insert({
       concierge_id: conciergeId,
@@ -68,7 +65,6 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
       </div>
       <div className="body">
 
-        {/* Stats */}
         <div className="money-header" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
           <div className="money-box">
             <span className="money-val gold">{fmt(totals.totalEarned)}</span>
@@ -88,25 +84,23 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
           </div>
         </div>
 
-        {/* Log referral button */}
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals — {bookings.length} total</div>
+          <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals &mdash; {bookings.length} total</div>
           <button onClick={() => setShowLog(true)} className="btn btn-gold" style={{ fontSize: 11, padding: '8px 16px' }}>+ Log Referral</button>
         </div>
 
-        {success && <div style={{ color: '#4caf50', fontSize: 12, fontFamily: 'monospace', marginBottom: 16 }}>✓ Referral logged successfully</div>}
+        {success && <div style={{ color: '#4caf50', fontSize: 12, fontFamily: 'monospace', marginBottom: 16 }}>Referral logged successfully</div>}
 
-        {/* Log modal */}
         {showLog && (
           <div style={{ background: 'var(--charcoal)', border: '1px solid var(--border)', borderRadius: 8, padding: 24, marginBottom: 24 }}>
             <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500, marginBottom: 16 }}>Log a Referral</div>
             <form onSubmit={handleLog}>
-              <div className="two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
                 <div className="form-group">
                   <label className="form-label">Venue</label>
                   <select className="form-input" value={venueId} onChange={e => setVenueId(e.target.value)} required>
                     <option value="">Select venue</option>
-                    {venues.map(v => <option key={v.id} value={v.id}>{v.name} · {v.area}</option>)}
+                    {venues.map((v: any) => <option key={v.id} value={v.id}>{v.name} &middot; {v.area}</option>)}
                   </select>
                 </div>
                 <div className="form-group">
@@ -130,7 +124,6 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
           </div>
         )}
 
-        {/* Bookings table */}
         {bookings.length > 0 ? (
           <div className="table-card">
             <table>
@@ -146,19 +139,18 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 </tr>
               </thead>
               <tbody>
-                {bookings.map(b => (
+                {bookings.map((b: any) => (
                   <tr key={b.id}>
                     <td className="td-mono td-muted">{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                    <td className="td-name">{(b.venue as any)?.name || '—'}</td>
-                    <td className="td-muted">{(b.venue as any)?.area || '—'}</td>
-                    <td className="td-mono">{b.covers || '—'}</td>
+                    <td className="td-name">{(b.venue as any)?.name || '&mdash;'}</td>
+                    <td className="td-muted">{(b.venue as any)?.area || '&mdash;'}</td>
+                    <td className="td-mono">{b.covers || '&mdash;'}</td>
                     <td className="td-mono" style={{ color: 'var(--gold)', fontWeight: 600 }}>
-                      {b.commission_amount ? fmt(Number(b.commission_amount)) : b.estimated_commission ? '~' + fmt(Number(b.estimated_commission)) : '—'}
+                      {b.commission_amount ? fmt(Number(b.commission_amount)) : b.estimated_commission ? '~' + fmt(Number(b.estimated_commission)) : '&mdash;'}
                     </td>
                     <td>{badge(b.commission_status || 'pending')}</td>
                     <td>{badge(b.payment_status || 'unpaid')}</td>
                   </tr>
-                  <tr><td colSpan={7} style={{ padding: 0, border: 'none' }}><BookingMessage bookingId={b.id} currentUserId={conciergeId} currentUserName='Concierge' currentUserRole='concierge' messages={[]} /></td></tr>
                 ))}
               </tbody>
             </table>
@@ -171,16 +163,12 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
           </div>
         ) : (
           <div className="card" style={{ textAlign: 'center', padding: '40px 24px' }}>
-            <div style={{ fontSize: 24, marginBottom: 12 }}>✦</div>
+            <div style={{ fontSize: 24, marginBottom: 12 }}>&#10022;</div>
             <div style={{ color: 'var(--cream)', fontSize: 15, marginBottom: 8 }}>No referrals yet</div>
             <div style={{ color: 'var(--muted)', fontSize: 13, marginBottom: 20 }}>Log your first referral to start tracking commission</div>
             <button onClick={() => setShowLog(true)} className="btn btn-gold">Log Your First Referral</button>
           </div>
         )}
-      <div style={{ marginTop: 32 }}>
-        <div className="mono" style={{ fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 16 }}>My Client Profile</div>
-        <ConciergeProfileForm userId={conciergeId} />
-      </div>
       </div>
     </>
   )
