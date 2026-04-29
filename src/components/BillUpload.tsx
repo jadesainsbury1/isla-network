@@ -15,11 +15,49 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
   const [billAmount, setBillAmount] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
+  const [scanning, setScanning] = useState(false)
+  const [scanNote, setScanNote] = useState('')
   const [done, setDone] = useState(false)
   const [commission, setCommission] = useState<number | null>(null)
   const router = useRouter()
 
   const rate = parseFloat(commissionRate?.replace('%', '') || '10')
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selected = e.target.files?.[0] || null
+    setFile(selected)
+    if (!selected) return
+
+    setScanning(true)
+    setScanNote('Scanning bill...')
+    setBillAmount('')
+
+    try {
+      const reader = new FileReader()
+      reader.onload = async () => {
+        const base64 = (reader.result as string).split(',')[1]
+        const mediaType = selected.type || 'image/jpeg'
+
+        const res = await fetch('/api/venue/scan-bill', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ base64, mediaType })
+        })
+        const data = await res.json()
+        if (data.amount) {
+          setBillAmount(data.amount.toString())
+          setScanNote('Amount extracted — please verify before submitting')
+        } else {
+          setScanNote('Could not read amount — please enter manually')
+        }
+        setScanning(false)
+      }
+      reader.readAsDataURL(selected)
+    } catch {
+      setScanNote('Scan failed — please enter amount manually')
+      setScanning(false)
+    }
+  }
 
   async function handleSubmit() {
     if (!billAmount) return
@@ -45,17 +83,14 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
   if (done) return (
     <div style={{ background: '#0d1f0d', border: '1px solid #2a4a2a', borderRadius: 6, padding: '12px 16px', fontSize: 13 }}>
       <span style={{ color: '#4ade80' }}>✓ Bill submitted</span>
-      {commission && <span style={{ color: '#888', marginLeft: 12 }}>Commission: €{commission.toFixed(2)} — pending GRM approval</span>}
+      {commission && <span style={{ color: '#888', marginLeft: 12 }}>Commission: €{commission.toFixed(2)} — pending approval</span>}
     </div>
   )
 
   return (
     <div>
       {!open ? (
-        <button
-          onClick={() => setOpen(true)}
-          style={{ padding: '8px 16px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.1em' }}
-        >
+        <button onClick={() => setOpen(true)} style={{ padding: '8px 16px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.1em' }}>
           Submit Bill
         </button>
       ) : (
@@ -63,44 +98,51 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
           <div style={{ fontFamily: 'monospace', fontSize: 10, letterSpacing: '0.2em', color: '#C9A96E', textTransform: 'uppercase', marginBottom: 16 }}>
             Submit Bill · {concierge}
           </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: 10, color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+              Bill Photo — AI will read the total automatically
+            </label>
+            <input type="file" accept="image/*,.pdf" onChange={handleFileChange} style={{ fontSize: 12, color: '#888' }} />
+            {scanning && (
+              <div style={{ marginTop: 8, fontFamily: 'monospace', fontSize: 11, color: '#C9A96E' }}>
+                ✦ Scanning bill...
+              </div>
+            )}
+            {scanNote && !scanning && (
+              <div style={{ marginTop: 8, fontFamily: 'monospace', fontSize: 11, color: scanNote.includes('verify') ? '#4ade80' : '#888' }}>
+                {scanNote.includes('verify') ? '✓ ' : '⚠ '}{scanNote}
+              </div>
+            )}
+          </div>
+
           <div style={{ marginBottom: 12 }}>
-            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: 10, color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>Total Bill Amount (€)</label>
+            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: 10, color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>
+              Net F&B Total (€) — excl. service charge & IVA
+            </label>
             <input
               type="number"
               value={billAmount}
               onChange={e => setBillAmount(e.target.value)}
-              placeholder="e.g. 3200"
+              placeholder={scanning ? 'Reading bill...' : 'e.g. 3200'}
+              disabled={scanning}
               style={{ width: '100%', padding: '10px 12px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
             />
           </div>
+
           {billAmount && (
-            <div style={{ background: '#0d1a0d', border: '1px solid #2a3a2a', borderRadius: 4, padding: '10px 14px', marginBottom: 12 }}>
+            <div style={{ background: '#0d1a0d', border: '1px solid #2a3a2a', borderRadius: 4, padding: '10px 14px', marginBottom: 16 }}>
               <span style={{ fontFamily: 'monospace', fontSize: 12, color: '#4ade80' }}>
                 Commission ({rate}%): €{(parseFloat(billAmount) * rate / 100).toFixed(2)}
               </span>
             </div>
           )}
-          <div style={{ marginBottom: 16 }}>
-            <label style={{ display: 'block', fontFamily: 'monospace', fontSize: 10, color: '#888', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 6 }}>Bill Photo (optional)</label>
-            <input
-              type="file"
-              accept="image/*,.pdf"
-              onChange={e => setFile(e.target.files?.[0] || null)}
-              style={{ fontSize: 12, color: '#888' }}
-            />
-          </div>
+
           <div style={{ display: 'flex', gap: 8 }}>
-            <button
-              onClick={handleSubmit}
-              disabled={loading || !billAmount}
-              style={{ padding: '10px 20px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.1em', opacity: loading || !billAmount ? 0.5 : 1 }}
-            >
+            <button onClick={handleSubmit} disabled={loading || !billAmount || scanning} style={{ padding: '10px 20px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.1em', opacity: loading || !billAmount || scanning ? 0.5 : 1 }}>
               {loading ? 'Submitting...' : 'Confirm & Submit'}
             </button>
-            <button
-              onClick={() => setOpen(false)}
-              style={{ padding: '10px 20px', background: 'transparent', color: '#666', border: '1px solid #333', borderRadius: 4, fontSize: 11, cursor: 'pointer' }}
-            >
+            <button onClick={() => setOpen(false)} style={{ padding: '10px 20px', background: 'transparent', color: '#666', border: '1px solid #333', borderRadius: 4, fontSize: 11, cursor: 'pointer' }}>
               Cancel
             </button>
           </div>
