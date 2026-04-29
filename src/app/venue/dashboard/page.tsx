@@ -92,7 +92,7 @@ export default async function VenueDashboardPage() {
           <div style={{ background: "#1a0f0f", border: "1px solid #f44336", borderRadius: 8, padding: "16px 20px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div>
               <div style={{ fontSize: 13, color: "#f44336", fontWeight: 600, marginBottom: 4 }}>Commission outstanding: {fmt(totalCommissionOwed)}</div>
-              <div style={{ fontSize: 12, color: "#888" }}>Please transfer this amount to ISLA. Invoice will be sent to your finance email.</div>
+              <div style={{ fontSize: 12, color: "#888" }}>These commissions are approved and ready to pay. Contact each concierge directly to arrange payment.</div>
             </div>
             <a href="mailto:hello@islanetwork.es?subject=Commission Payment" style={{ background: "#C9A96E", color: "#000", padding: "8px 16px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase", textDecoration: "none", fontWeight: 700, whiteSpace: "nowrap" }}>Contact ISLA</a>
           </div>
@@ -145,7 +145,7 @@ export default async function VenueDashboardPage() {
                   <th>F&B Spend</th>
                   <th>Commission</th>
                   <th>Commission Status</th>
-                  <th>Payment to ISLA</th>
+                  <th>Payment Status</th>
                 </tr>
               </thead>
               <tbody>
