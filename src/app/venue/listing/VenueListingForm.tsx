@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Venue } from '@/lib/types'
+import VenuePackages from '@/components/VenuePackages'
 
 interface Props {
   userId: string
