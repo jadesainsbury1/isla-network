@@ -284,7 +284,7 @@ export default function HomePage() {
                 <li><span>—</span>One booking covers the annual cost</li>
               </ul>
               <Link href="/auth/signup?role=venue" className="aud-cta">List Your Venue Now</Link>
-              <span className="aud-price">From 500/yr · Founding rate locked for life</span>
+              <span className="aud-price">From €75/month · Annual plans</span>
             </div>
             <div className="aud-panel">
               <div className="aud-panel-title">Venue Dashboard · Season 2026</div>
@@ -399,7 +399,8 @@ export default function HomePage() {
         <div className="pricing-grid">
           <div className="pricing-card">
             <div className="pricing-tier">Essential</div>
-            <div className="pricing-price">500</div>
+            <div className="pricing-price">€75<span style={{ fontSize: 14, fontWeight: 400, color: "var(--muted)" }}>/mo</span></div>
+            <div style={{ fontSize: 12, color: "var(--muted)", fontFamily: "monospace", marginBottom: 8 }}>€900 / year</div>
             <div className="pricing-period">per year · founding rate locked</div>
             <div className="pricing-hook">One average dinner table covers this. Every booking after is pure upside.</div>
             <ul className="pricing-features">
@@ -412,8 +413,12 @@ export default function HomePage() {
           </div>
           <div className="pricing-card featured">
             <div className="pricing-badge">Most chosen</div>
-            <div className="pricing-tier">Premium</div>
-            <div className="pricing-price">1,200</div>
+            <div style={{ position: "relative" }}>
+              <div style={{ position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)", background: "#C9A96E", color: "#000", fontFamily: "monospace", fontSize: 9, letterSpacing: "0.15em", padding: "3px 12px", textTransform: "uppercase", fontWeight: 700, whiteSpace: "nowrap" }}>Most Popular</div>
+            </div>
+            <div className="pricing-tier" style={{ color: "var(--gold)" }}>Premium</div>
+            <div className="pricing-price">€150<span style={{ fontSize: 14, fontWeight: 400, color: "var(--muted)" }}>/mo</span></div>
+            <div style={{ fontSize: 12, color: "var(--muted)", fontFamily: "monospace", marginBottom: 8 }}>€1,800 / year</div>
             <div className="pricing-period">per year · founding rate locked</div>
             <div className="pricing-hook">Featured placement means concierges see you first. More visibility means more bookings. Pays back in one weekend.</div>
             <ul className="pricing-features">
@@ -426,7 +431,8 @@ export default function HomePage() {
           </div>
           <div className="pricing-card">
             <div className="pricing-tier">Elite</div>
-            <div className="pricing-price">3,700</div>
+            <div className="pricing-price">€290<span style={{ fontSize: 14, fontWeight: 400, color: "var(--muted)" }}>/mo</span></div>
+            <div style={{ fontSize: 12, color: "var(--muted)", fontFamily: "monospace", marginBottom: 8 }}>€3,480 / year</div>
             <div className="pricing-period">per year · founding rate locked</div>
             <div className="pricing-hook">Top placement always. Control your commission terms. Every concierge sees you first. Built for venues where one booking is worth thousands.</div>
             <ul className="pricing-features">
