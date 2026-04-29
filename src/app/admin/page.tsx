@@ -50,10 +50,7 @@ export default async function AdminPage() {
               <div style={{ fontSize: 11, color: "#888", textTransform: "uppercase" }}>{venue.category} - {venue.area} - {venue.commission_rate}</div>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
-              <form action="/api/admin/approve" method="POST">
-                <input type="hidden" name="venueId" value={venue.id} />
-                <button style={{ padding: "8px 16px", background: "#C9A96E", color: "#000", border: "none", borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: "pointer" }}>Approve</button>
-              </form>
+              <VenueApproveButton venueId={venue.id} />
               <form action="/api/admin/reject" method="POST">
                 <input type="hidden" name="venueId" value={venue.id} />
                 <button style={{ padding: "8px 16px", background: "transparent", color: "#888", border: "1px solid #333", borderRadius: 4, fontSize: 11, cursor: "pointer" }}>Reject</button>
