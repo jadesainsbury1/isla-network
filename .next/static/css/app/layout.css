@@ -508,6 +508,9 @@ video {
 .invisible {
   visibility: hidden;
 }
+.collapse {
+  visibility: collapse;
+}
 .absolute {
   position: absolute;
 }
