@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import ReferralActions from '@/components/ReferralActions'
+import BookingConfirm from '@/components/BookingConfirm'
+import BookingMessage from '@/components/BookingMessage'
 import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
 import type { Booking, Profile } from '@/lib/types'
