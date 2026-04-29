@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import BookingMessage from '@/components/BookingMessage'
 import { createClient } from '@/lib/supabase/client'
 
 interface Totals {
@@ -157,6 +158,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                     <td>{badge(b.commission_status || 'pending')}</td>
                     <td>{badge(b.payment_status || 'unpaid')}</td>
                   </tr>
+                  <tr><td colSpan={7} style={{ padding: 0, border: 'none' }}><BookingMessage bookingId={b.id} currentUserId={conciergeId} currentUserName='Concierge' currentUserRole='concierge' messages={[]} /></td></tr>
                 ))}
               </tbody>
             </table>
