@@ -53,10 +53,10 @@ export default function HomePage() {
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: #0a0a0a; color: #f0ece4; font-family: Georgia, serif; }
-        .urgency-bar { background: #ef4444; padding: 10px 48px; display: flex; justify-content: center; align-items: center; gap: 32px; flex-wrap: wrap; }
+        .urgency-bar { background: #ef4444; padding: 7px 24px; display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: nowrap; overflow: hidden; }
         .urgency-bar-text { font-family: monospace; font-size: 10px; letter-spacing: 0.25em; color: #fff; text-transform: uppercase; }
         .urgency-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.4); flex-shrink: 0; }
-        .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 48px; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; background: #0a0a0a; z-index: 100; }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; background: #0a0a0a; z-index: 100; }
         .nav-logo { font-size: 20px; letter-spacing: 0.15em; color: #C9A96E; }
         .nav-sub { font-size: 9px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 2px; }
         .nav-actions { display: flex; gap: 12px; }
@@ -209,8 +209,8 @@ export default function HomePage() {
           .faq { padding: 48px 20px; }
           .cls { padding: 60px 20px; }
           .cls-title { font-size: 32px; }
-          .foot { flex-direction: column; gap: 16px; text-align: center; padding: 28px 20px; }
-          .divider { margin: 0 20px; }
+          .foot { flex-direction: column; gap: 16px; text-align: center; padding: 6px 12px; }
+          .divider { margin: 0 20px; } .urgency-bar { padding: 5px 10px; gap: 8px; } .urgency-bar-text { font-size: 8px; letter-spacing: 0.1em; } .urgency-dot { display: none; }
         }
       `}</style>
 
