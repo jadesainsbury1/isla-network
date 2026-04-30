@@ -53,15 +53,15 @@ export default function HomePage() {
       <style>{`
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: #0a0a0a; color: #f0ece4; font-family: Georgia, serif; }
-        .urgency-bar { background: #ef4444; padding: 7px 24px; display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: nowrap; overflow: hidden; }
-        .urgency-bar-text { font-family: monospace; font-size: 10px; letter-spacing: 0.25em; color: #fff; text-transform: uppercase; }
+        .urgency-bar { background: #ef4444; padding: 7px 24px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .urgency-bar-text { font-family: monospace; font-size: 10px; letter-spacing: 0.25em; color: #fff; text-transform: uppercase; } .urgency-ticker { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #fff; text-transform: uppercase; transition: opacity 0.3s; }
         .urgency-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.4); flex-shrink: 0; }
         .nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; background: #0a0a0a; z-index: 100; }
         .nav-logo { font-size: 20px; letter-spacing: 0.15em; color: #C9A96E; }
         .nav-sub { font-size: 9px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 2px; }
-        .nav-actions { display: flex; gap: 12px; }
-        .nav-btn-p { padding: 10px 20px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; font-weight: 600; }
-        .nav-btn-s { padding: 10px 20px; border: 1px solid #333; color: #aaa; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; }
+        .nav-actions { display: flex; gap: 8px; align-items: center; }
+        .nav-btn-p { padding: 8px 14px; background: #C9A96E; color: #0a0a0a; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; font-weight: 600; white-space: nowrap; }
+        .nav-btn-s { padding: 8px 14px; border: 1px solid #C9A96E; color: #C9A96E; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
         .stats-bar { display: flex; justify-content: center; gap: 64px; padding: 20px 48px; border-bottom: 1px solid #1e1e1e; background: #0d0d0d; }
         .stat-item { text-align: center; }
         .stat-num { font-size: 22px; color: #C9A96E; font-weight: 400; }
@@ -76,7 +76,7 @@ export default function HomePage() {
         .btn-p { padding: 16px 32px; background: #C9A96E; color: #0a0a0a; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-weight: 700; display: inline-block; }
         .btn-s { padding: 16px 32px; border: 1px solid #444; color: #aaa; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; display: inline-block; }
         .divider { border: none; border-top: 1px solid #1e1e1e; margin: 0 48px; }
-        .money-block { padding: 56px 48px; background: #111; border-bottom: 1px solid #1e1e1e; }
+        .money-block { border-top: 1px solid #1a1a1a; padding: 56px 48px; background: #111; border-bottom: 1px solid #1e1e1e; }
         .money-inner { max-width: 900px; margin: 0 auto; }
         .money-lbl { font-family: monospace; font-size: 9px; letter-spacing: 0.35em; color: #555; text-transform: uppercase; margin-bottom: 8px; }
         .money-title { font-size: clamp(22px, 3vw, 32px); font-weight: 400; color: #f0ece4; margin-bottom: 6px; }
@@ -95,7 +95,7 @@ export default function HomePage() {
         .money-card-desc { font-family: monospace; font-size: 10px; color: #444; letter-spacing: 0.1em; }
         .money-cta { margin-top: 24px; font-family: monospace; font-size: 11px; color: #555; letter-spacing: 0.1em; }
         .money-cta strong { color: #C9A96E; }
-        .problem { padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .problem { border-top: 1px solid #1a1a1a; padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
         .lbl { font-size: 10px; letter-spacing: 0.3em; color: #555; text-transform: uppercase; margin-bottom: 20px; font-family: monospace; }
         .problem-title { font-size: 36px; line-height: 1.2; font-weight: 400; margin-bottom: 24px; }
         .problem-title em { font-style: italic; color: #C9A96E; }
@@ -109,7 +109,7 @@ export default function HomePage() {
         .auth-box { background: #111; border: 1px solid #222; padding: 32px; margin-top: 32px; }
         .auth-text { font-size: 14px; line-height: 1.6; color: #aaa; font-style: italic; }
         .auth-attr { font-family: monospace; font-size: 10px; letter-spacing: 0.2em; color: #555; text-transform: uppercase; margin-top: 12px; }
-        .how { padding: 80px 48px; background: #0d0d0d; }
+        .how { border-top: 1px solid #1a1a1a; padding: 80px 48px; background: #0d0d0d; }
         .how-title { font-size: 36px; font-weight: 400; margin-bottom: 48px; }
         .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
         .how-num { font-family: monospace; font-size: 11px; color: #C9A96E; margin-bottom: 12px; }
@@ -193,10 +193,10 @@ export default function HomePage() {
           .stats-bar { gap: 32px; padding: 16px 20px; }
           .hero { padding: 60px 20px 48px; }
           .hero-title { font-size: 36px; }
-          .money-block { padding: 40px 20px; }
+          .money-block { border-top: 1px solid #1a1a1a; padding: 40px 20px; }
           .money-cards { grid-template-columns: 1fr; }
           .problem { grid-template-columns: 1fr; gap: 40px; padding: 48px 20px; }
-          .how { padding: 48px 20px; }
+          .how { border-top: 1px solid #1a1a1a; padding: 48px 20px; }
           .how-steps { grid-template-columns: 1fr 1fr; gap: 24px; }
           .demo { padding: 48px 20px; }
           .demo-inner { grid-template-columns: 1fr; gap: 32px; }
@@ -206,7 +206,7 @@ export default function HomePage() {
           .pricing { padding: 48px 20px; }
           .pricing-grid { grid-template-columns: 1fr; }
           .scar { flex-direction: column; gap: 24px; padding: 48px 20px; text-align: center; }
-          .faq { padding: 48px 20px; }
+          .faq { border-top: 1px solid #1a1a1a; padding: 80px 48px; }
           .cls { padding: 60px 20px; }
           .cls-title { font-size: 32px; }
           .foot { flex-direction: column; gap: 16px; text-align: center; padding: 6px 12px; }
@@ -215,12 +215,22 @@ export default function HomePage() {
       `}</style>
 
       <div className="urgency-bar">
-        <span className="urgency-bar-text">Season is live now</span>
-        <span className="urgency-dot" />
-        <span className="urgency-bar-text">Every week you wait = lost bookings</span>
-        <span className="urgency-dot" />
-        <span className="urgency-bar-text">Founding venues — limited places</span>
+        <span className="urgency-ticker" id="urgency-ticker">Season is live now — founding venues only</span>
       </div>
+      <script dangerouslySetInnerHTML={{ __html: `
+        var msgs = [
+          'Season is live now — founding venues only',
+          'Every week you wait = lost bookings',
+          'Free for concierges. Always.',
+          'Founding venues — limited places'
+        ];
+        var i = 0;
+        setInterval(function() {
+          i = (i + 1) % msgs.length;
+          var el = document.getElementById('urgency-ticker');
+          if (el) { el.style.opacity = '0'; setTimeout(function(){ el.textContent = msgs[i]; el.style.opacity = '1'; }, 300); }
+        }, 3000);
+      ` }} />
 
       <nav className="nav">
         <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
