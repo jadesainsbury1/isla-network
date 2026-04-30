@@ -47,42 +47,7 @@ export async function POST(req: NextRequest) {
     status: 'confirmed'
   }).eq('id', bookingId)
 
-  // Get booking details for notification
-  const { data: booking } = await supabase
-    .from('bookings')
-    .select('*, concierge:profiles(*)')
-    .eq('id', bookingId)
-    .single()
 
-  const concierge = booking?.concierge as any
-
-  // Notify you (ISLA admin) for GRM approval
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + process.env.RESEND_API_KEY,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: 'ISLA Network <hello@islanetwork.es>',
-      to: 'hello@islanetwork.es',
-      subject: 'Bill submitted — GRM approval required · ' + venueName,
-      html: [
-        '<div style="background:#0a0a0a;color:#fff;padding:40px;font-family:sans-serif;max-width:560px;">',
-        '<div style="font-family:monospace;font-size:10px;letter-spacing:3px;color:#c9a84c;text-transform:uppercase;margin-bottom:24px;">ISLA — Commission Review</div>',
-        '<h2 style="color:#c9a84c;margin-bottom:24px;">Bill Submitted — Approval Required</h2>',
-        '<p style="margin-bottom:8px;"><strong>Venue:</strong> ' + venueName + '</p>',
-        '<p style="margin-bottom:8px;"><strong>Concierge:</strong> ' + (concierge?.full_name || 'Unknown') + '</p>',
-        '<p style="margin-bottom:8px;"><strong>Total Bill:</strong> €' + billAmount.toFixed(2) + '</p>',
-        '<p style="margin-bottom:8px;"><strong>Commission Rate:</strong> ' + commissionRate + '%</p>',
-        '<p style="margin-bottom:8px;"><strong>Commission Amount:</strong> €' + commissionAmount.toFixed(2) + '</p>',
-        '<p style="margin-bottom:24px;"><strong>Payment Due:</strong> ' + paymentDue.toLocaleDateString('en-GB') + '</p>',
-        billPhotoUrl ? '<p style="margin-bottom:24px;"><a href="' + billPhotoUrl + '" style="color:#c9a84c;">View Bill Photo</a></p>' : '',
-        '<a href="https://islanetwork.es/admin/login" style="background:#c9a84c;color:#000;padding:12px 24px;text-decoration:none;border-radius:4px;display:inline-block;font-family:monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;">Approve in Admin</a>',
-        '</div>'
-      ].join(''),
-    }),
-  })
 
   return NextResponse.json({ ok: true, commissionAmount })
 }
