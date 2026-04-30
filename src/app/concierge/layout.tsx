@@ -4,9 +4,9 @@ import { createClient } from '@/lib/supabase/server'
 import SignOutButton from '@/components/SignOutButton'
 
 const navItems = [
-  { id: 'revenue', href: '/concierge/revenue', icon: '—', label: 'My Revenue' },
-  { id: 'opportunities', href: '/concierge/opportunities', icon: '—', label: 'Opportunities' },
-  { id: 'venues', href: '/concierge/venues', icon: '—', label: 'All Venues' },
+  { id: 'revenue', href: '/concierge/revenue', icon: '💰', label: 'Earnings' },
+  { id: 'venues', href: '/concierge/venues', icon: '🏛', label: 'Venues' },
+  { id: 'opportunities', href: '/concierge/opportunities', icon: '✦', label: 'Opps' },
 ]
 
 export default async function ConciergeLayout({
@@ -30,6 +30,7 @@ export default async function ConciergeLayout({
 
   return (
     <div className="app-shell">
+      {/* Desktop sidebar */}
       <aside className="sidebar">
         <div className="sidebar-top">
           <Link href="/" className="logo" style={{ fontSize: 18 }}>ISLA</Link>
@@ -49,7 +50,10 @@ export default async function ConciergeLayout({
         <nav className="sidebar-nav">
           <div className="nav-section">Menu</div>
           {navItems.map(item => (
-            <NavItem key={item.id} href={item.href} icon={item.icon} label={item.label} />
+            <Link key={item.id} href={item.href} className="nav-item">
+              <span className="nav-icon">{item.icon}</span>
+              {item.label}
+            </Link>
           ))}
         </nav>
 
@@ -58,18 +62,21 @@ export default async function ConciergeLayout({
         </div>
       </aside>
 
+      {/* Main content */}
       <div className="main-col">
         {children}
       </div>
-    </div>
-  )
-}
 
-function NavItem({ href, icon, label }: { href: string; icon: string; label: string }) {
-  return (
-    <Link href={href} className="nav-item">
-      <span className="nav-icon">{icon}</span>
-      {label}
-    </Link>
+      {/* Mobile bottom tab bar */}
+      <nav className="mobile-tabs">
+        {navItems.map(item => (
+          <Link key={item.id} href={item.href} className="mobile-tab">
+            <span className="mobile-tab-icon">{item.icon}</span>
+            {item.label}
+          </Link>
+        ))}
+        <SignOutButton />
+      </nav>
+    </div>
   )
 }
