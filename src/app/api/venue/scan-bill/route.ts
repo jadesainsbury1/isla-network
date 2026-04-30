@@ -2,7 +2,10 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  const { base64, mediaType } = await req.json()
+  const { base64, mediaType: rawMediaType } = await req.json()
+  // Normalise media type — Claude API accepts image/webp, image/jpeg, image/png, image/gif
+  const mediaType = rawMediaType === 'image/webp' ? 'image/webp' : 
+                    rawMediaType?.startsWith('image/') ? rawMediaType : 'image/jpeg'
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -23,7 +26,7 @@ export async function POST(req: NextRequest) {
           },
           {
             type: 'text',
-            text: 'This is a restaurant or venue bill. Extract the net food and beverage total, excluding any service charge, IVA, or VAT. Return ONLY a number with no currency symbol, no text, no explanation. If you cannot find a clear net F&B total, return 0.'
+            text: 'This image may be a restaurant bill, receipt, or a photo of one (possibly with other content around it like a social media post). Find the restaurant bill in the image. Look for the largest total amount on the receipt — this is typically labelled as Total, Subtotal, Base IVA, or shown as a large euro amount. Return ONLY that number as digits with no currency symbol, no commas, no text, no explanation — just the number. If the bill shows a gross total (e.g. 6790.00) and a base/net amount (e.g. 6172.73), return the base/net amount. If you cannot find any bill in the image, return 0.'
           }
         ]
       }]
