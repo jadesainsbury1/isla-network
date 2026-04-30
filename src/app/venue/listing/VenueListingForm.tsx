@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Venue } from '@/lib/types'
 import VenuePackages from '@/components/VenuePackages'
+import VenueDocuments from '@/components/VenueDocuments'
 
 interface Props {
   userId: string
@@ -279,6 +280,14 @@ export default function VenueListingForm({ userId, existingVenue, defaultName }:
         <div style={{ marginTop: 28 }}>
           <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid var(--border)' }}>Packages & Offers</div>
           <VenuePackages venueId={existingVenue.id} initial={(existingVenue as any).packages || []} />
+        </div>
+      )}
+
+      {existingVenue && (
+        <div style={{ marginTop: 28 }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid var(--border)' }}>Documents for Concierges</div>
+          <div style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 14, lineHeight: 1.6 }}>Upload menus, bed packages, rate cards, or floor plans. Concierges will see these when viewing your venue profile.</div>
+          <VenueDocuments venueId={existingVenue.id} userId={userId} initial={(existingVenue as any).documents || []} />
         </div>
       )}
 

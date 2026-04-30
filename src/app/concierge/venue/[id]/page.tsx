@@ -30,6 +30,7 @@ export default async function VenueProfilePage({ params }: { params: { id: strin
   if (!venue) redirect('/concierge/revenue')
 
   const packages = (venue as any).packages || []
+  const documents: any[] = (venue as any).documents || []
   const menuUrl = (venue as any).menu_url || null
   const menuPdfUrl = (venue as any).menu_pdf_url || null
 
@@ -150,6 +151,29 @@ export default async function VenueProfilePage({ params }: { params: { id: strin
                     {pkg.min_spend && <span style={{ fontSize: 11, fontFamily: 'monospace', color: '#666' }}>Min €{pkg.min_spend}</span>}
                   </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+
+        {/* Documents */}
+        {documents.length > 0 && (
+          <div className="card" style={{ padding: 24, marginBottom: 24 }}>
+            <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 16 }}>Documents & Downloads</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {documents.map((doc: any) => (
+                <a key={doc.id} href={doc.url} target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--charcoal)', border: '1px solid var(--border)', borderRadius: 6, padding: '12px 16px', textDecoration: 'none' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <span style={{ fontSize: 18 }}>{doc.url?.toLowerCase().includes('.pdf') ? '📄' : '🖼'}</span>
+                    <div>
+                      <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500 }}>{doc.name}</div>
+                      <div style={{ fontSize: 10, color: 'var(--muted)', fontFamily: 'monospace', marginTop: 2 }}>{(doc.type || '').toUpperCase()}</div>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: 11, color: 'var(--gold)', fontFamily: 'monospace' }}>Download ↓</span>
+                </a>
               ))}
             </div>
           </div>
