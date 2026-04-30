@@ -275,6 +275,13 @@ export default function VenueListingForm({ userId, existingVenue, defaultName }:
         </button>
       </form>
 
+      {existingVenue && (
+        <div style={{ marginTop: 28 }}>
+          <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid var(--border)' }}>Packages & Offers</div>
+          <VenuePackages venueId={existingVenue.id} initial={(existingVenue as any).packages || []} />
+        </div>
+      )}
+
       <div style={{ marginTop: 20, padding: '14px 16px', background: 'var(--charcoal)', border: '1px solid var(--gold-dim)', borderRadius: 'var(--radius)' }}>
         <div style={{ fontFamily: "'DM Mono', monospace", fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 6 }}>ISLA Venue Verification</div>
         <div style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6 }}>Every venue is reviewed by ISLA before going live. Once approved, your ISLA Verified badge signals quality to the entire concierge community.</div>

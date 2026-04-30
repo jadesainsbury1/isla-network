@@ -4,7 +4,6 @@ import BookingConfirm from '@/components/BookingConfirm'
 import BookingMessage from '@/components/BookingMessage'
 import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
-import VenuePackages from '@/components/VenuePackages'
 import type { Booking, Profile } from '@/lib/types'
 
 export default async function VenueDashboardPage() {
@@ -249,11 +248,6 @@ export default async function VenueDashboardPage() {
           )
         })()}
 
-
-        {/* Packages & Offers */}
-        <div className="card" style={{ padding: 24, marginBottom: 24 }}>
-          <VenuePackages venueId={venue.id} initial={(venue as any).packages || []} />
-        </div>
 
 
       </div>
