@@ -64,6 +64,14 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
         spend_profile: spendProfile || null,
       }
     })
+
+    // Notify venue by email
+    fetch('/api/booking/notify-venue', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ venueId, conciergeId, date, covers: parseInt(covers) || null, notes })
+    }).catch(() => {}) // fire-and-forget
+
     setLoading(false)
     setSuccess(true)
     setShowLog(false)
