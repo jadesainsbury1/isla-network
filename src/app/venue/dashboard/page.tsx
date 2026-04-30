@@ -68,11 +68,11 @@ export default async function VenueDashboardPage() {
         <div className="money-header" style={{ gridTemplateColumns: "repeat(5, 1fr)" }}>
           <div className="money-box">
             <span className="money-val gold">{pending.length}</span>
-            <span className="money-label gold">Pending referrals</span>
+            <span className="money-label gold">Awaiting confirmation</span>
           </div>
           <div className="money-box">
             <span className="money-val green">{confirmed.length}</span>
-            <span className="money-label green">Confirmed</span>
+            <span className="money-label green">Confirmed bookings</span>
           </div>
           <div className="money-box">
             <span className="money-val" style={{ color: "var(--cream)" }}>{conciergeIds.size}</span>
@@ -127,7 +127,7 @@ export default async function VenueDashboardPage() {
           <div className="mono" style={{ fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 12 }}>Pending referrals — action required</div>
           {pending.length === 0 ? (
             <div className="card" style={{ textAlign: "center", padding: "32px 24px" }}>
-              <div style={{ color: "var(--muted)", fontSize: 13 }}>No pending referrals right now</div>
+              <div style={{ color: "var(--muted)", fontSize: 13 }}>No referrals awaiting confirmation</div>
             </div>
           ) : (
             pending.map(b => {
@@ -208,6 +208,47 @@ export default async function VenueDashboardPage() {
             )}
           </div>
         )}
+
+        {/* Commission Forecast */}
+        {(() => {
+          const months: Record<string, { label: string, projected: number, count: number }> = {}
+          const now = new Date()
+          all
+            .filter(b => b.status === "confirmed" && b.commission_amount && b.date)
+            .forEach(b => {
+              const d = new Date(b.date)
+              if (d >= now) {
+                const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
+                const label = d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+                if (!months[key]) months[key] = { label, projected: 0, count: 0 }
+                months[key].projected += Number(b.commission_amount) || 0
+                months[key].count += 1
+              }
+            })
+          const sorted = Object.keys(months).sort()
+          if (sorted.length === 0) return null
+          return (
+            <div style={{ background: "var(--charcoal)", border: "1px solid var(--border)", borderRadius: 8, padding: "20px 24px", marginBottom: 24 }}>
+              <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 16 }}>Commission forecast</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {sorted.map(key => (
+                  <div key={key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#0d0d0d", borderRadius: 6, border: "1px solid var(--border)" }}>
+                    <div>
+                      <div style={{ fontSize: 13, color: "var(--cream)", fontWeight: 500 }}>{months[key].label}</div>
+                      <div style={{ fontSize: 11, color: "var(--muted)", fontFamily: "monospace", marginTop: 2 }}>{months[key].count} confirmed {months[key].count === 1 ? "booking" : "bookings"}</div>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: 16, fontWeight: 700, color: "#C9A96E", fontFamily: "monospace" }}>{fmt(months[key].projected)}</div>
+                      <div style={{ fontSize: 10, color: "var(--muted)", fontFamily: "monospace", marginTop: 2 }}>projected</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 12, fontStyle: "italic" }}>Based on confirmed bookings with bills submitted. Subject to change.</div>
+            </div>
+          )
+        })()}
+
 
         {/* Packages & Offers */}
         <div className="card" style={{ padding: 24, marginBottom: 24 }}>
