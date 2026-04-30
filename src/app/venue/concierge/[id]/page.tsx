@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import ConciergeNotesPanel from './ConciergeNotesPanel'
 import { createClient } from '@/lib/supabase/server'
 
 const TIER_LABELS: Record<string, string> = {
@@ -51,6 +52,16 @@ export default async function ConciergeProfilePage({ params }: { params: { id: s
     .eq('concierge_id', params.id)
     .eq('venue_id', venue.id)
     .order('date', { ascending: false })
+
+  const { data: noteRow } = await supabase
+    .from('venue_concierge_notes')
+    .select('notes, is_blocked')
+    .eq('venue_id', venue.id)
+    .eq('concierge_id', params.id)
+    .maybeSingle()
+
+  const existingNotes = noteRow?.notes || ''
+  const isBlocked = noteRow?.is_blocked || false
 
   const allBookings = bookings || []
   const totalSpend = allBookings.reduce((s, b) => s + (Number(b.bill_amount) || 0), 0)
@@ -234,6 +245,13 @@ export default async function ConciergeProfilePage({ params }: { params: { id: s
             <div style={{ color: 'var(--muted)', fontSize: 13 }}>No bookings yet between {concierge.full_name} and {venue.name}</div>
           </div>
         )}
+
+        <ConciergeNotesPanel
+          conciergeId={params.id}
+          conciergeName={concierge.full_name}
+          initialNotes={existingNotes}
+          initialBlocked={isBlocked}
+        />
 
       </div>
     </>

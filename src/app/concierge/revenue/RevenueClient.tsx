@@ -47,6 +47,19 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
     setLoading(true)
     const supabase = createClient()
 
+    const { data: noteRow } = await supabase
+      .from('venue_concierge_notes')
+      .select('is_blocked')
+      .eq('venue_id', venueId)
+      .eq('concierge_id', conciergeId)
+      .maybeSingle()
+
+    if (noteRow?.is_blocked) {
+      setLoading(false)
+      alert('You are not able to log referrals to this venue.')
+      return
+    }
+
     await supabase.from('bookings').insert({
       concierge_id: conciergeId,
       venue_id: venueId,
