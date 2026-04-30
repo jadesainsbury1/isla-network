@@ -121,15 +121,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
             </div>
           )}
         </div>
-          <div className="money-box">
-            <span className="money-val" style={{ color: totals.totalUnpaid > 0 ? '#f44336' : 'var(--cream)' }}>{fmt(totals.totalUnpaid)}</span>
-            <span className="money-label" style={{ color: 'var(--muted)' }}>Due from ISLA</span>
-          </div>
-          <div className="money-box">
-            <span className="money-val" style={{ color: 'var(--muted)' }}>{fmt(totals.totalPending)}</span>
-            <span className="money-label" style={{ color: 'var(--muted)' }}>Awaiting approval</span>
-          </div>
-        </div>
+
 
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals &mdash; {bookings.length} total</div>
