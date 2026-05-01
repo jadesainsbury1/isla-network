@@ -219,10 +219,10 @@ export default function HomePage() {
       </div>
       <script dangerouslySetInnerHTML={{ __html: `
         var msgs = [
-          'Season is live now — founding venues only',
-          'Every week you wait = lost bookings',
+          'When your GRM leaves — their contacts go with them. ISLA fixes that.',
           'Free for concierges. Always.',
-          'Founding venues — limited places'
+          'Founding venues — your network, permanently.',
+          'Ibiza · Bodrum · Mykonos — one concierge network'
         ];
         var i = 0;
         setInterval(function() {
@@ -244,11 +244,11 @@ export default function HomePage() {
 
       <section className="hero">
         <div className="hero-tag">Private network · Ibiza 2026 · Founding members now</div>
-        <h1 className="hero-title">The network that decides<br/>where Ibiza's money goes.<br/><em>Are you in it?</em></h1>
-        <p className="hero-sub">Concierges use ISLA to track every commission they earn. Venues use ISLA to be visible to every concierge sending clients in Ibiza. One network. Both sides win.</p>
+        <h1 className="hero-title">Your best GRM just left.<br/>Their contacts went with them.<br/><em>ISLA fixes that.</em></h1>
+        <p className="hero-sub">A GRM builds three years of concierge relationships. They know who sends the UHNW tables, who to call for a last-minute 12-cover. Then they leave. That institutional knowledge walks out with them. The venue is back to zero. <strong>ISLA keeps the relationship with the venue — permanently.</strong></p>
         <div className="hero-ctas">
-          <Link href="/auth/signup" className="btn-p">Get Access Now — Free</Link>
-          <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
+          <Link href="/auth/signup?role=venue" className="btn-p">Protect Your Network</Link>
+          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges</Link>
         </div>
       </section>
 
@@ -284,24 +284,24 @@ export default function HomePage() {
         {tab === 'venue' && (
           <div className="aud-content">
             <div>
-              <h2 className="aud-title">Every concierge checks ISLA before deciding where to send their client. Be there when they do.</h2>
-              <p className="aud-body">Every concierge in Ibiza checks ISLA before deciding where to send their client. If your venue is not listed, you do not exist to them. One booking covers the annual cost.</p>
+              <h2 className="aud-title">Your venues shouldn't depend on who has the contacts this season.</h2>
+              <p className="aud-body">Your GRMs come and go. Their concierge relationships go with them. ISLA gives your venue its own permanent concierge network — across every property, every season, every market. Whether you're in Ibiza, Bodrum or Mykonos, the relationships stay with you.</p>
               <ul className="aud-list">
-                <li><span>—</span>Visible to every verified concierge on ISLA</li>
-                <li><span>—</span>Every referral documented with a signed agreement</li>
-                <li><span>—</span>Know exactly which concierges drive your revenue</li>
-                <li><span>—</span>Relationships survive staff changes every October</li>
-                <li><span>—</span>One booking covers the annual cost</li>
+                <li><span>—</span>Concierge relationships belong to the venue, not the staff member</li>
+                <li><span>—</span>Full visibility on who drives revenue across all your properties</li>
+                <li><span>—</span>Commission agreements documented and enforced — no disputes</li>
+                <li><span>—</span>When a GRM leaves, nothing is lost</li>
+                <li><span>—</span>Scales with you as you open new locations</li>
               </ul>
-              <Link href="/auth/signup?role=venue" className="aud-cta">List Your Venue Now</Link>
+              <Link href="/auth/signup?role=venue" className="aud-cta">Protect Your Network</Link>
               <span className="aud-price">From €75/month · Annual plans</span>
             </div>
             <div className="aud-panel">
               <div className="aud-panel-title">Venue Dashboard · Season 2026</div>
-              <div className="aud-stat"><span className="aud-stat-label">Referrals this month</span><span className="aud-stat-value">23</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Total tracked spend</span><span className="aud-stat-value">48,200</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Commissions due</span><span className="aud-stat-value">5,780</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Top concierge</span><span className="aud-stat-value">12 referrals</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Active concierge relationships</span><span className="aud-stat-value">23</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Revenue via ISLA network</span><span className="aud-stat-value">€48,200</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Commissions tracked</span><span className="aud-stat-value">€5,780</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Retained after GRM change</span><span className="aud-stat-value paid">100%</span></div>
             </div>
           </div>
         )}
@@ -340,18 +340,18 @@ export default function HomePage() {
       <section className="problem">
         <div>
           <div className="lbl">The Problem</div>
-          <h2 className="problem-title">Every season. <em>Gone.</em></h2>
-          <p className="txt">Ibiza concierges lose thousands every season in commissions they earned and never tracked. Not because venues will not pay — because there is no record. No record means no leverage. No leverage means no money.</p>
+          <h2 className="problem-title">The relationship walks out<br/><em>with the GRM.</em></h2>
+          <p className="txt">A GRM builds three years of concierge relationships. They know who sends the UHNW tables, who to call for a last-minute 12-cover, which concierge controls the yacht clientele. Then they leave, or get moved to another property. That institutional knowledge walks out with them. The venue is back to zero.</p>
           <div className="shock-stat">
-            <div className="shock-number">Thousands</div>
-            <div className="shock-label">Lost per concierge per season untracked</div>
+            <div className="shock-number">Zero.</div>
+            <div className="shock-label">What a venue retains when a GRM leaves without ISLA</div>
           </div>
           <ul className="plist">
-            <li><span>—</span>No record of who referred the booking</li>
-            <li><span>—</span>Commission terms agreed verbally, disputed later</li>
-            <li><span>—</span>Payments chased on WhatsApp, often never received</li>
-            <li><span>—</span>Staff turnover wipes out venue relationships</li>
-            <li><span>—</span>No data on which concierges drive real revenue</li>
+            <li><span>—</span>Concierge contacts live in a personal phone, not the venue</li>
+            <li><span>—</span>Every GRM change restarts relationship-building from scratch</li>
+            <li><span>—</span>No visibility on which concierges drive real revenue</li>
+            <li><span>—</span>Commission disputes damage the relationships that matter most</li>
+            <li><span>—</span>Expanding to new markets means starting blind every time</li>
           </ul>
         </div>
         <div>
@@ -360,7 +360,7 @@ export default function HomePage() {
             <p className="auth-attr">ISLA — The Concierge Network · Ibiza 2026</p>
           </div>
           <div className="lbl" style={{marginTop: 32}}>The Fix</div>
-          <p className="txt">ISLA is becoming the operating system for concierge relationships in Ibiza. Every referral documented. Every commission enforced. Signed agreements with legal weight. The concierges who use ISLA get paid. The rest chase WhatsApp threads and hope for the best.</p>
+          <p className="txt">ISLA gives your venue its own permanent concierge network. The relationships, the history, the commission agreements — all of it lives in the platform, not in someone's phone. When a GRM leaves or moves property, nothing is lost. When you open in Bodrum or Mykonos, you already have infrastructure. The network travels with your brand.</p>
         </div>
       </section>
 
@@ -479,12 +479,12 @@ export default function HomePage() {
       </section>
 
       <section className="cls">
-        <h2 className="cls-title">The network is <em>forming now.</em></h2>
-        <p className="cls-sub">Every week you are not on ISLA is a week where bookings go somewhere else.</p>
-        <p className="cls-urgency">Do not wait — the season is live now</p>
+        <h2 className="cls-title">The relationship stays<br/><em>with the venue.</em></h2>
+        <p className="cls-sub">Not with the GRM. Not in a personal phone. With you — permanently.</p>
+        <p className="cls-urgency">Founding venues — season is live now</p>
         <div className="cls-ctas">
-          <Link href="/auth/signup" className="btn-p">Get Access Now — Free</Link>
-          <Link href="/auth/signup" className="btn-s">List Your Venue</Link>
+          <Link href="/auth/signup?role=venue" className="btn-p">Protect Your Network</Link>
+          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges</Link>
         </div>
       </section>
 
