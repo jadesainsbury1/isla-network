@@ -252,6 +252,13 @@ export default function HomePage() {
         </div>
       </section>
 
+      <div style={{ borderTop: "1px solid #1e1e1e", borderBottom: "1px solid #1e1e1e", padding: "28px 48px", background: "#0a0a0a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ fontFamily: "Georgia, serif", fontSize: 18, fontWeight: 400, color: "#555", lineHeight: 1.6, textAlign: "center", maxWidth: 700, fontStyle: "italic" }}>
+          ISLA gives every venue a concierge network that belongs to the business —{" "}
+          <span style={{ color: "#C9A96E" }}>not the person running it.</span>
+        </p>
+      </div>
+
       <section className="aud">
         <div className="lbl">Who It Is For</div>
         <div className="aud-tabs">
