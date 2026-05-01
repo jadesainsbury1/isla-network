@@ -87,15 +87,81 @@ export default async function VenueDashboardPage() {
           </div>
         </div>
 
+        {/* ISLA attribution */}
+        <div style={{ marginBottom: 16, marginTop: -8 }}>
+          <span style={{ fontFamily: "monospace", fontSize: 10, letterSpacing: "0.2em", color: "#555", textTransform: "uppercase" }}>
+            Revenue generated via ISLA concierge network
+          </span>
+        </div>
+
+        {/* Priority this week */}
+        {(() => {
+          const topUnpaid = (() => {
+            const map = new Map<string, { name: string, amount: number, id: string, bookings: number }>()
+            all
+              .filter((b: any) => b.commission_status === "approved" && b.payment_status !== "paid" && b.concierge)
+              .forEach((b: any) => {
+                const c = b.concierge as any
+                const existing = map.get(b.concierge_id) || { name: c.full_name, amount: 0, id: b.concierge_id, bookings: 0 }
+                existing.amount += Number(b.commission_amount) || 0
+                existing.bookings += 1
+                map.set(b.concierge_id, existing)
+              })
+            return Array.from(map.values()).sort((a, b) => b.amount - a.amount)[0] || null
+          })()
+
+          const topEarner = (() => {
+            const map = new Map<string, { name: string, amount: number, id: string, bookings: number }>()
+            all
+              .filter((b: any) => b.bill_amount && b.concierge)
+              .forEach((b: any) => {
+                const c = b.concierge as any
+                const existing = map.get(b.concierge_id) || { name: c.full_name, amount: 0, id: b.concierge_id, bookings: 0 }
+                existing.amount += Number(b.bill_amount) || 0
+                existing.bookings += 1
+                map.set(b.concierge_id, existing)
+              })
+            return Array.from(map.values()).sort((a, b) => b.amount - a.amount)[0] || null
+          })()
+
+          if (!topUnpaid && !topEarner) return null
+
+          return (
+            <div style={{ background: "#0d0d0d", border: "1px solid #2a2000", borderRadius: 8, padding: "16px 20px", marginBottom: 24 }}>
+              <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.3em", color: "#C9A96E", textTransform: "uppercase", marginBottom: 14 }}>Priority this week</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {topUnpaid && (
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <span style={{ fontSize: 13, color: "var(--cream)", fontWeight: 500 }}>{topUnpaid.name}</span>
+                      <span style={{ fontSize: 11, color: "#888", marginLeft: 10, fontFamily: "monospace" }}>payment overdue — delaying risks the relationship</span>
+                    </div>
+                    <a href={`/venue/concierge/${topUnpaid.id}`} style={{ fontSize: 11, color: "#f44336", fontFamily: "monospace", textDecoration: "none", letterSpacing: "0.1em" }}>{fmt(topUnpaid.amount)} due →</a>
+                  </div>
+                )}
+                {topEarner && topEarner.id !== topUnpaid?.id && (
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <span style={{ fontSize: 13, color: "var(--cream)", fontWeight: 500 }}>{topEarner.name}</span>
+                      <span style={{ fontSize: 11, color: "#888", marginLeft: 10, fontFamily: "monospace" }}>your highest-value concierge this season</span>
+                    </div>
+                    <a href={`/venue/concierge/${topEarner.id}`} style={{ fontSize: 11, color: "#C9A96E", fontFamily: "monospace", textDecoration: "none", letterSpacing: "0.1em" }}>{fmt(topEarner.amount)} driven →</a>
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        })()}
+
         {/* Commission owed banner */}
         {totalCommissionOwed > 0 && (
           <div style={{ background: "#1a0f0f", border: "1px solid #f44336", borderRadius: 8, padding: "16px 20px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ width: "100%" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 <div style={{ fontSize: 13, color: "#f44336", fontWeight: 600 }}>
-                  {all.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} commissions ready to pay — {fmt(totalCommissionOwed)} total due
+                  {all.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} concierges awaiting payment — {fmt(totalCommissionOwed)} outstanding
                 </div>
-                <div style={{ fontSize: 11, color: "#888", fontFamily: "monospace" }}>Pay each concierge directly</div>
+                <div style={{ fontSize: 11, color: "#888", fontFamily: "monospace" }}>Delayed payment risks losing your best concierges</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {(() => {

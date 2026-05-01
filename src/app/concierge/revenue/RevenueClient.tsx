@@ -95,6 +95,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
     <>
       <div className="topbar">
         <div className="page-title">My Earnings</div>
+        <div style={{ fontSize: 10, fontFamily: "monospace", letterSpacing: "0.15em", color: "var(--muted)", textTransform: "uppercase" }}>Tracked via ISLA · protected by signed agreement</div>
       </div>
       <div className="body">
 
@@ -102,10 +103,15 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
         <div style={{ background: "linear-gradient(135deg, #0d0d0d 0%, #1a1500 100%)", border: "1px solid #2a2000", borderRadius: 12, padding: "28px 32px", marginBottom: 24 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
             <div>
-              <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.25em", color: "#888", textTransform: "uppercase", marginBottom: 6 }}>Season earnings</div>
+              <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.25em", color: "#888", textTransform: "uppercase", marginBottom: 6 }}>Your earnings via ISLA · Season 2026</div>
               <div style={{ fontSize: 40, fontWeight: 700, color: "#C9A96E", lineHeight: 1 }}>{fmt(totals.totalEarned)}</div>
               <div style={{ fontSize: 12, color: "#555", marginTop: 6, fontFamily: "monospace" }}>
                 {fmt(totals.totalPaid)} paid · {fmt(totals.totalUnpaid > 0 ? totals.totalUnpaid : 0)} outstanding
+              </div>
+              <div style={{ marginTop: 12, display: "flex", gap: 16 }}>
+                <span style={{ fontFamily: "monospace", fontSize: 10, color: "#C9A96E", letterSpacing: "0.1em" }}>
+                  {venues.length} active {venues.length === 1 ? "venue" : "venues"} working with you
+                </span>
               </div>
             </div>
             <div style={{ textAlign: "right" }}>
@@ -146,14 +152,14 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
 
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals &mdash; {bookings.length} total</div>
-          <button onClick={() => setShowLog(true)} className="btn btn-gold" style={{ fontSize: 11, padding: '8px 16px' }}>+ Log Referral</button>
+          <button onClick={() => setShowLog(true)} className="btn btn-gold" style={{ fontSize: 11, padding: '8px 16px' }}>+ Log Booking</button>
         </div>
 
         {success && <div style={{ color: '#4caf50', fontSize: 12, fontFamily: 'monospace', marginBottom: 16 }}>Referral logged successfully</div>}
 
         {showLog && (
           <div style={{ background: 'var(--charcoal)', border: '1px solid var(--border)', borderRadius: 8, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500, marginBottom: 16 }}>Log a Referral</div>
+            <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500, marginBottom: 16 }}>Log a Booking</div>
             <form onSubmit={handleLog}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
                 <div className="form-group">
