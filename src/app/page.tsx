@@ -248,6 +248,7 @@ export default function HomePage() {
         <p className="hero-sub">A GRM builds three years of concierge relationships. They know who sends the UHNW tables, who to call for a last-minute 12-cover. Then they leave. That institutional knowledge walks out with them. The venue is back to zero. <strong>ISLA keeps the relationship with the venue — permanently.</strong></p>
         <div className="hero-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
+          <Link href="/preview" className="btn-ghost" style={{ fontSize: 12, color: '#8a8070', border: '1px solid #2a2620', padding: '10px 20px', borderRadius: 4, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase' }}>See the Dashboard →</Link>
           <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge or GRM</Link>
         </div>
       </section>
@@ -491,6 +492,7 @@ export default function HomePage() {
         <p className="cls-urgency">Founding venues — season is live now</p>
         <div className="cls-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
+          <Link href="/preview" className="btn-ghost" style={{ fontSize: 12, color: '#8a8070', border: '1px solid #2a2620', padding: '10px 20px', borderRadius: 4, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase' }}>See the Dashboard →</Link>
           <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge or GRM</Link>
         </div>
       </section>
