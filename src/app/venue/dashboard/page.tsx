@@ -5,6 +5,7 @@ import BookingMessage from '@/components/BookingMessage'
 import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
 import BookingChat from '@/components/BookingChat'
+import VenueBookingPanel from '@/components/VenueBookingPanel'
 import type { Booking, Profile } from '@/lib/types'
 
 export default async function VenueDashboardPage() {
@@ -246,105 +247,9 @@ export default async function VenueDashboardPage() {
         </div>
 
         {/* All bookings table */}
-        {all.length > 0 && (
-          <div className="table-card">
-            <div className="table-header">
-              <span className="table-title">All Referrals & Commission</span>
-              <span className="mono" style={{ fontSize: 10, color: "var(--muted)" }}>{all.length} total</span>
+        <VenueBookingPanel bookings={all} venue={venue} userId={user.id} />
+
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Concierge</th>
-                  <th>Covers</th>
-                  <th>F&B Spend</th>
-                  <th>Commission</th>
-                  <th>Commission Status</th>
-                  <th>Payment Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {all.map(b => {
-                  const concierge = b.concierge as Profile
-                  const commAmt = Number(b.commission_amount) || 0
-                  return (
-                    <tr key={b.id}>
-                      <td className="td-mono td-muted">{new Date(b.date).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</td>
-                      <td className="td-name">{concierge?.full_name || "—"}</td>
-
-                      <td className="td-mono">{b.covers || "—"}</td>
-                      <td className="td-mono">{b.bill_amount ? fmt(Number(b.bill_amount)) : "—"}</td>
-                      <td className="td-mono" style={{ color: "var(--gold)", fontWeight: 600 }}>{commAmt > 0 ? fmt(commAmt) : "—"}</td>
-                      <td><span className={b.commission_status ? "badge badge-" + b.commission_status : ""}>{b.commission_status || "pending"}</span></td>
-                      <td>
-                        {b.payment_status === "paid"
-                          ? <span className="badge badge-paid">Paid to concierge ✓</span>
-                          : commAmt > 0 && b.commission_status === "approved"
-                            ? <VenuePayButton bookingId={b.id} />
-                            : commAmt > 0
-                              ? <span className="badge badge-pending">Awaiting approval</span>
-                              : <span style={{ color: "var(--muted)", fontSize: 11 }}>—</span>
-                        }
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-            {totalCommissionPaid > 0 && (
-              <div style={{ padding: "12px 16px", borderTop: "1px solid var(--border)", fontSize: 12, color: "var(--muted)", display: "flex", justifyContent: "space-between" }}>
-                <span>Total paid to concierge to date</span>
-                <span style={{ color: "#4caf50", fontWeight: 600 }}>{fmt(totalCommissionPaid)}</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Commission Forecast */}
-        {(() => {
-          const months: Record<string, { label: string, projected: number, count: number }> = {}
-          const now = new Date()
-          all
-            .filter(b => b.status === "confirmed" && b.commission_amount && b.date)
-            .forEach(b => {
-              const d = new Date(b.date)
-              if (d >= now) {
-                const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')
-                const label = d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
-                if (!months[key]) months[key] = { label, projected: 0, count: 0 }
-                months[key].projected += Number(b.commission_amount) || 0
-                months[key].count += 1
-              }
-            })
-          const sorted = Object.keys(months).sort()
-          if (sorted.length === 0) return null
-          return (
-            <div style={{ background: "var(--charcoal)", border: "1px solid var(--border)", borderRadius: 8, padding: "20px 24px", marginBottom: 24 }}>
-              <div style={{ fontFamily: "monospace", fontSize: 9, letterSpacing: "0.25em", textTransform: "uppercase", color: "var(--muted)", marginBottom: 16 }}>Commission forecast</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {sorted.map(key => (
-                  <div key={key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "#0d0d0d", borderRadius: 6, border: "1px solid var(--border)" }}>
-                    <div>
-                      <div style={{ fontSize: 13, color: "var(--cream)", fontWeight: 500 }}>{months[key].label}</div>
-                      <div style={{ fontSize: 11, color: "var(--muted)", fontFamily: "monospace", marginTop: 2 }}>{months[key].count} confirmed {months[key].count === 1 ? "booking" : "bookings"}</div>
-                    </div>
-                    <div style={{ textAlign: "right" }}>
-                      <div style={{ fontSize: 16, fontWeight: 700, color: "#C9A96E", fontFamily: "monospace" }}>{fmt(months[key].projected)}</div>
-                      <div style={{ fontSize: 10, color: "var(--muted)", fontFamily: "monospace", marginTop: 2 }}>projected</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div style={{ fontSize: 11, color: "var(--muted)", marginTop: 12, fontStyle: "italic" }}>Based on confirmed bookings with bills submitted. Subject to change.</div>
-            </div>
-          )
-        })()}
-
-
-
-      </div>
     </>
   )
 }
