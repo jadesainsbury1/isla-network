@@ -67,7 +67,13 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
       pending: 'badge-pending',
       unpaid: 'badge-pending',
     }
-    return <span className={'badge ' + (map[status] || '')}>{status}</span>
+    const labels: Record<string, string> = {
+      approved: 'Commission approved',
+      paid: 'Paid',
+      pending: 'Awaiting approval',
+      unpaid: 'Unpaid',
+    }
+    return <span className={'badge ' + (map[status] || '')}>{labels[status] || status}</span>
   }
 
   async function handleLog(e: React.FormEvent) {
@@ -239,7 +245,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
           </select>
           <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: filterStatus ? 'var(--cream)' : 'var(--muted)', fontSize: 11, padding: '6px 10px', fontFamily: 'monospace' }}>
             <option value="">All statuses</option>
-            <option value="pending">Pending approval</option>
+            <option value="pending">Commission pending</option>
             <option value="approved">Approved</option>
             <option value="paid">Paid</option>
             <option value="unpaid">Unpaid</option>
@@ -264,7 +270,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500 }}>Booking — {(b.venue as any)?.name}</div>
                 <div style={{ display: 'flex', gap: 8 }}>
-                  {b.status === 'pending' && new Date(b.date) > new Date() && (
+                  {b.status !== 'confirmed' && new Date(b.date) > new Date() && (
                     <button onClick={() => { setViewingId(null); setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || ''); setNationality(gp.nationality || ''); setOccasion(gp.occasion || ''); setDietary(gp.dietary || ''); setVipNotes(gp.vip_notes || ''); setSpendProfile(gp.spend_profile || ''); setGuestName(gp.guest_name || ''); setGuestEmail(gp.guest_email || ''); setGuestPhone(gp.guest_phone || ''); setArrivalTime(gp.arrival_time || ''); setGuestSource(gp.guest_source || '') }} className="btn btn-gold" style={{ fontSize: 11, padding: '6px 14px' }}>Edit</button>
                   )}
                   <button onClick={() => setViewingId(null)} style={{ background: 'none', border: '1px solid #333', color: '#555', cursor: 'pointer', borderRadius: 4, padding: '6px 12px', fontSize: 12 }}>Close</button>
@@ -583,7 +589,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   <th>Guest</th>
                   <th>Covers</th>
                   <th>Commission</th>
-                  <th>Approval</th>
+                  <th>Commission</th>
                   <th>Payment</th>
                   <th>Chat</th>
                   <th></th>
@@ -613,7 +619,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                       />
                     </td>
                     <td>
-                      {b.status === 'pending' && new Date(b.date) > new Date() ? (
+                      {b.status !== 'confirmed' && new Date(b.date) > new Date() ? (
                         <button onClick={() => { const gp = b.guest_profile || {}; setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || ''); setNationality(gp.nationality || ''); setOccasion(gp.occasion || ''); setDietary(gp.dietary || ''); setVipNotes(gp.vip_notes || ''); setSpendProfile(gp.spend_profile || ''); setGuestName(gp.guest_name || ''); setGuestEmail(gp.guest_email || ''); setGuestPhone(gp.guest_phone || ''); setArrivalTime(gp.arrival_time || ''); setGuestSource(gp.guest_source || '') }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', color: '#888', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>Edit</button>
                       ) : null}
                     </td>
