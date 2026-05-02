@@ -36,6 +36,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [arrivalTime, setArrivalTime] = useState('')
   const [guestSource, setGuestSource] = useState('')
   const [sendingConfirmation, setSendingConfirmation] = useState<string | null>(null)
+  const [viewingId, setViewingId] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editDate, setEditDate] = useState('')
   const [editCovers, setEditCovers] = useState('')
@@ -202,6 +203,71 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
         </div>
 
         {success && <div style={{ color: '#4caf50', fontSize: 12, fontFamily: 'monospace', marginBottom: 16 }}>Referral logged successfully</div>}
+
+        {viewingId && (() => {
+          const b = bookings.find((x: any) => x.id === viewingId)
+          if (!b) return null
+          const gp = b.guest_profile || {}
+          const sourceMap: Record<string, string> = { hotel_guest: 'Hotel guest', yacht: 'Yacht / charter', private_villa: 'Private villa', returning: 'Returning client', referral: 'Personal referral', other: 'Other' }
+          const spendMap: Record<string, string> = { standard: 'Standard — under 2,000', premium: 'Premium — 2,000 to 5,000', uhnw: 'UHNW — 5,000+' }
+          return (
+            <div style={{ background: 'var(--charcoal)', border: '1px solid #333', borderRadius: 8, padding: 24, marginBottom: 24 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500 }}>Booking — {(b.venue as any)?.name}</div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  {b.status === 'pending' && new Date(b.date) > new Date() && (
+                    <button onClick={() => { setViewingId(null); setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || ''); setNationality(gp.nationality || ''); setOccasion(gp.occasion || ''); setDietary(gp.dietary || ''); setVipNotes(gp.vip_notes || ''); setSpendProfile(gp.spend_profile || ''); setGuestName(gp.guest_name || ''); setGuestEmail(gp.guest_email || ''); setGuestPhone(gp.guest_phone || ''); setArrivalTime(gp.arrival_time || ''); setGuestSource(gp.guest_source || '') }} className="btn btn-gold" style={{ fontSize: 11, padding: '6px 14px' }}>Edit</button>
+                  )}
+                  <button onClick={() => setViewingId(null)} style={{ background: 'none', border: '1px solid #333', color: '#555', cursor: 'pointer', borderRadius: 4, padding: '6px 12px', fontSize: 12 }}>Close</button>
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+                {[
+                  ['Venue', (b.venue as any)?.name],
+                  ['Date', new Date(b.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })],
+                  ['Arrival time', gp.arrival_time || null],
+                  ['Covers', b.covers || null],
+                  ['Notes', b.notes || null],
+                  ['Guest name', gp.guest_name || null],
+                  ['Guest email', gp.guest_email || null],
+                  ['Guest phone', gp.guest_phone || null],
+                  ['How introduced', gp.guest_source ? sourceMap[gp.guest_source] || gp.guest_source : null],
+                  ['Nationality', gp.nationality || null],
+                  ['Occasion', gp.occasion || null],
+                  ['Dietary', gp.dietary || null],
+                  ['Spend profile', gp.spend_profile ? spendMap[gp.spend_profile] || gp.spend_profile : null],
+                  ['VIP notes', gp.vip_notes || null],
+                  ['Status', b.status],
+                  ['Commission', b.commission_amount ? fmt(Number(b.commission_amount)) : 'Pending'],
+                ].filter(([, v]) => v).map(([label, value]) => (
+                  <div key={label as string} style={{ padding: '10px 0', borderBottom: '1px solid #1a1a1a', display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <div style={{ fontSize: 10, fontFamily: 'monospace', letterSpacing: '0.15em', color: '#555', textTransform: 'uppercase' }}>{label}</div>
+                    <div style={{ fontSize: 13, color: 'var(--cream)' }}>{value}</div>
+                  </div>
+                ))}
+              </div>
+              {gp.guest_email && (
+                <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #1a1a1a' }}>
+                  <button
+                    onClick={async () => {
+                      setSendingConfirmation(b.id)
+                      await fetch('/api/booking/guest-confirmation', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ guestEmail: gp.guest_email, guestName: gp.guest_name, venueId: b.venue_id, conciergeId, date: b.date, covers: b.covers, arrivalTime: gp.arrival_time, bookingId: b.id })
+                      })
+                      setSendingConfirmation(null)
+                    }}
+                    disabled={sendingConfirmation === b.id}
+                    style={{ padding: '8px 16px', background: 'transparent', border: '1px solid #C9A96E', color: '#C9A96E', borderRadius: 4, fontSize: 11, cursor: 'pointer', fontFamily: 'monospace', opacity: sendingConfirmation === b.id ? 0.5 : 1 }}
+                  >
+                    {sendingConfirmation === b.id ? 'Sending...' : '✉ Send guest confirmation'}
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        })()}
 
         {editingId && (
           <div style={{ background: 'var(--charcoal)', border: '1px solid var(--gold)', borderRadius: 8, padding: 24, marginBottom: 24 }}>
@@ -404,8 +470,8 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
               <tbody>
                 {bookings.map((b: any) => (
                   <tr key={b.id}>
-                    <td className="td-mono td-muted">{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                    <td className="td-name">{(b.venue as any)?.name || '—'}</td>
+                    <td className="td-mono td-muted" style={{ cursor: 'pointer', color: 'var(--gold)', textDecoration: 'underline' }} onClick={() => setViewingId(b.id)}>{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                    <td className="td-name" style={{ cursor: 'pointer' }} onClick={() => setViewingId(b.id)}>{(b.venue as any)?.name || '—'}</td>
                     <td className="td-muted">{(b.venue as any)?.area || '—'}</td>
                     <td className="td-mono">{b.covers || '—'}</td>
                     <td className="td-mono" style={{ color: 'var(--gold)', fontWeight: 600 }}>
