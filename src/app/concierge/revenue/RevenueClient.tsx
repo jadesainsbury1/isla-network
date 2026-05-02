@@ -303,7 +303,28 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
               </div>
               <div className="form-group">
                 <label className="form-label">Guest phone / WhatsApp</label>
-                <input className="form-input" placeholder="+44 7700 900000" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} />
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <select value={countryCode} onChange={e => setCountryCode(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: 'var(--cream)', fontSize: 12, padding: '8px 6px', width: 90, flexShrink: 0 }}>
+                    <option value="+34">🇪🇸 +34</option>
+                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+33">🇫🇷 +33</option>
+                    <option value="+49">🇩🇪 +49</option>
+                    <option value="+31">🇳🇱 +31</option>
+                    <option value="+39">🇮🇹 +39</option>
+                    <option value="+41">🇨🇭 +41</option>
+                    <option value="+7">🇷🇺 +7</option>
+                    <option value="+971">🇦🇪 +971</option>
+                    <option value="+966">🇸🇦 +966</option>
+                    <option value="+974">🇶🇦 +974</option>
+                    <option value="+852">🇭🇰 +852</option>
+                    <option value="+65">🇸🇬 +65</option>
+                    <option value="+55">🇧🇷 +55</option>
+                    <option value="+30">🇬🇷 +30</option>
+                    <option value="+90">🇹🇷 +90</option>
+                  </select>
+                  <input className="form-input" placeholder="600 000 000" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} style={{ flex: 1 }} />
+                </div>
               </div>
               <div className="form-group" style={{ gridColumn: '1 / -1' }}>
                 <label className="form-label">How introduced</label>

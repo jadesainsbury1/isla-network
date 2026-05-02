@@ -198,28 +198,47 @@ export default async function VenueDashboardPage() {
           ) : (
             pending.map(b => {
               const concierge = b.concierge as Profile
+              const gp = (b as any).guest_profile || {}
+              const spendMap: Record<string,string> = { standard: 'Under €2k', premium: '€2k–5k', uhnw: '€5k+' }
+              const sourceMap: Record<string,string> = { hotel_guest: 'Hotel', yacht: 'Yacht', private_villa: 'Villa', returning: 'Returning', referral: 'Referral', other: 'Other' }
               return (
-                <div key={b.id} className="confirm-card">
-                  <div>
-                    <div className="confirm-title">{concierge?.full_name || "Concierge"} · {concierge?.property || ""}</div>
-                    <div className="confirm-sub">
-                      {b.covers ? `${b.covers} covers · ` : ""}
-                      {new Date(b.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}
-                      {b.notes ? ` · ${b.notes}` : ""}
+                <div key={b.id} style={{ background: 'var(--charcoal)', border: '1px solid var(--border)', borderRadius: 8, padding: '16px 20px', marginBottom: 12 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--cream)', marginBottom: 2 }}>{concierge?.full_name || "Concierge"}{concierge?.property ? ` · ${concierge.property}` : ""}</div>
+                      <div style={{ fontSize: 12, color: 'var(--muted)', fontFamily: 'monospace' }}>
+                        {new Date(b.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })}
+                        {gp.arrival_time ? ` · ${gp.arrival_time}` : ""}
+                        {b.covers ? ` · ${b.covers} covers` : ""}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <BillUpload bookingId={b.id} venueName={venue.name} venueEmail={venue.contact_email || ""} commissionRate={venue.commission_rate || "10%"} concierge={concierge?.full_name || "Concierge"} />
+                      <BookingChat
+                        bookingId={b.id}
+                        currentUserId={user.id}
+                        currentUserRole="venue"
+                        currentUserName={venue.name}
+                        notifyEmail={(b.concierge as any)?.email || ''}
+                        notifyName={concierge?.full_name || 'Concierge'}
+                      />
                     </div>
                   </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end" }}>
-                    
-                    <BillUpload bookingId={b.id} venueName={venue.name} venueEmail={venue.contact_email || ""} commissionRate={venue.commission_rate || "10%"} concierge={concierge?.full_name || "Concierge"} />
-                    <BookingChat
-                      bookingId={b.id}
-                      currentUserId={user.id}
-                      currentUserRole="venue"
-                      currentUserName={venue.name}
-                      notifyEmail={(b.concierge as any)?.email || ''}
-                      notifyName={concierge?.full_name || 'Concierge'}
-                    />
-                  </div>
+                  {(gp.guest_name || gp.guest_email || gp.guest_phone || gp.nationality || gp.occasion || gp.spend_profile || gp.dietary || gp.vip_notes || gp.guest_source) && (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, paddingTop: 12, borderTop: '1px solid var(--border)', marginTop: 4 }}>
+                      {gp.guest_name && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Guest</div><div style={{ fontSize: 12, color: 'var(--cream)' }}>{gp.guest_name}</div></div>}
+                      {gp.guest_phone && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Phone</div><a href={`https://wa.me/${gp.guest_phone.replace(/[^0-9]/g,'')}`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: '#25D366', textDecoration: 'none' }}>📱 {gp.guest_phone}</a></div>}
+                      {gp.guest_email && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Email</div><div style={{ fontSize: 12, color: 'var(--cream)' }}>{gp.guest_email}</div></div>}
+                      {gp.arrival_time && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Arrival</div><div style={{ fontSize: 12, color: 'var(--cream)' }}>{gp.arrival_time}</div></div>}
+                      {gp.nationality && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Nationality</div><div style={{ fontSize: 12, color: '#aaa' }}>{gp.nationality}</div></div>}
+                      {gp.occasion && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Occasion</div><div style={{ fontSize: 12, color: '#aaa' }}>{gp.occasion}</div></div>}
+                      {gp.dietary && gp.dietary !== 'None' && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Dietary</div><div style={{ fontSize: 12, color: '#f44336' }}>{gp.dietary}</div></div>}
+                      {gp.spend_profile && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Spend</div><div style={{ fontSize: 12, color: '#C9A96E' }}>{spendMap[gp.spend_profile] || gp.spend_profile}</div></div>}
+                      {gp.guest_source && <div><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Via</div><div style={{ fontSize: 12, color: '#aaa' }}>{sourceMap[gp.guest_source] || gp.guest_source}</div></div>}
+                      {gp.vip_notes && <div style={{ gridColumn: '1 / -1' }}><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>VIP notes</div><div style={{ fontSize: 12, color: '#C9A96E', fontStyle: 'italic' }}>{gp.vip_notes}</div></div>}
+                      {b.notes && <div style={{ gridColumn: '1 / -1' }}><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 2 }}>Booking notes</div><div style={{ fontSize: 12, color: '#aaa' }}>{b.notes}</div></div>}
+                    </div>
+                  )}
                 </div>
               )
             })
