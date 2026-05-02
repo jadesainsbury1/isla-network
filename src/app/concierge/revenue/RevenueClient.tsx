@@ -630,7 +630,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                           disabled={sendingConfirmation === b.id}
                           style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #C9A96E', color: '#C9A96E', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace', opacity: sendingConfirmation === b.id ? 0.5 : 1 }}
                         >
-                          {sendingConfirmation === b.id ? 'Sending...' : '✉ Confirm guest'}
+                          {sendingConfirmation === b.id ? 'Sending...' : '✉ Guest'}
                         </button>
                       ) : null}
                     </td>

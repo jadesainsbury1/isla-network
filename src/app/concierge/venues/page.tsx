@@ -84,8 +84,8 @@ export default async function VenuesPage() {
                           <span className="vcr-val">{venue.commission_rate}</span>
                         </div>
                         {venue.commission_basis && <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>Basis: {venue.commission_basis}</div>}
-                        {venue.booking_instructions && <div style={{ fontSize: 11, color: 'var(--muted)', fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>{venue.booking_instructions}</div>}
-                        {venue.contact && <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>Contact: {venue.contact}</div>}
+                        
+                        {venue.contact && false && <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>Contact: {venue.contact}</div>}
                         <div className="venue-reliability" style={{ marginBottom: 12 }}>
                           <span className="rel-label">Pays on time:</span>
                           <div className="rel-dots">{dots(5)}</div>

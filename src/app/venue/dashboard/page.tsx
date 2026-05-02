@@ -212,7 +212,8 @@ export default async function VenueDashboardPage() {
                         {b.covers ? ` · ${b.covers} covers` : ""}
                       </div>
                     </div>
-                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                      <BookingConfirm bookingId={b.id} venueId={venue.id} conciergeEmail={(b.concierge as any)?.email || ''} conciergeName={concierge?.full_name || 'Concierge'} />
                       <BillUpload bookingId={b.id} venueName={venue.name} venueEmail={venue.contact_email || ""} commissionRate={venue.commission_rate || "10%"} concierge={concierge?.full_name || "Concierge"} />
                       <BookingChat
                         bookingId={b.id}
