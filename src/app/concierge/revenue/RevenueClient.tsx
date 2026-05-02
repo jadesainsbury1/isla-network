@@ -30,6 +30,12 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [dietary, setDietary] = useState('')
   const [vipNotes, setVipNotes] = useState('')
   const [spendProfile, setSpendProfile] = useState('')
+  const [guestName, setGuestName] = useState('')
+  const [guestEmail, setGuestEmail] = useState('')
+  const [guestPhone, setGuestPhone] = useState('')
+  const [arrivalTime, setArrivalTime] = useState('')
+  const [guestSource, setGuestSource] = useState('')
+  const [sendingConfirmation, setSendingConfirmation] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editDate, setEditDate] = useState('')
   const [editCovers, setEditCovers] = useState('')
@@ -81,8 +87,22 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
         dietary: dietary || null,
         vip_notes: vipNotes || null,
         spend_profile: spendProfile || null,
+        guest_name: guestName || null,
+        guest_email: guestEmail || null,
+        guest_phone: guestPhone || null,
+        arrival_time: arrivalTime || null,
+        guest_source: guestSource || null,
       }
     })
+
+    // Send guest confirmation if email provided
+    if (guestEmail) {
+      fetch('/api/booking/guest-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ guestEmail, guestName, venueId, conciergeId, date, covers: parseInt(covers) || null, arrivalTime })
+      }).catch(() => {})
+    }
 
     // Notify venue by email
     fetch('/api/booking/notify-venue', {
@@ -202,6 +222,34 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 <label className="form-label">Notes (optional)</label>
                 <input className="form-input" placeholder="Birthday dinner, champagne on arrival" value={editNotes} onChange={e => setEditNotes(e.target.value)} />
               </div>
+              <div className="form-group">
+                <label className="form-label">Guest name</label>
+                <input className="form-input" placeholder="e.g. James & Sarah Wilson" value={guestName} onChange={e => setGuestName(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Arrival time</label>
+                <input className="form-input" type="time" value={arrivalTime} onChange={e => setArrivalTime(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Guest email</label>
+                <input className="form-input" type="email" placeholder="guest@email.com" value={guestEmail} onChange={e => setGuestEmail(e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Guest phone / WhatsApp</label>
+                <input className="form-input" placeholder="+44 7700 900000" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} />
+              </div>
+              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                <label className="form-label">How introduced</label>
+                <select className="form-input" value={guestSource} onChange={e => setGuestSource(e.target.value)}>
+                  <option value="">Select</option>
+                  <option value="hotel_guest">Hotel guest</option>
+                  <option value="yacht">Yacht / charter</option>
+                  <option value="private_villa">Private villa</option>
+                  <option value="returning">Returning client</option>
+                  <option value="referral">Personal referral</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
             </div>
             <div style={{ marginBottom: 12 }}>
               <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>Guest Profile</div>
@@ -266,6 +314,39 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 </div>
               </div>
               <div style={{ marginBottom: 12 }}>
+                <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>Guest Contact</div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div className="form-group">
+                    <label className="form-label">Guest name</label>
+                    <input className="form-input" placeholder="e.g. James & Sarah Wilson" value={guestName} onChange={e => setGuestName(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Arrival time</label>
+                    <input className="form-input" type="time" value={arrivalTime} onChange={e => setArrivalTime(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Guest email — for confirmation</label>
+                    <input className="form-input" type="email" placeholder="guest@email.com" value={guestEmail} onChange={e => setGuestEmail(e.target.value)} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Guest phone / WhatsApp</label>
+                    <input className="form-input" placeholder="+44 7700 900000" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} />
+                  </div>
+                </div>
+                <div className="form-group" style={{ marginTop: 12 }}>
+                  <label className="form-label">How introduced</label>
+                  <select className="form-input" value={guestSource} onChange={e => setGuestSource(e.target.value)}>
+                    <option value="">Select</option>
+                    <option value="hotel_guest">Hotel guest</option>
+                    <option value="yacht">Yacht / charter</option>
+                    <option value="private_villa">Private villa</option>
+                    <option value="returning">Returning client</option>
+                    <option value="referral">Personal referral</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div style={{ marginBottom: 12 }}>
                 <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>Guest Profile — visible to venue before arrival</div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div className="form-group">
@@ -317,6 +398,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   <th>Payment</th>
                   <th>Chat</th>
                   <th></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -343,7 +425,35 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                     </td>
                     <td>
                       {b.status === 'pending' && new Date(b.date) > new Date() ? (
-                        <button onClick={() => { setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || ''); setNationality(b.guest_profile?.nationality || ''); setOccasion(b.guest_profile?.occasion || ''); setDietary(b.guest_profile?.dietary || ''); setVipNotes(b.guest_profile?.vip_notes || ''); setSpendProfile(b.guest_profile?.spend_profile || '') }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', color: '#888', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>Edit</button>
+                        <button onClick={() => { setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || ''); setNationality(b.guest_profile?.nationality || ''); setOccasion(b.guest_profile?.occasion || ''); setDietary(b.guest_profile?.dietary || ''); setVipNotes(b.guest_profile?.vip_notes || ''); setSpendProfile(b.guest_profile?.spend_profile || ''); setGuestName(b.guest_profile?.guest_name || ''); setGuestEmail(b.guest_profile?.guest_email || ''); setGuestPhone(b.guest_profile?.guest_phone || ''); setArrivalTime(b.guest_profile?.arrival_time || ''); setGuestSource(b.guest_profile?.guest_source || '') }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', color: '#888', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>Edit</button>
+                      ) : null}
+                    </td>
+                    <td>
+                      {b.guest_profile?.guest_email ? (
+                        <button
+                          onClick={async () => {
+                            setSendingConfirmation(b.id)
+                            await fetch('/api/booking/guest-confirmation', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                guestEmail: b.guest_profile.guest_email,
+                                guestName: b.guest_profile.guest_name,
+                                venueId: b.venue_id,
+                                conciergeId,
+                                date: b.date,
+                                covers: b.covers,
+                                arrivalTime: b.guest_profile.arrival_time,
+                                bookingId: b.id
+                              })
+                            })
+                            setSendingConfirmation(null)
+                          }}
+                          disabled={sendingConfirmation === b.id}
+                          style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #C9A96E', color: '#C9A96E', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace', opacity: sendingConfirmation === b.id ? 0.5 : 1 }}
+                        >
+                          {sendingConfirmation === b.id ? 'Sending...' : '✉ Confirm guest'}
+                        </button>
                       ) : null}
                     </td>
                   </tr>
