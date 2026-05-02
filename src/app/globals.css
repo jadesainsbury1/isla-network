@@ -8,8 +8,8 @@
   --charcoal: #161410;
   --surface: #1E1C18;
   --border: #2A2620;
-  --muted: #5A5048;
-  --text: #B8B0A0;
+  --muted: #8A8070;
+  --text: #D0C8B8;
   --cream: #F2EDE4;
   --gold: #C9A96E;
   --gold-dim: #7A5E32;
@@ -230,14 +230,14 @@ body::before {
 
 /* ── Cards ── */
 .card {
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: #252320;
+  border: 1px solid #4a4640;
   border-radius: var(--radius);
   padding: 20px 24px;
 }
 .table-card {
-  background: #2a2a2a;
-  border: 1px solid #444;
+  background: #252320;
+  border: 1px solid #4a4640;
   border-radius: var(--radius);
   overflow: hidden;
 }
