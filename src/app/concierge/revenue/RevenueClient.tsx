@@ -38,6 +38,9 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [guestSource, setGuestSource] = useState('')
   const [sendingConfirmation, setSendingConfirmation] = useState<string | null>(null)
   const [viewingId, setViewingId] = useState<string | null>(null)
+  const [filterVenue, setFilterVenue] = useState('')
+  const [filterStatus, setFilterStatus] = useState('')
+  const [sortDir, setSortDir] = useState<'asc'|'desc'>('desc')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editDate, setEditDate] = useState('')
   const [editCovers, setEditCovers] = useState('')
@@ -139,6 +142,21 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
     window.location.reload()
   }
 
+  const filteredBookings = bookings
+    .filter((b: any) => {
+      if (filterVenue && b.venue_id !== filterVenue) return false
+      if (filterStatus === 'pending' && b.commission_status !== 'pending') return false
+      if (filterStatus === 'approved' && b.commission_status !== 'approved') return false
+      if (filterStatus === 'paid' && b.payment_status !== 'paid') return false
+      if (filterStatus === 'unpaid' && b.payment_status === 'paid') return false
+      return true
+    })
+    .sort((a: any, b: any) => {
+      const da = new Date(a.date).getTime()
+      const db = new Date(b.date).getTime()
+      return sortDir === 'desc' ? db - da : da - db
+    })
+
   return (
     <>
       <div className="topbar">
@@ -201,6 +219,25 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals — {bookings.length} total</div>
           <button onClick={() => setShowLog(true)} className="btn btn-gold" style={{ fontSize: 11, padding: '8px 16px' }}>+ Log Booking</button>
+        </div>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+          <select value={filterVenue} onChange={e => setFilterVenue(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: filterVenue ? 'var(--cream)' : 'var(--muted)', fontSize: 11, padding: '6px 10px', fontFamily: 'monospace' }}>
+            <option value="">All venues</option>
+            {venues.map((v: any) => <option key={v.id} value={v.id}>{v.name}</option>)}
+          </select>
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: filterStatus ? 'var(--cream)' : 'var(--muted)', fontSize: 11, padding: '6px 10px', fontFamily: 'monospace' }}>
+            <option value="">All statuses</option>
+            <option value="pending">Pending approval</option>
+            <option value="approved">Approved</option>
+            <option value="paid">Paid</option>
+            <option value="unpaid">Unpaid</option>
+          </select>
+          <button onClick={() => setSortDir(d => d === 'desc' ? 'asc' : 'desc')} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: 'var(--muted)', fontSize: 11, padding: '6px 10px', fontFamily: 'monospace', cursor: 'pointer' }}>
+            Date {sortDir === 'desc' ? '↓' : '↑'}
+          </button>
+          {(filterVenue || filterStatus) && <button onClick={() => { setFilterVenue(''); setFilterStatus('') }} style={{ background: 'transparent', border: '1px solid #333', borderRadius: 4, color: '#666', fontSize: 11, padding: '6px 10px', fontFamily: 'monospace', cursor: 'pointer' }}>✕ Clear</button>}
+          <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--muted)', fontFamily: 'monospace', lineHeight: '30px' }}>{filteredBookings.length} of {bookings.length}</span>
         </div>
 
         {success && <div style={{ color: '#4caf50', fontSize: 12, fontFamily: 'monospace', marginBottom: 16 }}>Referral logged successfully</div>}
@@ -532,7 +569,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 <tr>
                   <th>Date</th>
                   <th>Venue</th>
-                  <th>Area</th>
+                  <th>Guest</th>
                   <th>Covers</th>
                   <th>Commission</th>
                   <th>Approval</th>
@@ -543,11 +580,11 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 </tr>
               </thead>
               <tbody>
-                {bookings.map((b: any) => (
+                {filteredBookings.map((b: any) => (
                   <tr key={b.id}>
                     <td className="td-mono td-muted" style={{ cursor: 'pointer', color: 'var(--gold)', textDecoration: 'underline' }} onClick={() => setViewingId(b.id)}>{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                     <td className="td-name" style={{ cursor: 'pointer' }} onClick={() => setViewingId(b.id)}>{(b.venue as any)?.name || '—'}</td>
-                    <td className="td-muted">{(b.venue as any)?.area || '—'}</td>
+                    <td className="td-muted" style={{ fontSize: 12 }}>{(b as any).guest_profile?.guest_name || (b.venue as any)?.area || '—'}</td>
                     <td className="td-mono">{b.covers || '—'}</td>
                     <td className="td-mono" style={{ color: 'var(--gold)', fontWeight: 600 }}>
                       {b.commission_amount ? fmt(Number(b.commission_amount)) : b.estimated_commission ? '~' + fmt(Number(b.estimated_commission)) : '—'}
