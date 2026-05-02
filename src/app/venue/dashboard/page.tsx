@@ -246,6 +246,66 @@ export default async function VenueDashboardPage() {
           )}
         </div>
 
+        {/* Charts */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
+          <div className="card" style={{ padding: 24 }}>
+            <div style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 16 }}>Monthly referral volume</div>
+            {(() => {
+              const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+              const counts: number[] = Array(12).fill(0)
+              all.forEach((b: any) => { const m = new Date(b.date).getMonth(); counts[m]++ })
+              const now = new Date().getMonth()
+              const display = months.filter((_: string, i: number) => i >= Math.max(0, now - 4) && i <= Math.min(11, now + 1))
+              const max = Math.max(...display.map((_: string, i: number) => counts[Math.max(0, now - 4) + i]), 1)
+              return (
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 80 }}>
+                  {display.map((m: string, i: number) => {
+                    const mi = Math.max(0, now - 4) + i
+                    const h = Math.max(4, Math.round((counts[mi] / max) * 76))
+                    return (
+                      <div key={m} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                        <div style={{ width: '100%', height: h, background: counts[mi] > 0 ? '#C9A96E' : '#2a2620', borderRadius: '2px 2px 0 0' }} />
+                        <span style={{ fontSize: 9, color: 'var(--muted)', fontFamily: 'monospace' }}>{m}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })()}
+          </div>
+          <div className="card" style={{ padding: 24 }}>
+            <div style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 16 }}>Top concierges by revenue</div>
+            {(() => {
+              const byConc: Record<string, {name: string, rev: number}> = {}
+              all.forEach((b: any) => {
+                const id = b.concierge_id
+                const name = (b.concierge as any)?.full_name || 'Unknown'
+                const amt = Number(b.bill_amount) || 0
+                if (!byConc[id]) byConc[id] = { name, rev: 0 }
+                byConc[id].rev += amt
+              })
+              const sorted = Object.values(byConc).sort((a: any, b: any) => b.rev - a.rev).slice(0, 5)
+              const maxRev = Math.max(...sorted.map((x: any) => x.rev), 1)
+              if (sorted.length === 0) return <div style={{ fontSize: 12, color: 'var(--muted)', paddingTop: 8 }}>No bookings yet this season</div>
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {sorted.map((c: any) => (
+                    <div key={c.name}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                        <span style={{ fontSize: 11, color: 'var(--text)' }}>{c.name}</span>
+                        <span style={{ fontSize: 11, fontFamily: 'monospace', color: '#C9A96E' }}>{c.rev > 0 ? '€' + c.rev.toLocaleString('en-GB') : '—'}</span>
+                      </div>
+                      <div style={{ background: '#1a1810', borderRadius: 3, height: 5, overflow: 'hidden' }}>
+                        <div style={{ height: '100%', background: '#C9A96E', borderRadius: 3, width: (c.rev / maxRev * 100) + '%' }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )
+            })()}
+          </div>
+        </div>
+
         {/* All bookings table */}
         <VenueBookingPanel bookings={all} venue={venue} userId={user.id} />
 

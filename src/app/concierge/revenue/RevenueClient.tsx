@@ -230,7 +230,65 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
           <button onClick={() => setShowLog(true)} className="btn btn-gold" style={{ fontSize: 11, padding: '8px 16px' }}>+ Log Booking</button>
         </div>
 
-        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+        {/* Charts */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
+          <div className="card" style={{ padding: 20 }}>
+            <div style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 14 }}>My earnings by month</div>
+            {(() => {
+              const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+              const earned: number[] = Array(12).fill(0)
+              bookings.forEach((b: any) => {
+                if (b.commission_status === 'approved' && b.commission_amount) {
+                  const m = new Date(b.date).getMonth()
+                  earned[m] += Number(b.commission_amount)
+                }
+              })
+              const now = new Date().getMonth()
+              const display = months.filter((_: string, i: number) => i >= Math.max(0, now - 4) && i <= Math.min(11, now + 1))
+              const max = Math.max(...display.map((_: string, i: number) => earned[Math.max(0, now - 4) + i]), 1)
+              return (
+                <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 72 }}>
+                  {display.map((m: string, i: number) => {
+                    const mi = Math.max(0, now - 4) + i
+                    const h = Math.max(4, Math.round((earned[mi] / max) * 68))
+                    return (
+                      <div key={m} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                        <div style={{ width: '100%', height: h, background: earned[mi] > 0 ? '#C9A96E' : '#2a2620', borderRadius: '2px 2px 0 0' }} />
+                        <span style={{ fontSize: 9, color: 'var(--muted)', fontFamily: 'monospace' }}>{m}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })()}
+          </div>
+          <div className="card" style={{ padding: 20 }}>
+            <div style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 14 }}>My venues</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {venues.filter((vn: any) => bookings.some((b: any) => b.venue_id === vn.id || (b.venue as any)?.id === vn.id)).slice(0, 4).map((vn: any) => {
+                const vbookings = bookings.filter((b: any) => b.venue_id === vn.id || (b.venue as any)?.id === vn.id)
+                const earned = vbookings.filter((b: any) => b.commission_status === 'approved').reduce((s: number, b: any) => s + (Number(b.commission_amount) || 0), 0)
+                return (
+                  <div key={vn.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: 'var(--charcoal)', borderRadius: 6, border: '1px solid var(--border)' }}>
+                    <div>
+                      <div style={{ fontSize: 12, color: 'var(--cream)', fontWeight: 500 }}>{vn.name}</div>
+                      <div style={{ fontSize: 10, color: 'var(--muted)', fontFamily: 'monospace' }}>{vn.area} · {vn.commission_rate}</div>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontSize: 13, color: '#C9A96E', fontFamily: 'monospace', fontWeight: 600 }}>{earned > 0 ? '€' + earned.toLocaleString('en-GB') : '—'}</div>
+                      <div style={{ fontSize: 9, color: 'var(--muted)', fontFamily: 'monospace' }}>{vbookings.length} ref{vbookings.length !== 1 ? 's' : ''}</div>
+                    </div>
+                  </div>
+                )
+              })}
+              {venues.filter((vn: any) => !bookings.some((b: any) => b.venue_id === vn.id || (b.venue as any)?.id === vn.id)).length === 0 && bookings.length === 0 && (
+                <div style={{ fontSize: 12, color: 'var(--muted)' }}>No venues yet</div>
+              )}
+            </div>
+          </div>
+        </div>
+
+                <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
           <select value={filterVenue} onChange={e => setFilterVenue(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: filterVenue ? 'var(--cream)' : 'var(--muted)', fontSize: 11, padding: '6px 10px', fontFamily: 'monospace' }}>
             <option value="">All venues</option>
             {venues.map((v: any) => <option key={v.id} value={v.id}>{v.name}</option>)}
