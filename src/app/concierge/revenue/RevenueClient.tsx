@@ -231,7 +231,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   ['Notes', b.notes || null],
                   ['Guest name', gp.guest_name || null],
                   ['Guest email', gp.guest_email || null],
-                  ['Guest phone', gp.guest_phone || null],
+                  ['Guest phone', gp.guest_phone ? '___WA___' + gp.guest_phone : null],
                   ['How introduced', gp.guest_source ? sourceMap[gp.guest_source] || gp.guest_source : null],
                   ['Nationality', gp.nationality || null],
                   ['Occasion', gp.occasion || null],
@@ -243,7 +243,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                 ].filter(([, v]) => v).map(([label, value]) => (
                   <div key={label as string} style={{ padding: '10px 0', borderBottom: '1px solid #1a1a1a', display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <div style={{ fontSize: 10, fontFamily: 'monospace', letterSpacing: '0.15em', color: '#555', textTransform: 'uppercase' }}>{label}</div>
-                    <div style={{ fontSize: 13, color: 'var(--cream)' }}>{value}</div>
+                    <div style={{ fontSize: 13, color: 'var(--cream)' }}>{(value as string).startsWith('___WA___') ? <a href={`https://wa.me/${(value as string).replace('___WA___','').replace(/[^0-9]/g,'')}`} target="_blank" rel="noreferrer" style={{color:'#25D366',textDecoration:'none'}}>📱 {(value as string).replace('___WA___','')}</a> : value}</div>
                   </div>
                 ))}
               </div>
