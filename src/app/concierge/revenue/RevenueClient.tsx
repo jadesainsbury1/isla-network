@@ -48,15 +48,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [editNotes, setEditNotes] = useState('')
   const [editLoading, setEditLoading] = useState(false)
 
-  useEffect(() => {
-    const supabase = createClient()
-    const ch = supabase.channel('bookings-live')
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'bookings' }, () => {
-        window.location.reload()
-      })
-      .subscribe()
-    return () => { supabase.removeChannel(ch) }
-  }, [])
+
 
   const fmt = (n: number) => '\u20ac' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
