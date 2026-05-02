@@ -247,8 +247,8 @@ export default function HomePage() {
         <h1 className="hero-title">Your best GRM just left.<br/>Their contacts went with them.<br/><em>ISLA fixes that.</em></h1>
         <p className="hero-sub">A GRM builds three years of concierge relationships. They know who sends the UHNW tables, who to call for a last-minute 12-cover. Then they leave. That institutional knowledge walks out with them. The venue is back to zero. <strong>ISLA keeps the relationship with the venue — permanently.</strong></p>
         <div className="hero-ctas">
-          <Link href="/auth/signup?role=venue" className="btn-p">Protect Your Network</Link>
-          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges & Guest Relations</Link>
+          <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
+          <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge or GRM</Link>
         </div>
       </section>
 
@@ -262,8 +262,8 @@ export default function HomePage() {
       <section className="aud">
         <div className="lbl">Who It Is For</div>
         <div className="aud-tabs">
-          <button className={`aud-tab ${tab === 'concierge' ? 'active' : ''}`} onClick={() => setTab('concierge')}>For Concierges and GRMs</button>
-          <button className={`aud-tab ${tab === 'venue' ? 'active' : ''}`} onClick={() => setTab('venue')}>For Venues and Operators</button>
+          <button className={`aud-tab ${tab === 'concierge' ? 'active' : ''}`} onClick={() => setTab('concierge')}>I'm a Concierge or GRM</button>
+          <button className={`aud-tab ${tab === 'venue' ? 'active' : ''}`} onClick={() => setTab('venue')}>I Run a Venue</button>
         </div>
         {tab === 'concierge' && (
           <div className="aud-content">
@@ -300,7 +300,7 @@ export default function HomePage() {
                 <li><span>—</span>When a GRM leaves, nothing is lost</li>
                 <li><span>—</span>Scales with you as you open new locations</li>
               </ul>
-              <Link href="/auth/signup?role=venue" className="aud-cta">Protect Your Network</Link>
+              <Link href="/auth/signup?role=venue" className="aud-cta">I Run a Venue</Link>
               <span className="aud-price">From €75/month · Annual plans</span>
             </div>
             <div className="aud-panel">
@@ -490,8 +490,8 @@ export default function HomePage() {
         <p className="cls-sub">Not with the GRM. Not in a personal phone. With you — permanently.</p>
         <p className="cls-urgency">Founding venues — season is live now</p>
         <div className="cls-ctas">
-          <Link href="/auth/signup?role=venue" className="btn-p">Protect Your Network</Link>
-          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges & Guest Relations</Link>
+          <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
+          <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge or GRM</Link>
         </div>
       </section>
 
