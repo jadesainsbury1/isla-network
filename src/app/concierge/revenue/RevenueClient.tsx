@@ -33,6 +33,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [guestName, setGuestName] = useState('')
   const [guestEmail, setGuestEmail] = useState('')
   const [guestPhone, setGuestPhone] = useState('')
+  const [countryCode, setCountryCode] = useState('+34')
   const [arrivalTime, setArrivalTime] = useState('')
   const [guestSource, setGuestSource] = useState('')
   const [sendingConfirmation, setSendingConfirmation] = useState<string | null>(null)
@@ -396,7 +397,45 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   </div>
                   <div className="form-group">
                     <label className="form-label">Guest phone / WhatsApp</label>
-                    <input className="form-input" placeholder="+44 7700 900000" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} />
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <select value={countryCode} onChange={e => setCountryCode(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 4, color: 'var(--cream)', fontSize: 12, padding: '8px 6px', width: 90, flexShrink: 0 }}>
+                        <option value="+34">🇪🇸 +34</option>
+                        <option value="+44">🇬🇧 +44</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+33">🇫🇷 +33</option>
+                        <option value="+49">🇩🇪 +49</option>
+                        <option value="+31">🇳🇱 +31</option>
+                        <option value="+39">🇮🇹 +39</option>
+                        <option value="+41">🇨🇭 +41</option>
+                        <option value="+43">🇦🇹 +43</option>
+                        <option value="+32">🇧🇪 +32</option>
+                        <option value="+46">🇸🇪 +46</option>
+                        <option value="+47">🇳🇴 +47</option>
+                        <option value="+45">🇩🇰 +45</option>
+                        <option value="+358">🇫🇮 +358</option>
+                        <option value="+351">🇵🇹 +351</option>
+                        <option value="+7">🇷🇺 +7</option>
+                        <option value="+971">🇦🇪 +971</option>
+                        <option value="+966">🇸🇦 +966</option>
+                        <option value="+974">🇶🇦 +974</option>
+                        <option value="+965">🇰🇼 +965</option>
+                        <option value="+852">🇭🇰 +852</option>
+                        <option value="+65">🇸🇬 +65</option>
+                        <option value="+81">🇯🇵 +81</option>
+                        <option value="+86">🇨🇳 +86</option>
+                        <option value="+91">🇮🇳 +91</option>
+                        <option value="+55">🇧🇷 +55</option>
+                        <option value="+52">🇲🇽 +52</option>
+                        <option value="+61">🇦🇺 +61</option>
+                        <option value="+27">🇿🇦 +27</option>
+                        <option value="+20">🇪🇬 +20</option>
+                        <option value="+212">🇲🇦 +212</option>
+                        <option value="+30">🇬🇷 +30</option>
+                        <option value="+90">🇹🇷 +90</option>
+                        <option value="+972">🇮🇱 +972</option>
+                      </select>
+                      <input className="form-input" placeholder="600 000 000" value={guestPhone} onChange={e => setGuestPhone(e.target.value)} style={{ flex: 1 }} />
+                    </div>
                   </div>
                 </div>
                 <div className="form-group" style={{ marginTop: 12 }}>
@@ -425,7 +464,22 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   </div>
                   <div className="form-group">
                     <label className="form-label">Dietary requirements</label>
-                    <input className="form-input" placeholder="e.g. Halal, Vegan, Nut allergy" value={dietary} onChange={e => setDietary(e.target.value)} />
+                    <select className="form-input" value={dietary} onChange={e => setDietary(e.target.value)}>
+                      <option value="">None / Unknown</option>
+                      <option value="Halal">Halal</option>
+                      <option value="Kosher">Kosher</option>
+                      <option value="Vegan">Vegan</option>
+                      <option value="Vegetarian">Vegetarian</option>
+                      <option value="Gluten-free">Gluten-free</option>
+                      <option value="Dairy-free">Dairy-free</option>
+                      <option value="Nut allergy">Nut allergy</option>
+                      <option value="Shellfish allergy">Shellfish allergy</option>
+                      <option value="No pork">No pork</option>
+                      <option value="No alcohol">No alcohol</option>
+                      <option value="Raw fish allergy">Raw fish allergy</option>
+                      <option value="Diabetic">Diabetic</option>
+                      <option value="Other">Other — add to VIP notes</option>
+                    </select>
                   </div>
                   <div className="form-group">
                     <label className="form-label">Spend profile</label>
