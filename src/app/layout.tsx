@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'ISLA — The Concierge Network | Ibiza 2026',
-  description: 'The commission tracking platform for Ibiza concierges and venues. Track every euro you are owed. Never lose a commission again. Free for concierges. From 500 per year for venues.',
+  description: 'The commission tracking platform for Ibiza concierges, Guest Relations & venues. Track every euro you are owed. Never lose a commission again. Free for concierges. From 500 per year for venues.',
   keywords: 'concierge commission tracking Ibiza, Ibiza venue network 2026, concierge platform Ibiza, commission management hospitality, Ibiza GRM platform, venue concierge software Ibiza, ISLA network',
   openGraph: {
     title: 'ISLA — The Concierge Network | Ibiza 2026',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'ISLA — The Concierge Network | Ibiza 2026',
-    description: 'Never lose a commission again. Free for concierges. From 500/yr for venues.',
+    description: 'Never lose a commission again. Free for concierges & Guest Relations. From 500/yr for venues.',
   },
   metadataBase: new URL('https://islanetwork.es'),
   alternates: { canonical: 'https://islanetwork.es' },

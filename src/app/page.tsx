@@ -32,7 +32,7 @@ export default function HomePage() {
   }, [demoStep])
 
   const faqs = [
-    ['Is ISLA really free for concierges?', 'Yes. Always. Concierges never pay. Revenue comes from venues who pay to be listed and verified.'],
+    ['Is ISLA really free for concierges & Guest Relations?', 'Yes. Always. Concierges and GRMs never pay. Revenue comes from venues who pay to be listed and verified.'],
     ['Will venues be able to contact me or see my details?', 'No. Your identity is never shared without your permission. Venues see referral data, not personal information.'],
     ['How does ISLA make money if concierges are free?', 'Venues pay an annual listing fee to be visible and verified on the platform. Concierges are always free because they are the network.'],
     ['We already use SevenRooms. Why do we need ISLA?', 'SevenRooms manages reservations internally. ISLA manages the concierge relationship layer.'],
@@ -220,7 +220,7 @@ export default function HomePage() {
       <script dangerouslySetInnerHTML={{ __html: `
         var msgs = [
           'When your GRM leaves — their contacts go with them. ISLA fixes that.',
-          'Free for concierges. Always.',
+          'Free for concierges & Guest Relations. Always.',
           'Founding venues — your network, permanently.',
           'Ibiza · Bodrum · Mykonos — one concierge network'
         ];
@@ -248,7 +248,7 @@ export default function HomePage() {
         <p className="hero-sub">A GRM builds three years of concierge relationships. They know who sends the UHNW tables, who to call for a last-minute 12-cover. Then they leave. That institutional knowledge walks out with them. The venue is back to zero. <strong>ISLA keeps the relationship with the venue — permanently.</strong></p>
         <div className="hero-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">Protect Your Network</Link>
-          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges</Link>
+          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges & Guest Relations</Link>
         </div>
       </section>
 
@@ -491,7 +491,7 @@ export default function HomePage() {
         <p className="cls-urgency">Founding venues — season is live now</p>
         <div className="cls-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">Protect Your Network</Link>
-          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges</Link>
+          <Link href="/auth/signup?role=concierge" className="btn-s">Join Free — Concierges & Guest Relations</Link>
         </div>
       </section>
 
