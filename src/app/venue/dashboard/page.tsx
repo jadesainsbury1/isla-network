@@ -214,7 +214,6 @@ export default async function VenueDashboardPage() {
                     </div>
                     <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                       <BookingConfirm bookingId={b.id} venueId={venue.id} currentStatus={b.status} />
-                      <BillUpload bookingId={b.id} venueName={venue.name} venueEmail={venue.contact_email || ""} commissionRate={venue.commission_rate || "10%"} concierge={concierge?.full_name || "Concierge"} />
                       <BookingChat
                         bookingId={b.id}
                         currentUserId={user.id}
@@ -258,12 +257,12 @@ export default async function VenueDashboardPage() {
                 <tr>
                   <th>Date</th>
                   <th>Concierge</th>
-                  <th>Property</th>
                   <th>Covers</th>
                   <th>F&B Spend</th>
                   <th>Commission</th>
                   <th>Commission Status</th>
                   <th>Payment Status</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -274,7 +273,7 @@ export default async function VenueDashboardPage() {
                     <tr key={b.id}>
                       <td className="td-mono td-muted">{new Date(b.date).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}</td>
                       <td className="td-name">{concierge?.full_name || "—"}</td>
-                      <td className="td-muted">{concierge?.property || "—"}</td>
+
                       <td className="td-mono">{b.covers || "—"}</td>
                       <td className="td-mono">{b.bill_amount ? fmt(Number(b.bill_amount)) : "—"}</td>
                       <td className="td-mono" style={{ color: "var(--gold)", fontWeight: 600 }}>{commAmt > 0 ? fmt(commAmt) : "—"}</td>

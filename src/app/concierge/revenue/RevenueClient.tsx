@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useEffect } from 'react'
 import BookingChat from '@/components/BookingChat'
 
 interface Totals {
@@ -46,6 +47,16 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [editCovers, setEditCovers] = useState('')
   const [editNotes, setEditNotes] = useState('')
   const [editLoading, setEditLoading] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+    const ch = supabase.channel('bookings-live')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'bookings' }, () => {
+        window.location.reload()
+      })
+      .subscribe()
+    return () => { supabase.removeChannel(ch) }
+  }, [])
 
   const fmt = (n: number) => '\u20ac' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
@@ -584,7 +595,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   <tr key={b.id}>
                     <td className="td-mono td-muted" style={{ cursor: 'pointer', color: 'var(--gold)', textDecoration: 'underline' }} onClick={() => setViewingId(b.id)}>{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                     <td className="td-name" style={{ cursor: 'pointer' }} onClick={() => setViewingId(b.id)}>{(b.venue as any)?.name || '—'}</td>
-                    <td className="td-muted" style={{ fontSize: 12 }}>{(b as any).guest_profile?.guest_name || (b.venue as any)?.area || '—'}</td>
+                    <td className="td-muted" style={{ fontSize: 12 }}>{(b as any).guest_profile?.guest_name || '—'}<br/><span style={{fontSize:10,color:'var(--muted)',fontFamily:'monospace'}}>{(b as any).guest_profile?.arrival_time || (b.venue as any)?.area || ''}</span></td>
                     <td className="td-mono">{b.covers || '—'}</td>
                     <td className="td-mono" style={{ color: 'var(--gold)', fontWeight: 600 }}>
                       {b.commission_amount ? fmt(Number(b.commission_amount)) : b.estimated_commission ? '~' + fmt(Number(b.estimated_commission)) : '—'}
