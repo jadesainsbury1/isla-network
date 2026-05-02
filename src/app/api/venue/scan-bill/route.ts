@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
           },
           {
             type: 'text',
-            text: 'This image may be a restaurant bill, receipt, or a photo of one (possibly with other content around it like a social media post). Find the restaurant bill in the image. Look for the largest total amount on the receipt — this is typically labelled as Total, Subtotal, Base IVA, or shown as a large euro amount. Return ONLY that number as digits with no currency symbol, no commas, no text, no explanation — just the number. If the bill shows a gross total (e.g. 6790.00) and a base/net amount (e.g. 6172.73), return the base/net amount. If you cannot find any bill in the image, return 0.'
+            text: 'This is a restaurant or beach club bill. I need the NET F&B total excluding IVA and excluding service charge. On Spanish receipts this is the "Base Imponible" or "Sin IVA" or "Base IVA 10%" figure — NOT the final total which includes tax. For example: if the bill shows Base IVA 10%: 6445.91, IVA: 644.59, Total: 7090.50 — return 6445.91. If there is no IVA breakdown and only a single total, return that total. Return ONLY the number as digits, no currency symbol, no commas, no text, no explanation. If you cannot find a bill, return 0.'
           }
         ]
       }]

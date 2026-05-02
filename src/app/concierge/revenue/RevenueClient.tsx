@@ -608,7 +608,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                         currentUserId={conciergeId}
                         currentUserRole="concierge"
                         currentUserName="Me"
-                        notifyEmail={(b.venue as any)?.contact_email || ''}
+                        notifyEmail={(b.venue as any)?.contact_email || (b.venue as any)?.contact || ''}
                         notifyName={(b.venue as any)?.name || 'Venue'}
                       />
                     </td>
