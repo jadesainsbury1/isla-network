@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import BookingChat from '@/components/BookingChat'
 
 interface Totals {
   totalEarned: number
@@ -29,6 +30,11 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
   const [dietary, setDietary] = useState('')
   const [vipNotes, setVipNotes] = useState('')
   const [spendProfile, setSpendProfile] = useState('')
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editDate, setEditDate] = useState('')
+  const [editCovers, setEditCovers] = useState('')
+  const [editNotes, setEditNotes] = useState('')
+  const [editLoading, setEditLoading] = useState(false)
 
   const fmt = (n: number) => '\u20ac' + n.toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
 
@@ -91,6 +97,19 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
     setTimeout(() => window.location.reload(), 800)
   }
 
+  async function handleEdit(bookingId: string) {
+    setEditLoading(true)
+    const supabase = createClient()
+    await supabase.from('bookings').update({
+      date: editDate,
+      covers: parseInt(editCovers) || null,
+      notes: editNotes,
+    }).eq('id', bookingId)
+    setEditingId(null)
+    setEditLoading(false)
+    window.location.reload()
+  }
+
   return (
     <>
       <div className="topbar">
@@ -151,7 +170,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
 
 
         <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals &mdash; {bookings.length} total</div>
+          <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)' }}>My referrals — {bookings.length} total</div>
           <button onClick={() => setShowLog(true)} className="btn btn-gold" style={{ fontSize: 11, padding: '8px 16px' }}>+ Log Booking</button>
         </div>
 
@@ -166,7 +185,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   <label className="form-label">Venue</label>
                   <select className="form-input" value={venueId} onChange={e => setVenueId(e.target.value)} required>
                     <option value="">Select venue</option>
-                    {venues.map((v: any) => <option key={v.id} value={v.id}>{v.name} &middot; {v.area}</option>)}
+                    {venues.map((v: any) => <option key={v.id} value={v.id}>{v.name} · {v.area}</option>)}
                   </select>
                 </div>
                 <div className="form-group">
@@ -232,20 +251,49 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                   <th>Commission</th>
                   <th>Approval</th>
                   <th>Payment</th>
+                  <th>Chat</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {bookings.map((b: any) => (
                   <tr key={b.id}>
                     <td className="td-mono td-muted">{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                    <td className="td-name">{(b.venue as any)?.name || '&mdash;'}</td>
-                    <td className="td-muted">{(b.venue as any)?.area || '&mdash;'}</td>
-                    <td className="td-mono">{b.covers || '&mdash;'}</td>
+                    <td className="td-name">{(b.venue as any)?.name || '—'}</td>
+                    <td className="td-muted">{(b.venue as any)?.area || '—'}</td>
+                    <td className="td-mono">{b.covers || '—'}</td>
                     <td className="td-mono" style={{ color: 'var(--gold)', fontWeight: 600 }}>
-                      {b.commission_amount ? fmt(Number(b.commission_amount)) : b.estimated_commission ? '~' + fmt(Number(b.estimated_commission)) : '&mdash;'}
+                      {b.commission_amount ? fmt(Number(b.commission_amount)) : b.estimated_commission ? '~' + fmt(Number(b.estimated_commission)) : '—'}
                     </td>
                     <td>{badge(b.commission_status || 'pending')}</td>
                     <td>{badge(b.payment_status || 'unpaid')}</td>
+                    <td>
+                      <BookingChat
+                        bookingId={b.id}
+                        currentUserId={conciergeId}
+                        currentUserRole="concierge"
+                        currentUserName="Me"
+                        notifyEmail={(b.venue as any)?.contact_email || ''}
+                        notifyName={(b.venue as any)?.name || 'Venue'}
+                      />
+                    </td>
+                    <td>
+                      {b.status === 'pending' && new Date(b.date) > new Date() ? (
+                        editingId === b.id ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 200 }}>
+                            <input type="date" value={editDate} onChange={e => setEditDate(e.target.value)} style={{ padding: '4px 8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 12 }} />
+                            <input type="number" placeholder="Covers" value={editCovers} onChange={e => setEditCovers(e.target.value)} style={{ padding: '4px 8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 12 }} />
+                            <input placeholder="Notes" value={editNotes} onChange={e => setEditNotes(e.target.value)} style={{ padding: '4px 8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 12 }} />
+                            <div style={{ display: 'flex', gap: 4 }}>
+                              <button onClick={() => handleEdit(b.id)} disabled={editLoading} style={{ padding: '4px 10px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 3, fontSize: 10, fontWeight: 700, cursor: 'pointer' }}>Save</button>
+                              <button onClick={() => setEditingId(null)} style={{ padding: '4px 10px', background: 'transparent', color: '#666', border: '1px solid #333', borderRadius: 3, fontSize: 10, cursor: 'pointer' }}>Cancel</button>
+                            </div>
+                          </div>
+                        ) : (
+                          <button onClick={() => { setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || '') }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', color: '#888', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>Edit</button>
+                        )
+                      ) : null}
+                    </td>
                   </tr>
                 ))}
               </tbody>

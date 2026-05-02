@@ -4,6 +4,7 @@ import BookingConfirm from '@/components/BookingConfirm'
 import BookingMessage from '@/components/BookingMessage'
 import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
+import BookingChat from '@/components/BookingChat'
 import type { Booking, Profile } from '@/lib/types'
 
 export default async function VenueDashboardPage() {
@@ -210,6 +211,14 @@ export default async function VenueDashboardPage() {
                   <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end" }}>
                     
                     <BillUpload bookingId={b.id} venueName={venue.name} venueEmail={venue.contact_email || ""} commissionRate={venue.commission_rate || "10%"} concierge={concierge?.full_name || "Concierge"} />
+                    <BookingChat
+                      bookingId={b.id}
+                      currentUserId={user.id}
+                      currentUserRole="venue"
+                      currentUserName={venue.name}
+                      notifyEmail={(b.concierge as any)?.email || ''}
+                      notifyName={concierge?.full_name || 'Concierge'}
+                    />
                   </div>
                 </div>
               )
