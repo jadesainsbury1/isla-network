@@ -104,6 +104,13 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
       date: editDate,
       covers: parseInt(editCovers) || null,
       notes: editNotes,
+      guest_profile: {
+        nationality: nationality || null,
+        occasion: occasion || null,
+        dietary: dietary || null,
+        vip_notes: vipNotes || null,
+        spend_profile: spendProfile || null,
+      }
     }).eq('id', bookingId)
     setEditingId(null)
     setEditLoading(false)
@@ -175,6 +182,63 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
         </div>
 
         {success && <div style={{ color: '#4caf50', fontSize: 12, fontFamily: 'monospace', marginBottom: 16 }}>Referral logged successfully</div>}
+
+        {editingId && (
+          <div style={{ background: 'var(--charcoal)', border: '1px solid var(--gold)', borderRadius: 8, padding: 24, marginBottom: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <div style={{ fontSize: 13, color: 'var(--cream)', fontWeight: 500 }}>Edit Booking</div>
+              <button onClick={() => setEditingId(null)} style={{ background: 'none', border: 'none', color: '#555', cursor: 'pointer', fontSize: 18 }}>×</button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+              <div className="form-group">
+                <label className="form-label">Date of visit</label>
+                <input className="form-input" type="date" value={editDate} onChange={e => setEditDate(e.target.value)} required />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Number of covers</label>
+                <input className="form-input" type="number" placeholder="4" value={editCovers} onChange={e => setEditCovers(e.target.value)} />
+              </div>
+              <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                <label className="form-label">Notes (optional)</label>
+                <input className="form-input" placeholder="Birthday dinner, champagne on arrival" value={editNotes} onChange={e => setEditNotes(e.target.value)} />
+              </div>
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <div className="mono" style={{ fontSize: 9, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 10 }}>Guest Profile</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="form-group">
+                  <label className="form-label">Nationality</label>
+                  <input className="form-input" placeholder="e.g. German, Dutch, British" value={nationality} onChange={e => setNationality(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Special occasion</label>
+                  <input className="form-input" placeholder="e.g. Birthday, Anniversary" value={occasion} onChange={e => setOccasion(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Dietary requirements</label>
+                  <input className="form-input" placeholder="e.g. Halal, Vegan, Nut allergy" value={dietary} onChange={e => setDietary(e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Spend profile</label>
+                  <select className="form-input" value={spendProfile} onChange={e => setSpendProfile(e.target.value)}>
+                    <option value="">Select</option>
+                    <option value="standard">Standard — under 2,000</option>
+                    <option value="premium">Premium — 2,000 to 5,000</option>
+                    <option value="uhnw">UHNW — 5,000+</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group" style={{ marginTop: 12 }}>
+                <label className="form-label">VIP notes — private to venue</label>
+                <input className="form-input" placeholder="e.g. Guest is a regular at Nobu. Prefers window table." value={vipNotes} onChange={e => setVipNotes(e.target.value)} />
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={() => handleEdit(editingId)} disabled={editLoading} className="btn btn-gold">{editLoading ? 'Saving...' : 'Save Changes'}</button>
+              <button onClick={() => setEditingId(null)} className="btn btn-ghost">Cancel</button>
+            </div>
+          </div>
+        )}
 
         {showLog && (
           <div style={{ background: 'var(--charcoal)', border: '1px solid var(--border)', borderRadius: 8, padding: 24, marginBottom: 24 }}>
@@ -279,19 +343,7 @@ export default function RevenueClient({ bookings, venues, conciergeId, totals }:
                     </td>
                     <td>
                       {b.status === 'pending' && new Date(b.date) > new Date() ? (
-                        editingId === b.id ? (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 200 }}>
-                            <input type="date" value={editDate} onChange={e => setEditDate(e.target.value)} style={{ padding: '4px 8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 12 }} />
-                            <input type="number" placeholder="Covers" value={editCovers} onChange={e => setEditCovers(e.target.value)} style={{ padding: '4px 8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 12 }} />
-                            <input placeholder="Notes" value={editNotes} onChange={e => setEditNotes(e.target.value)} style={{ padding: '4px 8px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 12 }} />
-                            <div style={{ display: 'flex', gap: 4 }}>
-                              <button onClick={() => handleEdit(b.id)} disabled={editLoading} style={{ padding: '4px 10px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 3, fontSize: 10, fontWeight: 700, cursor: 'pointer' }}>Save</button>
-                              <button onClick={() => setEditingId(null)} style={{ padding: '4px 10px', background: 'transparent', color: '#666', border: '1px solid #333', borderRadius: 3, fontSize: 10, cursor: 'pointer' }}>Cancel</button>
-                            </div>
-                          </div>
-                        ) : (
-                          <button onClick={() => { setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || '') }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', color: '#888', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>Edit</button>
-                        )
+                        <button onClick={() => { setEditingId(b.id); setEditDate(b.date); setEditCovers(b.covers?.toString() || ''); setEditNotes(b.notes || ''); setNationality(b.guest_profile?.nationality || ''); setOccasion(b.guest_profile?.occasion || ''); setDietary(b.guest_profile?.dietary || ''); setVipNotes(b.guest_profile?.vip_notes || ''); setSpendProfile(b.guest_profile?.spend_profile || '') }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', color: '#888', borderRadius: 3, fontSize: 10, cursor: 'pointer', fontFamily: 'monospace' }}>Edit</button>
                       ) : null}
                     </td>
                   </tr>
