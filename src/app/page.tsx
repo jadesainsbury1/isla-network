@@ -236,11 +236,11 @@ export default function HomePage() {
         <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
         <div className="nav-actions">
           <Link href="/auth/signup" className="nav-btn-s">For Venues</Link>
+          <Link href="/auth/login" className="nav-btn-s">Sign In</Link>
           <Link href="/auth/signup?role=concierge" className="nav-btn-s">Join Free</Link>
           <Link href="/auth/signup?role=venue" className="nav-btn-p">List Your Venue</Link>
         </div>
       </nav>
-      <a href="/auth/login" style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", textDecoration: "none" }}>Sign In</a>
 
 
       <section className="hero">
