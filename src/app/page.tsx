@@ -240,7 +240,7 @@ export default function HomePage() {
           <Link href="/auth/signup?role=venue" className="nav-btn-p">List Your Venue</Link>
         </div>
       </nav>
-      <a href="/auth/login" style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", textDecoration: "none" }}>Sign In</a></nav>
+      <a href="/auth/login" style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", textDecoration: "none" }}>Sign In</a>
 
 
       <section className="hero">
@@ -501,7 +501,6 @@ export default function HomePage() {
             <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge — Join Free</Link>
             <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
           </div>
-        <
         <p className="cls-urgency">Founding venues — season is live now</p>
         <div className="cls-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>

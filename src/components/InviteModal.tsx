@@ -31,7 +31,7 @@ export default function InviteModal({ role, inviterName, inviterEmail, onClose }
           <>
             <p style={{ fontSize: 15, color: '#6abb7a', marginBottom: 8 }}>Invitation sent ✓</p>
             <p style={{ fontSize: 12, color: '#8a8070', lineHeight: 1.6, marginBottom: 24 }}>
-              {role === 'concierge' ? 'They'll receive a free access link to join the network.' : 'They'll receive an invite to list their venue on ISLA.'}
+              {role === 'concierge' ? 'They will receive a free access link to join the network.' : 'They will receive an invite to list their venue on ISLA.'}
             </p>
             <button onClick={onClose} style={{ padding: '8px 20px', border: '1px solid #2a2620', borderRadius: 4, background: 'transparent', color: '#8a8070', fontSize: 11, fontFamily: 'monospace', cursor: 'pointer' }}>Close</button>
           </>
