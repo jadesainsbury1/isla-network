@@ -42,7 +42,7 @@ export default function HomePage() {
   ]
 
   const demoSteps = [
-    { label: 'Referral submitted', detail: 'Beach Club · 4 guests · dinner', color: '#C9A96E' },
+    { label: 'Referral submitted', detail: 'Beach Club · 4 guests · dinner reservation', color: '#C9A96E' },
     { label: 'Reference generated', detail: 'ISLA-2026-0041', color: '#C9A96E' },
     { label: 'Booking confirmed', detail: '3200 spend · 12% commission', color: '#4ade80' },
     { label: 'Commission tracked', detail: '384 pending payment', color: '#facc15' },
@@ -222,7 +222,7 @@ export default function HomePage() {
           'When your GRM leaves — their contacts go with them. ISLA fixes that.',
           'Free for concierges & Guest Relations. Always.',
           'Founding venues — your network, permanently.',
-          'Ibiza · Bodrum · Mykonos — one concierge network'
+          'Restaurants · Beach clubs · Yacht charters · Villa rentals · Nightclubs · Spas — one network'
         ];
         var i = 0;
         setInterval(function() {
@@ -282,8 +282,8 @@ export default function HomePage() {
             </div>
             <div className="aud-panel">
               <div className="aud-panel-title">Your Commission Dashboard · Season 2026</div>
-              <div className="aud-stat"><span className="aud-stat-label">Beach Club · 12%</span><span className="aud-stat-value">464 pending</span></div>
-              <div className="aud-stat"><span className="aud-stat-label">Restaurant · 10%</span><span className="aud-stat-value paid">254 paid</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Beach Club</span><span className="aud-stat-value">464 pending</span></div>
+              <div className="aud-stat"><span className="aud-stat-label">Restaurant</span><span className="aud-stat-value paid">254 paid</span></div>
               <div className="aud-stat"><span className="aud-stat-label">Beach Bar · 8%</span><span className="aud-stat-value">194 pending</span></div>
               <div className="aud-stat"><span className="aud-stat-label">Nightclub · 15%</span><span className="aud-stat-value overdue">653 overdue</span></div>
             </div>
@@ -295,7 +295,8 @@ export default function HomePage() {
               <h2 className="aud-title">Your venues shouldn't depend on who has the contacts this season.</h2>
               <p className="aud-body">Your GRMs come and go. Their concierge relationships go with them. ISLA gives your venue its own permanent concierge network — across every property, every season, every market. Whether you're in Ibiza, Bodrum or Mykonos, the relationships stay with you.</p>
               <ul className="aud-list">
-                <li><span>—</span>Concierge relationships belong to the venue, not the staff member</li>
+                <li><span>—</span>Works across restaurants, beach clubs, yacht charters, villa rentals, nightclubs, spas, members clubs & more</li>
+              <li><span>—</span>Concierge relationships belong to the venue, not the staff member</li>
                 <li><span>—</span>Full visibility on who drives revenue across all your properties</li>
                 <li><span>—</span>Commission agreements documented and enforced — no disputes</li>
                 <li><span>—</span>When a GRM leaves, nothing is lost</li>
@@ -489,6 +490,17 @@ export default function HomePage() {
       <section className="cls">
         <h2 className="cls-title">The relationship stays<br/><em>with the venue.</em></h2>
         <p className="cls-sub">Not with the GRM. Not in a personal phone. With you — permanently.</p>
+        </section>
+
+        <section className="section" style={{ textAlign: 'center', padding: '60px 24px', borderTop: '1px solid #1e1c18' }}>
+          <p style={{ fontSize: 9, letterSpacing: '0.3em', color: '#5a5048', fontFamily: 'monospace', textTransform: 'uppercase', marginBottom: 16 }}>Grow your network</p>
+          <h2 style={{ fontSize: 28, fontWeight: 400, color: '#f2ede4', marginBottom: 12 }}>Your network is<br/><em style={{ color: '#c9a96e' }}>your earnings.</em></h2>
+          <p style={{ fontSize: 14, color: '#8a8070', maxWidth: 480, margin: '0 auto 32px', lineHeight: 1.7 }}>Every concierge you invite expands what you can offer your clients. Every venue you refer gets you seen first. ISLA grows when you share it.</p>
+          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge — Join Free</Link>
+            <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
+          </div>
+        <
         <p className="cls-urgency">Founding venues — season is live now</p>
         <div className="cls-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
