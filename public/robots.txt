@@ -2,7 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /dashboard
-Disallow: /concierge
-Disallow: /venue
+Disallow: /concierge/
+Disallow: /venue/
+Disallow: /auth/
 
-Sitemap: https://islanetwork.es/sitemap.xml
+Sitemap: https://www.islanetwork.es/sitemap.xml
