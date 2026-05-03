@@ -30,12 +30,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // Protect concierge and venue routes
-  if (!user && (path.startsWith('/concierge') || path.startsWith('/venue') || path === '/dashboard')) {
+  if (!user && (path.startsWith('/concierge/') || path === '/concierge' || path.startsWith('/venue/') || path === '/venue' || path === '/dashboard')) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
   // Check concierge approval
-  if (user && (path.startsWith('/dashboard') || path.startsWith('/concierge'))) {
+  if (user && (path.startsWith('/dashboard') || path.startsWith('/concierge/') || path === '/concierge')) {
     const { createClient } = await import('@supabase/supabase-js')
     const adminClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
