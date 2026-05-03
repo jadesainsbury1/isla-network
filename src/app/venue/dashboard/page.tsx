@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import BookingConfirm from '@/components/BookingConfirm'
+import VenueInviteButton from '@/components/VenueInviteButton'
 import BookingMessage from '@/components/BookingMessage'
 import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
@@ -310,6 +311,7 @@ export default async function VenueDashboardPage() {
         <VenueBookingPanel bookings={all} venue={venue} userId={user.id} />
 
             </div>
+      <VenueInviteButton venueName={venue?.name || ''} />
     </>
   )
 }
