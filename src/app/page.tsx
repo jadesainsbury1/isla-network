@@ -230,7 +230,7 @@ export default function HomePage() {
           var el = document.getElementById('urgency-ticker');
           if (el) { el.style.opacity = '0'; setTimeout(function(){ el.textContent = msgs[i]; el.style.opacity = '1'; }, 300); }
         }, 3000);
-      ` }} />
+      `}} />
 
       <nav className="nav">
         <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
@@ -239,6 +239,7 @@ export default function HomePage() {
           <Link href="/auth/signup?role=concierge" className="nav-btn-s">Join Free</Link>
           <Link href="/auth/signup?role=venue" className="nav-btn-p">List Your Venue</Link>
         </div>
+      </nav>
       <a href="/auth/login" style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--muted)", textDecoration: "none" }}>Sign In</a></nav>
 
 
