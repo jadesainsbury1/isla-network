@@ -501,12 +501,6 @@ export default function HomePage() {
             <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge — Join Free</Link>
             <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
           </div>
-        <p className="cls-urgency">Founding venues — season is live now</p>
-        <div className="cls-ctas">
-          <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
-          <Link href="/preview" className="btn-ghost" style={{ fontSize: 12, color: '#8a8070', border: '1px solid #2a2620', padding: '10px 20px', borderRadius: 4, fontFamily: 'monospace', letterSpacing: '0.1em', textTransform: 'uppercase' }}>See the Dashboard →</Link>
-          <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge or GRM</Link>
-        </div>
       </section>
 
       <footer className="foot">
