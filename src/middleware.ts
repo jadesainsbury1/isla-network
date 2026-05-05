@@ -34,8 +34,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
-  // Check concierge approval
-  if (user && (path.startsWith('/dashboard') || path.startsWith('/concierge/') || path === '/concierge')) {
+  // Check approval + founding member unlock status
+  if (user && (path.startsWith('/dashboard') || path.startsWith('/concierge/') || path === '/concierge' || path.startsWith('/venue/') || path === '/venue')) {
     const { createClient } = await import('@supabase/supabase-js')
     const adminClient = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -43,12 +43,31 @@ export async function middleware(request: NextRequest) {
     )
     const { data: profile } = await adminClient
       .from('profiles')
-      .select('role, is_approved')
+      .select('role, is_approved, founding_member_unlocked')
       .eq('id', user.id)
       .single()
 
+    // Concierge: pending approval
     if (profile?.role === 'concierge' && !profile?.is_approved && path !== '/pending') {
       return NextResponse.redirect(new URL('/pending', request.url))
+    }
+
+    // Concierge: approved but not yet unlocked → welcome page
+    if (profile?.role === 'concierge' && profile?.is_approved && !profile?.founding_member_unlocked && path !== '/welcome/concierge') {
+      return NextResponse.redirect(new URL('/welcome/concierge', request.url))
+    }
+
+    // Venue: check unlock status
+    if (profile?.role === 'venue') {
+      const { data: venue } = await adminClient
+        .from('venues')
+        .select('founding_member_unlocked, is_active')
+        .eq('user_id', user.id)
+        .single()
+
+      if (venue?.is_active && !venue?.founding_member_unlocked && path !== '/welcome/venue') {
+        return NextResponse.redirect(new URL('/welcome/venue', request.url))
+      }
     }
   }
 
