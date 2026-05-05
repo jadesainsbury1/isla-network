@@ -37,7 +37,24 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const commissionAmount = (billAmount * commissionRate) / 100
+  // Look up venue min_spend threshold (per-booking floor)
+  const { data: bookingForVenue } = await supabase
+    .from('bookings')
+    .select('venue_id')
+    .eq('id', bookingId)
+    .single()
+  let minSpend = 0
+  if (bookingForVenue?.venue_id) {
+    const { data: venueRow } = await supabase
+      .from('venues')
+      .select('min_spend')
+      .eq('id', bookingForVenue.venue_id)
+      .single()
+    minSpend = Number(venueRow?.min_spend) || 0
+  }
+
+  const meetsThreshold = minSpend === 0 || billAmount >= minSpend
+  const commissionAmount = meetsThreshold ? (billAmount * commissionRate) / 100 : 0
   const paymentDue = new Date()
   paymentDue.setDate(paymentDue.getDate() + 30)
 
@@ -65,10 +82,10 @@ export async function POST(req: NextRequest) {
   if (booking?.concierge_id) {
     const { data: prof } = await supabase
       .from('profiles')
-      .select('contact_email, full_name')
+      .select('email, full_name')
       .eq('id', booking.concierge_id)
       .single()
-    conciergeEmail = prof?.contact_email || ''
+    conciergeEmail = prof?.email || ''
     conciergeName = prof?.full_name || 'Concierge'
   }
 

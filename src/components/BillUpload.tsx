@@ -8,9 +8,10 @@ interface Props {
   venueEmail: string
   commissionRate: string
   concierge: string
+  minSpend?: number
 }
 
-export default function BillUpload({ bookingId, venueName, venueEmail, commissionRate, concierge }: Props) {
+export default function BillUpload({ bookingId, venueName, venueEmail, commissionRate, concierge, minSpend = 0 }: Props) {
   const [open, setOpen] = useState(false)
   const [billAmount, setBillAmount] = useState('')
   const [ticketNumber, setTicketNumber] = useState('')
@@ -146,13 +147,23 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
             />
           </div>
 
-          {billAmount && (
-            <div style={{ background: '#0d1a0d', border: '1px solid #2a3a2a', borderRadius: 4, padding: '10px 14px', marginBottom: 16 }}>
-              <span style={{ fontFamily: 'monospace', fontSize: 12, color: '#4ade80' }}>
-                Commission ({rate}%): €{(parseFloat(billAmount) * rate / 100).toFixed(2)}
-              </span>
-            </div>
-          )}
+          {billAmount && (() => {
+            const amt = parseFloat(billAmount)
+            const meetsThreshold = !minSpend || amt >= minSpend
+            const commissionPreview = meetsThreshold ? (amt * rate / 100) : 0
+            return (
+              <div style={{ background: meetsThreshold ? '#0d1a0d' : '#1a1408', border: '1px solid ' + (meetsThreshold ? '#2a3a2a' : '#3a2e1a'), borderRadius: 4, padding: '10px 14px', marginBottom: 16 }}>
+                <div style={{ fontFamily: 'monospace', fontSize: 12, color: meetsThreshold ? '#4ade80' : '#d4a548' }}>
+                  Commission ({rate}%): €{commissionPreview.toFixed(2)}
+                </div>
+                {!meetsThreshold && (
+                  <div style={{ fontFamily: 'monospace', fontSize: 11, color: '#888', marginTop: 4 }}>
+                    Below €{minSpend.toLocaleString('en-GB')} threshold — no commission applies
+                  </div>
+                )}
+              </div>
+            )
+          })()}
 
           <div style={{ display: 'flex', gap: 8 }}>
             <button onClick={handleSubmit} disabled={loading || !billAmount || scanning} style={{ padding: '10px 20px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.1em', opacity: loading || !billAmount || scanning ? 0.5 : 1 }}>
