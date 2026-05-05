@@ -137,7 +137,7 @@ export default async function VenueDashboardPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <span style={{ fontSize: 13, color: "var(--cream)", fontWeight: 500 }}>{topUnpaid.name}</span>
-                      <span style={{ fontSize: 11, color: "#888", marginLeft: 10, fontFamily: "monospace" }}>payment overdue — delaying risks the relationship</span>
+                      <span style={{ fontSize: 11, color: "#888", marginLeft: 10, fontFamily: "monospace" }}>payment due</span>
                     </div>
                     <a href={`/venue/concierge/${topUnpaid.id}`} style={{ fontSize: 11, color: "#f44336", fontFamily: "monospace", textDecoration: "none", letterSpacing: "0.1em" }}>{fmt(topUnpaid.amount)} due →</a>
                   </div>
@@ -162,9 +162,9 @@ export default async function VenueDashboardPage() {
             <div style={{ width: "100%" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 <div style={{ fontSize: 13, color: "#f44336", fontWeight: 600 }}>
-                  {all.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} concierges awaiting payment — {fmt(totalCommissionOwed)} outstanding
+                  {all.filter((b: any) => b.commission_status === "approved" && b.payment_status === "unpaid").length} approved commissions ready to settle · {fmt(totalCommissionOwed)} total
                 </div>
-                <div style={{ fontSize: 11, color: "#888", fontFamily: "monospace" }}>Delayed payment risks losing your best concierges</div>
+                <div style={{ fontSize: 11, color: "#888", fontFamily: "monospace" }}>Settle approved commissions to keep your concierge relationships active</div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {(() => {
