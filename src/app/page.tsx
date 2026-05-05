@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import WaitlistForm from '@/components/WaitlistForm'
 import { useState, useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 
@@ -542,7 +543,7 @@ export default function HomePage() {
               <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Marbella</div>
               <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Spain · Costa del Sol</div>
               <div style={{ color: '#8a8070', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>Joining the network for the 2026 season. Beach clubs, restaurants, members' clubs.</div>
-              <a href="mailto:hello@islanetwork.es?subject=Marbella%20Waitlist" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px dotted #5a5048', paddingBottom: 2 }}>Get notified →</a>
+              <WaitlistForm location="Marbella" />
             </div>
 
             <div style={{ background: '#1a1410', border: '1px solid #2a2620', borderRadius: 8, padding: 28, position: 'relative' }}>
@@ -550,7 +551,7 @@ export default function HomePage() {
               <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Mallorca</div>
               <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Spain · Balearics</div>
               <div style={{ color: '#8a8070', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>The natural extension of ISLA. Palma, Port d'Andratx, Deià, Sóller.</div>
-              <a href="mailto:hello@islanetwork.es?subject=Mallorca%20Waitlist" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px dotted #5a5048', paddingBottom: 2 }}>Get notified →</a>
+              <WaitlistForm location="Mallorca" />
             </div>
 
             <div style={{ background: '#1a1410', border: '1px solid #2a2620', borderRadius: 8, padding: 28, position: 'relative' }}>
@@ -558,7 +559,7 @@ export default function HomePage() {
               <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Dubai</div>
               <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>UAE</div>
               <div style={{ color: '#8a8070', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>Year-round luxury hospitality. The first ISLA market outside Europe.</div>
-              <a href="mailto:hello@islanetwork.es?subject=Dubai%20Waitlist" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px dotted #5a5048', paddingBottom: 2 }}>Get notified →</a>
+              <WaitlistForm location="Dubai" />
             </div>
 
           </div>
