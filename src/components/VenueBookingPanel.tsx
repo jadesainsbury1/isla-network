@@ -86,7 +86,7 @@ export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
         <div style={{ background: 'var(--charcoal)', border: '1px solid #2a2620', borderRadius: 8, padding: 16, marginBottom: 16, display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--muted)' }}>Commission Terms</span>
-            <span style={{ fontSize: 13, color: 'var(--gold)', fontWeight: 600 }}>{venue?.commission_rate || '—'}% {venue?.commission_basis === 'gross' ? 'on gross' : venue?.commission_basis === 'net' ? 'on net' : 'per booking'}</span>
+            <span style={{ fontSize: 13, color: 'var(--gold)', fontWeight: 600 }}>{String(venue?.commission_rate || '—').replace(/%/g, '')}% {venue?.commission_basis === 'gross' ? 'on gross' : venue?.commission_basis === 'net' ? 'on net' : 'per booking'}</span>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             <select value={filterMonth} onChange={e => setFilterMonth(e.target.value)} style={{ padding: '6px 10px', background: 'var(--bg)', border: '1px solid #2a2620', borderRadius: 4, color: 'var(--cream)', fontSize: 11, fontFamily: 'monospace' }}>
