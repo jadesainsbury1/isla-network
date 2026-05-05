@@ -16,23 +16,38 @@ export async function POST(req: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 
+  // Count approved concierges before unlock
+  const { count: profileCount } = await supabase
+    .from('profiles')
+    .select('id', { count: 'exact', head: true })
+    .eq('role', 'concierge')
+    .eq('is_approved', true)
+
+  // Count active venues before unlock
+  const { count: venueCount } = await supabase
+    .from('venues')
+    .select('id', { count: 'exact', head: true })
+    .eq('is_active', true)
+
   // Unlock all approved concierges
-  const { error: profileErr, count: profileCount } = await supabase
+  const { error: profileErr } = await supabase
     .from('profiles')
     .update({ founding_member_unlocked: true })
     .eq('role', 'concierge')
     .eq('is_approved', true)
-    .select('*', { count: 'exact', head: true })
 
   // Unlock all active venues
-  const { error: venueErr, count: venueCount } = await supabase
+  const { error: venueErr } = await supabase
     .from('venues')
     .update({ founding_member_unlocked: true })
     .eq('is_active', true)
-    .select('*', { count: 'exact', head: true })
 
   if (profileErr || venueErr) {
-    return NextResponse.json({ error: 'partial failure', profileErr, venueErr }, { status: 500 })
+    return NextResponse.json({
+      error: 'partial failure',
+      profileErr: profileErr?.message,
+      venueErr: venueErr?.message
+    }, { status: 500 })
   }
 
   return NextResponse.json({
