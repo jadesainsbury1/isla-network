@@ -518,6 +518,57 @@ export default function HomePage() {
         </div>
       </section>
 
+      
+      <section style={{ padding: '100px 32px', background: '#0a0a0a', borderTop: '1px solid #1e1e1e' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 64 }}>
+            <p style={{ color: '#c9a96e', fontSize: 11, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: 16 }}>The ISLA Network</p>
+            <h2 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: 40, color: '#f2ede4', margin: '0 0 8px', lineHeight: 1.1 }}>Built for Ibiza.</h2>
+            <h2 style={{ fontFamily: 'Georgia, serif', fontStyle: 'italic', fontWeight: 400, fontSize: 32, color: '#c9a96e', margin: 0 }}>Coming to the world's best destinations.</h2>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+
+            <div style={{ background: '#1a1410', border: '1.5px solid #c9a96e', borderRadius: 8, padding: 28, position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 14, right: 14, background: '#c9a96e', color: '#0a0a0a', fontSize: 9, fontWeight: 700, letterSpacing: '0.15em', padding: '4px 10px', borderRadius: 999, fontFamily: "'DM Mono', monospace" }}>LIVE NOW</div>
+              <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Ibiza</div>
+              <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Spain · Balearics</div>
+              <div style={{ color: '#c5bfb5', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>Founding venues and verified concierges. Network opens 1 June 2026.</div>
+              <Link href="/auth/signup?role=venue" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px solid #c9a96e', paddingBottom: 2 }}>Apply now →</Link>
+            </div>
+
+            <div style={{ background: '#1a1410', border: '1px solid #2a2620', borderRadius: 8, padding: 28, position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 14, right: 14, background: 'transparent', color: '#8a8070', fontSize: 9, fontWeight: 700, letterSpacing: '0.15em', padding: '4px 10px', borderRadius: 999, border: '1px solid #2a2620', fontFamily: "'DM Mono', monospace" }}>2026</div>
+              <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Marbella</div>
+              <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Spain · Costa del Sol</div>
+              <div style={{ color: '#8a8070', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>Joining the network for the 2026 season. Beach clubs, restaurants, members' clubs.</div>
+              <a href="mailto:hello@islanetwork.es?subject=Marbella%20Waitlist" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px dotted #5a5048', paddingBottom: 2 }}>Get notified →</a>
+            </div>
+
+            <div style={{ background: '#1a1410', border: '1px solid #2a2620', borderRadius: 8, padding: 28, position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 14, right: 14, background: 'transparent', color: '#8a8070', fontSize: 9, fontWeight: 700, letterSpacing: '0.15em', padding: '4px 10px', borderRadius: 999, border: '1px solid #2a2620', fontFamily: "'DM Mono', monospace" }}>2026</div>
+              <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Mallorca</div>
+              <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>Spain · Balearics</div>
+              <div style={{ color: '#8a8070', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>The natural extension of ISLA. Palma, Port d'Andratx, Deià, Sóller.</div>
+              <a href="mailto:hello@islanetwork.es?subject=Mallorca%20Waitlist" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px dotted #5a5048', paddingBottom: 2 }}>Get notified →</a>
+            </div>
+
+            <div style={{ background: '#1a1410', border: '1px solid #2a2620', borderRadius: 8, padding: 28, position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 14, right: 14, background: 'transparent', color: '#8a8070', fontSize: 9, fontWeight: 700, letterSpacing: '0.15em', padding: '4px 10px', borderRadius: 999, border: '1px solid #2a2620', fontFamily: "'DM Mono', monospace" }}>2026</div>
+              <div style={{ fontFamily: 'Georgia, serif', fontSize: 28, color: '#f2ede4', marginBottom: 6 }}>Dubai</div>
+              <div style={{ color: '#8a8070', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 20 }}>UAE</div>
+              <div style={{ color: '#8a8070', fontSize: 13, lineHeight: 1.5, marginBottom: 24 }}>Year-round luxury hospitality. The first ISLA market outside Europe.</div>
+              <a href="mailto:hello@islanetwork.es?subject=Dubai%20Waitlist" style={{ display: 'inline-block', color: '#c9a96e', fontSize: 12, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none', borderBottom: '1px dotted #5a5048', paddingBottom: 2 }}>Get notified →</a>
+            </div>
+
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: 48 }}>
+            <p style={{ color: '#5a5048', fontSize: 12, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>Following the world's best concierges, wherever they go.</p>
+          </div>
+        </div>
+      </section>
+
       <footer className="foot">
         <div className="foot-logo">ISLA</div>
         <div className="foot-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{color: 'inherit', opacity: 0.5, textDecoration: 'none'}}>admin</a></div>
