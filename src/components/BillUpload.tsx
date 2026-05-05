@@ -13,6 +13,7 @@ interface Props {
 export default function BillUpload({ bookingId, venueName, venueEmail, commissionRate, concierge }: Props) {
   const [open, setOpen] = useState(false)
   const [billAmount, setBillAmount] = useState('')
+  const [ticketNumber, setTicketNumber] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [scanning, setScanning] = useState(false)
@@ -70,6 +71,8 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
     form.append('venueEmail', venueEmail)
     if (file) form.append('billPhoto', file)
 
+    form.append('ticket_number', ticketNumber)
+
     const res = await fetch('/api/venue/submit-bill', { method: 'POST', body: form })
     const data = await res.json()
     if (data.ok) {
@@ -126,6 +129,19 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
               onChange={e => setBillAmount(e.target.value)}
               placeholder={scanning ? 'Reading bill...' : 'e.g. 3200'}
               disabled={scanning}
+              style={{ width: '100%', padding: '10px 12px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
+            />
+          </div>
+
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ display: 'block', fontSize: 11, color: '#999', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6, fontFamily: 'monospace' }}>
+              Ticket / Receipt Number <span style={{ color: '#666', textTransform: 'none', letterSpacing: 0 }}>(for finance reference)</span>
+            </label>
+            <input
+              type="text"
+              value={ticketNumber}
+              onChange={(e) => setTicketNumber(e.target.value)}
+              placeholder="e.g. #A2841 or POS-12345"
               style={{ width: '100%', padding: '10px 12px', background: '#1a1a1a', border: '1px solid #333', borderRadius: 4, color: '#fff', fontSize: 14, boxSizing: 'border-box' }}
             />
           </div>
