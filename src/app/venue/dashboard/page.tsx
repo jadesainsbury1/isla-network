@@ -255,13 +255,17 @@ export default async function VenueDashboardPage() {
               const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
               const counts: number[] = Array(12).fill(0)
               all.forEach((b: any) => { const m = new Date(b.date).getMonth(); counts[m]++ })
-              const now = new Date().getMonth()
-              const display = months.filter((_: string, i: number) => i >= Math.max(0, now - 4) && i <= Math.min(11, now + 1))
-              const max = Math.max(...display.map((_: string, i: number) => counts[Math.max(0, now - 4) + i]), 1)
+              const monthsWithData = all.map((b: any) => new Date(b.date).getMonth()).filter((m: number) => !isNaN(m))
+              const minMonth = monthsWithData.length > 0 ? Math.min(...monthsWithData) : new Date().getMonth() - 5
+              const maxMonth = monthsWithData.length > 0 ? Math.max(...monthsWithData) : new Date().getMonth()
+              const startIdx = Math.max(0, minMonth - 1)
+              const endIdx = Math.min(11, maxMonth + 1)
+              const display = months.filter((_: string, i: number) => i >= startIdx && i <= endIdx)
+              const max = Math.max(...display.map((_: string, i: number) => counts[startIdx + i]), 1)
               return (
                 <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 80 }}>
                   {display.map((m: string, i: number) => {
-                    const mi = Math.max(0, now - 4) + i
+                    const mi = startIdx + i
                     const h = Math.max(4, Math.round((counts[mi] / max) * 76))
                     return (
                       <div key={m} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
