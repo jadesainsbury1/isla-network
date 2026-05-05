@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import Link from 'next/link'
 import BillUpload from './BillUpload'
 import BookingChat from './BookingChat'
 
@@ -11,6 +12,27 @@ interface Props {
 
 export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
   const [viewingId, setViewingId] = useState<string | null>(null)
+  const [filterMonth, setFilterMonth] = useState<string>('all')
+  const [filterPayment, setFilterPayment] = useState<string>('all')
+  const [filterCommission, setFilterCommission] = useState<string>('all')
+
+  const filtered = useMemo(() => {
+    return bookings.filter(b => {
+      if (filterMonth !== 'all') {
+        const m = new Date(b.date).toISOString().slice(0, 7)
+        if (m !== filterMonth) return false
+      }
+      if (filterPayment !== 'all' && (b.payment_status || 'pending') !== filterPayment) return false
+      if (filterCommission !== 'all' && (b.commission_status || 'pending') !== filterCommission) return false
+      return true
+    })
+  }, [bookings, filterMonth, filterPayment, filterCommission])
+
+  const months = useMemo(() => {
+    const set = new Set<string>()
+    bookings.forEach(b => set.add(new Date(b.date).toISOString().slice(0, 7)))
+    return Array.from(set).sort().reverse()
+  }, [bookings])
 
   const fmt = (n: number) => '€' + Number(n).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
   const spendMap: Record<string,string> = { standard: 'Under €2k', premium: '€2k–5k', uhnw: '€5k+' }
@@ -60,6 +82,30 @@ export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
       })()}
 
       <div className="table-card">
+        {/* Commission terms reminder + filter bar */}
+        <div style={{ background: 'var(--charcoal)', border: '1px solid #2a2620', borderRadius: 8, padding: 16, marginBottom: 16, display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--muted)' }}>Commission Terms</span>
+            <span style={{ fontSize: 13, color: 'var(--gold)', fontWeight: 600 }}>{venue?.commission_rate || '—'}% {venue?.commission_basis === 'gross' ? 'on gross' : venue?.commission_basis === 'net' ? 'on net' : 'per booking'}</span>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            <select value={filterMonth} onChange={e => setFilterMonth(e.target.value)} style={{ padding: '6px 10px', background: 'var(--bg)', border: '1px solid #2a2620', borderRadius: 4, color: 'var(--cream)', fontSize: 11, fontFamily: 'monospace' }}>
+              <option value="all">All months</option>
+              {months.map(m => (<option key={m} value={m}>{new Date(m + '-01').toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</option>))}
+            </select>
+            <select value={filterPayment} onChange={e => setFilterPayment(e.target.value)} style={{ padding: '6px 10px', background: 'var(--bg)', border: '1px solid #2a2620', borderRadius: 4, color: 'var(--cream)', fontSize: 11, fontFamily: 'monospace' }}>
+              <option value="all">All payments</option>
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+            </select>
+            <select value={filterCommission} onChange={e => setFilterCommission(e.target.value)} style={{ padding: '6px 10px', background: 'var(--bg)', border: '1px solid #2a2620', borderRadius: 4, color: 'var(--cream)', fontSize: 11, fontFamily: 'monospace' }}>
+              <option value="all">All commissions</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+        </div>
         <table>
           <thead>
             <tr>
@@ -69,23 +115,25 @@ export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
               <th>Covers</th>
               <th>Status</th>
               <th>F&B</th>
+              <th>Ticket</th>
               <th>Commission</th>
               <th>Payment</th>
             </tr>
           </thead>
           <tbody>
-            {bookings.map(b => {
+            {filtered.map(b => {
               const concierge = b.concierge || {}
               const gp = b.guest_profile || {}
               const commAmt = Number(b.commission_amount) || 0
               return (
                 <tr key={b.id} onClick={() => setViewingId(b.id)} style={{ cursor: 'pointer' }} className={viewingId === b.id ? 'tr-active' : ''}>
                   <td className="td-mono td-muted" style={{ color: 'var(--gold)' }}>{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}{gp.arrival_time ? <><br/><span style={{fontSize:10,color:'var(--muted)'}}>{gp.arrival_time}</span></> : null}</td>
-                  <td className="td-name">{concierge.full_name || '—'}</td>
+                  <td className="td-name"><Link href={`/venue/concierge/${concierge.id || ''}`} style={{ color: 'var(--cream)', textDecoration: 'none', borderBottom: '1px dotted var(--muted)' }}>{concierge.full_name || '—'}</Link></td>
                   <td className="td-muted" style={{ fontSize: 12 }}>{gp.guest_name || '—'}</td>
                   <td className="td-mono">{b.covers || '—'}</td>
                   <td><span className={'badge ' + (b.status === 'confirmed' ? 'badge-paid' : 'badge-pending')}>{b.status}</span></td>
                   <td className="td-mono">{b.bill_amount ? fmt(Number(b.bill_amount)) : '—'}</td>
+                  <td className="td-mono td-muted" style={{ fontSize: 11 }}>{b.ticket_number || '—'}</td>
                   <td className="td-mono" style={{ color: 'var(--gold)', fontWeight: 600 }}>{commAmt > 0 ? fmt(commAmt) : '—'}</td>
                   <td>{b.payment_status === 'paid' ? <span className="badge badge-paid">Paid ✓</span> : commAmt > 0 ? <span className="badge badge-pending">Due</span> : <span style={{ color: 'var(--muted)', fontSize: 11 }}>—</span>}</td>
                 </tr>
