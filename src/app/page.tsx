@@ -216,14 +216,16 @@ export default function HomePage() {
       `}</style>
 
       <div className="urgency-bar">
-        <span className="urgency-ticker" id="urgency-ticker">Season is live now — founding venues only</span>
+        <span className="urgency-ticker" id="urgency-ticker">Founding venues · Ibiza 2026 · Network opens 1 June</span>
       </div>
       <script dangerouslySetInnerHTML={{ __html: `
         var msgs = [
-          'When your GRM leaves — their contacts go with them. ISLA fixes that.',
-          'Free for concierges & Guest Relations. Always.',
-          'Founding venues — your network, permanently.',
-          'Restaurants · Beach clubs · Yacht charters · Villa rentals · Nightclubs · Spas — one network'
+          'Founding venues · Ibiza 2026 · Network opens 1 June',
+          'Every referral tracked. Every commission recorded.',
+          'Free for concierges & Guest Relations teams',
+          'Restaurants · Beach clubs · Yacht charters · Villa rentals · Hotels · Spas',
+          'One shared system. Venues, concierges and GRMs together.',
+          'Locked founding rates — only for the 2026 launch class'
         ];
         var i = 0;
         setInterval(function() {
@@ -245,8 +247,8 @@ export default function HomePage() {
 
       <section className="hero">
         <div className="hero-tag">Private network · Ibiza 2026 · Founding members now</div>
-        <h1 className="hero-title">Your best GRM just left.<br/>Their contacts went with them.<br/><em>ISLA fixes that.</em></h1>
-        <p className="hero-sub">A GRM builds three years of concierge relationships. They know who sends the UHNW tables, who to call for a last-minute 12-cover. Then they leave. That institutional knowledge walks out with them. The venue is back to zero. <strong>ISLA keeps the relationship with the venue — permanently.</strong></p>
+        <h1 className="hero-title">The concierge bookings you can't track.<br/><em>ISLA fixes that.</em></h1>
+        <p className="hero-sub">Every venue in Ibiza pays commissions to concierges and Guest Relations. But the bookings live in WhatsApp threads, the tickets get lost mid-season, and when staff turn over the relationships walk out the door. <strong>ISLA gives venues, concierges and GRMs one shared system — every referral tracked, every commission recorded, every relationship preserved.</strong></p>
         <div className="hero-ctas">
           <Link href="/auth/signup?role=venue" className="btn-p">I Run a Venue</Link>
           <Link href="/auth/signup?role=concierge" className="btn-s">I'm a Concierge or GRM</Link>
