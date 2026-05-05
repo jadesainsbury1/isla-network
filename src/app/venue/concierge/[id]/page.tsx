@@ -22,7 +22,7 @@ export default async function ConciergeProfilePage({ params }: Props) {
   // Get concierge profile
   const { data: concierge } = await supabase
     .from('profiles')
-    .select('id, full_name, contact_email, phone, role')
+    .select('id, full_name, email, role, concierge_tier')
     .eq('id', id)
     .single()
 
@@ -54,9 +54,8 @@ export default async function ConciergeProfilePage({ params }: Props) {
           <div style={{ fontSize: 11, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 8 }}>Concierge Profile</div>
           <h1 style={{ fontSize: 32, color: 'var(--cream)', fontFamily: 'Georgia, serif', fontWeight: 300, marginBottom: 8 }}>{concierge?.full_name || 'Unknown'}</h1>
           <div style={{ color: 'var(--muted)', fontSize: 13 }}>
-            {concierge?.contact_email && <span>{concierge.contact_email}</span>}
-            {concierge?.contact_email && concierge?.phone && <span> &middot; </span>}
-            {concierge?.phone && <span>{concierge.phone}</span>}
+            {concierge?.email && <span>{concierge.email}</span>}
+            {concierge?.concierge_tier && <span style={{ marginLeft: 12, padding: '2px 8px', border: '1px solid var(--gold)', borderRadius: 3, color: 'var(--gold)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.15em' }}>{concierge.concierge_tier}</span>}
           </div>
         </div>
 
