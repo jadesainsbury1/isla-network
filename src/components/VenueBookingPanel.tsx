@@ -1,4 +1,7 @@
 'use client'
+import BillPhotoModal from './BillPhotoModal'
+import MarkPaidButton from './MarkPaidButton'
+import BookingTimeline from './BookingTimeline'
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import BillUpload from './BillUpload'
@@ -76,6 +79,34 @@ export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', paddingTop: 12, borderTop: '1px solid var(--border)' }}>
               <BillUpload bookingId={viewing.id} venueName={venue.name} venueEmail={venue.contact_email || ''} commissionRate={venue.commission_rate || '10%'} concierge={concierge.full_name || 'Concierge'} minSpend={Number(venue.min_spend) || 0} />
               <BookingChat bookingId={viewing.id} currentUserId={userId} currentUserRole="venue" currentUserName={venue.name} notifyEmail={concierge.email || ''} notifyName={concierge.full_name || 'Concierge'} />
+            </div>
+
+            {/* Trust layer: bill viewer + payment workflow */}
+            {viewing.bill_amount && (
+              <div style={{ marginTop: 16, paddingTop: 16, borderTop: '1px solid #2a2620' }}>
+                <div style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.3em', color: 'var(--muted)', textTransform: 'uppercase', marginBottom: 12 }}>Bill verification & payment</div>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+                  <BillPhotoModal billPhotoUrl={viewing.bill_photo_url || null} billAmount={viewing.bill_amount} ticketNumber={viewing.ticket_number || null} />
+                  {viewing.payment_status !== 'paid' && Number(viewing.commission_amount || 0) > 0 && (
+                    <MarkPaidButton bookingId={viewing.id} commissionAmount={Number(viewing.commission_amount)} conciergeName={concierge.full_name || 'Concierge'} />
+                  )}
+                  {viewing.payment_status === 'paid' && (
+                    <span style={{ fontSize: 11, fontFamily: 'monospace', color: '#4ade80', padding: '6px 12px', border: '1px solid #2a4a2a', borderRadius: 4, background: '#0d2218' }}>
+                      ✓ Paid
+                      {viewing.paid_at && ' · ' + new Date(viewing.paid_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
+                      {viewing.paid_method && ' · ' + String(viewing.paid_method).replace('_', ' ')}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Audit trail */}
+            <div style={{ marginTop: 16 }}>
+              <BookingTimeline bookingId={viewing.id} />
+            </div>
+
+            <div style={{ display: 'none' }}>
             </div>
           </div>
         )
