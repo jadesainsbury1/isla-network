@@ -60,6 +60,7 @@ export default function PendingPage() {
         <p style={{ fontSize: 12, color: 'var(--muted)', marginTop: 24 }}>
           Questions? <a href="mailto:hello@islanetwork.es" style={{ color: 'var(--gold)', textDecoration: 'none' }}>hello@islanetwork.es</a>
         </p>
+        <a href="/" style={{ display: 'inline-block', marginTop: 20, color: 'var(--gold)', fontSize: 11, fontFamily: "monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none' }}>&larr; Back to home</a>
       </div>
     </div>
   )

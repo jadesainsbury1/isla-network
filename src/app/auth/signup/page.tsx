@@ -60,6 +60,7 @@ function SignupForm() {
           <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7 }}>4. Referrals arrive with unique ISLA reference numbers</p>
         </div>
         <p style={{ fontSize: 12, color: 'var(--muted)' }}>Questions? <a href="mailto:hello@islanetwork.es" style={{ color: 'var(--gold)', textDecoration: 'none' }}>hello@islanetwork.es</a></p>
+        <a href="/" style={{ display: 'inline-block', marginTop: 20, color: 'var(--gold)', fontSize: 11, fontFamily: "monospace", textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none' }}>&larr; Back to home</a>
       </div>
     )
   }
