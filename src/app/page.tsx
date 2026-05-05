@@ -504,6 +504,20 @@ export default function HomePage() {
           </div>
       </section>
 
+      
+      <section style={{ padding: '80px 32px', background: '#0a0a0a', borderTop: '1px solid #1e1e1e', borderBottom: '1px solid #1e1e1e' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ color: '#5a5048', fontSize: 11, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.25em', marginBottom: 32 }}>From an Ibiza Finance Manager</p>
+          <p style={{ fontFamily: 'Georgia, serif', fontSize: 22, fontWeight: 300, color: '#f2ede4', lineHeight: 1.6, fontStyle: 'italic', marginBottom: 24 }}>
+            "The main problem we had at the end of the season was tracking bookings that came in once Guest Relations had finished. The GR left on August 31st, and September bookings were complicated to follow up on if we hadn't located the ticket — sometimes it didn't link to our systems and it became a slow, manual process."
+          </p>
+          <p style={{ color: '#c9a96e', fontSize: 13, fontFamily: "'DM Mono', monospace", textTransform: 'uppercase', letterSpacing: '0.2em' }}>— Finance Manager, Ibiza Hospitality Group</p>
+          <div style={{ marginTop: 40, padding: '20px 32px', border: '1px solid #2a2620', borderRadius: 4, display: 'inline-block' }}>
+            <p style={{ color: '#8a8070', fontSize: 13, fontFamily: 'Georgia, serif', fontStyle: 'italic' }}>This is exactly what ISLA fixes.</p>
+          </div>
+        </div>
+      </section>
+
       <footer className="foot">
         <div className="foot-logo">ISLA</div>
         <div className="foot-meta">The Concierge Network · islanetwork.es · Ibiza 2026 · hello@islanetwork.es · <a href="/admin" style={{color: 'inherit', opacity: 0.5, textDecoration: 'none'}}>admin</a></div>
