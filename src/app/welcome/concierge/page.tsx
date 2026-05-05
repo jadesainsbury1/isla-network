@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import SignOutButton from '@/components/SignOutButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -105,11 +106,7 @@ export default async function ConciergeWelcomePage() {
           <p style={{ fontSize: 12, color: '#8a8070', margin: '0 0 14px' }}>
             Questions? <a href="mailto:hello@islanetwork.es" style={{ color: '#c9a96e' }}>hello@islanetwork.es</a>
           </p>
-          <form action="/auth/signout" method="post" style={{ display: 'inline' }}>
-            <button type="submit" style={{ background: 'transparent', border: 'none', color: '#5a5048', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', fontFamily: 'inherit' }}>
-              Sign out
-            </button>
-          </form>
+          <SignOutButton />
         </div>
 
       </div>
