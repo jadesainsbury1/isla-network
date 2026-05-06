@@ -15,15 +15,15 @@ export async function POST(req: NextRequest) {
 
   const formData = await req.formData()
   const bookingId = formData.get('bookingId') as string
-  const billAmount = parseFloat(formData.get('billAmount') as string)
+  const netAmount = parseFloat(formData.get('netAmount') as string || '0')
+  const grossAmount = parseFloat(formData.get('grossAmount') as string || '0')
   const file = formData.get('billPhoto') as File | null
   const venueEmail = formData.get('venueEmail') as string
   const venueName = formData.get('venueName') as string
-  const commissionRate = parseFloat(formData.get('commissionRate') as string || '10')
+  const venueId = formData.get('venueId') as string
   const ticketNumber = (formData.get('ticket_number') as string) || ''
 
-  let billPhotoUrl = null
-
+  let billPhotoUrl: string | null = null
   if (file && file.size > 0) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
@@ -37,43 +37,40 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Look up venue min_spend threshold (per-booking floor)
-  const { data: bookingForVenue } = await supabase
-    .from('bookings')
-    .select('venue_id')
-    .eq('id', bookingId)
+  const { data: venue } = await supabase
+    .from('venues')
+    .select('commission_rate, commission_basis, min_spend, min_spend_basis')
+    .eq('id', venueId)
     .single()
-  let minSpend = 0
-  if (bookingForVenue?.venue_id) {
-    const { data: venueRow } = await supabase
-      .from('venues')
-      .select('min_spend')
-      .eq('id', bookingForVenue.venue_id)
-      .single()
-    minSpend = Number(venueRow?.min_spend) || 0
-  }
 
-  const meetsThreshold = minSpend === 0 || billAmount >= minSpend
-  const commissionAmount = meetsThreshold ? (billAmount * commissionRate) / 100 : 0
+  const rate = parseFloat(String(venue?.commission_rate || '10').replace('%', '')) || 10
+  const basis = venue?.commission_basis || 'net'
+  const minSpend = parseFloat(String(venue?.min_spend || '0')) || 0
+  const minSpendBasis = venue?.min_spend_basis || 'gross'
+
+  const thresholdAmount = minSpendBasis === 'net' ? netAmount : grossAmount
+  const meetsThreshold = minSpend === 0 || thresholdAmount >= minSpend
+  const commissionBaseAmount = basis === 'gross' ? grossAmount : netAmount
+  const commissionAmount = meetsThreshold ? (commissionBaseAmount * rate) / 100 : 0
+  const billAmount = commissionBaseAmount
+
   const paymentDue = new Date()
   paymentDue.setDate(paymentDue.getDate() + 30)
 
-  // Save booking with ticket_number
   await supabase.from('bookings').update({
     bill_amount: billAmount,
     bill_photo_url: billPhotoUrl,
     commission_amount: commissionAmount,
-    commission_status: 'confirmed_by_venue',
-    payment_status: 'pending',
-    payment_due_at: paymentDue.toISOString(),
+    commission_status: meetsThreshold ? 'confirmed_by_venue' : 'below_threshold',
+    payment_status: meetsThreshold ? 'pending' : 'no_commission',
+    payment_due_at: meetsThreshold ? paymentDue.toISOString() : null,
     status: 'confirmed',
     ticket_number: ticketNumber || null
   }).eq('id', bookingId)
 
-  // Fetch concierge email + names for notifications
   const { data: booking } = await supabase
     .from('bookings')
-    .select('id, date, covers, concierge_id, guest_profile, venue_id')
+    .select('id, date, covers, concierge_id, guest_profile')
     .eq('id', bookingId)
     .single()
 
@@ -89,74 +86,72 @@ export async function POST(req: NextRequest) {
     conciergeName = prof?.full_name || 'Concierge'
   }
 
-  const fmt = (n: number) => 'EUR ' + n.toLocaleString('en-GB', { maximumFractionDigits: 0 })
+  const fmt = (n: number) => 'EUR ' + n.toLocaleString('en-GB', { maximumFractionDigits: 2 })
   const guestName = (booking?.guest_profile as any)?.guest_name || ''
   const dateStr = booking?.date ? new Date(booking.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : ''
-
-  const ticketLine = ticketNumber ? `<p><strong>Ticket / Receipt:</strong> ${ticketNumber}</p>` : ''
   const dueDateStr = paymentDue.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
-  // Email to venue (confirmation)
   if (venueEmail) {
     try {
       await resend.emails.send({
         from: 'ISLA <hello@islanetwork.es>',
         to: venueEmail,
         cc: 'hello@islanetwork.es',
-        subject: `Commission confirmed - ${fmt(commissionAmount)} for ${conciergeName}`,
-        html: `
-          <div style="font-family: Georgia, serif; color: #1a1a1a; max-width: 560px; margin: 0 auto; padding: 24px;">
-            <h2 style="color: #c9a96e; font-weight: 400;">Commission Confirmed</h2>
-            <p>Hi ${venueName},</p>
-            <p>You have confirmed the bill total for the booking referred by <strong>${conciergeName}</strong>.</p>
-            <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Helvetica', sans-serif; font-size: 14px;">
-              <tr><td style="padding: 6px 0; color: #666;">Date</td><td style="text-align: right;">${dateStr}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Guest</td><td style="text-align: right;">${guestName || '—'}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Covers</td><td style="text-align: right;">${booking?.covers || '—'}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Bill Total</td><td style="text-align: right;">${fmt(billAmount)}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Commission Rate</td><td style="text-align: right;">${commissionRate}%</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;"><strong>Commission Owed</strong></td><td style="text-align: right; color: #c9a96e; font-weight: 600;">${fmt(commissionAmount)}</td></tr>
-              ${ticketNumber ? `<tr><td style="padding: 6px 0; color: #666;">Ticket / Receipt</td><td style="text-align: right; font-family: monospace;">${ticketNumber}</td></tr>` : ''}
-              <tr><td style="padding: 6px 0; color: #666;">Payment Due By</td><td style="text-align: right;">${dueDateStr}</td></tr>
-            </table>
-            <p>Please settle this commission directly with ${conciergeName} within 30 days. ISLA holds the full record.</p>
-            <p style="color: #888; font-size: 12px; margin-top: 32px;">ISLA - The Concierge Network</p>
-          </div>
-        `
+        subject: meetsThreshold
+          ? `Commission confirmed - ${fmt(commissionAmount)} for ${conciergeName}`
+          : `Bill submitted - below threshold, no commission`,
+        html: `<div style="font-family:Georgia,serif;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px;">
+          <h2 style="color:#c9a96e;font-weight:400;">${meetsThreshold ? 'Commission Confirmed' : 'Bill Below Threshold'}</h2>
+          <p>Hi ${venueName},</p>
+          <p>Booking referred by <strong>${conciergeName}</strong> on ${dateStr}${guestName ? ' (' + guestName + ')' : ''}.</p>
+          <table style="width:100%;border-collapse:collapse;margin:20px 0;font-family:Helvetica,sans-serif;font-size:14px;">
+            <tr><td style="padding:6px 0;color:#666;">Net F&B</td><td style="text-align:right;">${fmt(netAmount)}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">Gross total</td><td style="text-align:right;">${fmt(grossAmount)}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">Threshold (${minSpendBasis})</td><td style="text-align:right;">${fmt(minSpend)}${meetsThreshold ? ' met' : ' not met'}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">Commission rule</td><td style="text-align:right;">${rate}% of ${basis}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;"><strong>Commission Owed</strong></td><td style="text-align:right;color:#c9a96e;font-weight:600;">${fmt(commissionAmount)}</td></tr>
+            ${ticketNumber ? `<tr><td style="padding:6px 0;color:#666;">Ticket</td><td style="text-align:right;font-family:monospace;">${ticketNumber}</td></tr>` : ''}
+            ${meetsThreshold ? `<tr><td style="padding:6px 0;color:#666;">Payment Due By</td><td style="text-align:right;">${dueDateStr}</td></tr>` : ''}
+          </table>
+          ${meetsThreshold ? `<p>Please settle directly with ${conciergeName} within 30 days. ISLA holds the full record.</p>` : `<p>This booking did not meet your minimum spend threshold, so no commission applies. The booking is still logged for your records.</p>`}
+        </div>`
       })
     } catch (e) { console.error('venue email failed', e) }
   }
 
-  // Email to concierge
   if (conciergeEmail) {
     try {
       await resend.emails.send({
         from: 'ISLA <hello@islanetwork.es>',
         to: conciergeEmail,
         cc: 'hello@islanetwork.es',
-        subject: `Commission confirmed - ${fmt(commissionAmount)} from ${venueName}`,
-        html: `
-          <div style="font-family: Georgia, serif; color: #1a1a1a; max-width: 560px; margin: 0 auto; padding: 24px;">
-            <h2 style="color: #c9a96e; font-weight: 400;">You have a commission confirmed</h2>
-            <p>Hi ${conciergeName},</p>
-            <p><strong>${venueName}</strong> has confirmed the bill total for the booking you referred. Your commission has been logged in ISLA.</p>
-            <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Helvetica', sans-serif; font-size: 14px;">
-              <tr><td style="padding: 6px 0; color: #666;">Venue</td><td style="text-align: right;">${venueName}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Date</td><td style="text-align: right;">${dateStr}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Guest</td><td style="text-align: right;">${guestName || '—'}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Covers</td><td style="text-align: right;">${booking?.covers || '—'}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;">Bill Total</td><td style="text-align: right;">${fmt(billAmount)}</td></tr>
-              <tr><td style="padding: 6px 0; color: #666;"><strong>Your Commission</strong></td><td style="text-align: right; color: #c9a96e; font-weight: 600;">${fmt(commissionAmount)}</td></tr>
-              ${ticketNumber ? `<tr><td style="padding: 6px 0; color: #666;">Ticket Reference</td><td style="text-align: right; font-family: monospace;">${ticketNumber}</td></tr>` : ''}
-              <tr><td style="padding: 6px 0; color: #666;">Expected Payment By</td><td style="text-align: right;">${dueDateStr}</td></tr>
-            </table>
-            <p>The venue will settle this commission with you directly. View your full earnings dashboard at <a href="https://islanetwork.es/concierge/revenue" style="color: #c9a96e;">islanetwork.es</a>.</p>
-            <p style="color: #888; font-size: 12px; margin-top: 32px;">ISLA - The Concierge Network</p>
-          </div>
-        `
+        subject: meetsThreshold
+          ? `Commission confirmed - ${fmt(commissionAmount)} from ${venueName}`
+          : `Booking logged - below ${venueName} threshold`,
+        html: `<div style="font-family:Georgia,serif;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px;">
+          <h2 style="color:#c9a96e;font-weight:400;">${meetsThreshold ? 'You have a commission confirmed' : 'Booking logged - below threshold'}</h2>
+          <p>Hi ${conciergeName},</p>
+          <p><strong>${venueName}</strong> has submitted the bill for ${dateStr}${guestName ? ' (' + guestName + ')' : ''}.</p>
+          <table style="width:100%;border-collapse:collapse;margin:20px 0;font-family:Helvetica,sans-serif;font-size:14px;">
+            <tr><td style="padding:6px 0;color:#666;">Venue</td><td style="text-align:right;">${venueName}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">Bill total (gross)</td><td style="text-align:right;">${fmt(grossAmount)}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;">Threshold</td><td style="text-align:right;">${fmt(minSpend)} ${minSpendBasis}${meetsThreshold ? '' : ' not met'}</td></tr>
+            <tr><td style="padding:6px 0;color:#666;"><strong>Your Commission</strong></td><td style="text-align:right;color:#c9a96e;font-weight:600;">${fmt(commissionAmount)}</td></tr>
+            ${ticketNumber ? `<tr><td style="padding:6px 0;color:#666;">Ticket</td><td style="text-align:right;font-family:monospace;">${ticketNumber}</td></tr>` : ''}
+          </table>
+          ${meetsThreshold ? `<p>The venue will settle this commission with you directly within 30 days.</p>` : `<p>This booking did not meet ${venueName}'s minimum spend, so no commission applies on this one. It's still logged in your history.</p>`}
+        </div>`
       })
     } catch (e) { console.error('concierge email failed', e) }
   }
 
-  return NextResponse.json({ ok: true, commissionAmount })
+  return NextResponse.json({
+    ok: true,
+    commissionAmount,
+    meetsThreshold,
+    netAmount,
+    grossAmount,
+    basis,
+    rate
+  })
 }

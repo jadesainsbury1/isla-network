@@ -77,7 +77,7 @@ export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
               {gp.vip_notes && <div style={{ gridColumn: '1 / -1' }}><div style={{ fontSize: 9, fontFamily: 'monospace', color: '#555', textTransform: 'uppercase', marginBottom: 3 }}>VIP notes</div><div style={{ fontSize: 12, color: '#C9A96E', fontStyle: 'italic' }}>{gp.vip_notes}</div></div>}
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-              <BillUpload bookingId={viewing.id} venueName={venue.name} venueEmail={venue.contact_email || ''} commissionRate={venue.commission_rate || '10%'} concierge={concierge.full_name || 'Concierge'} minSpend={Number(venue.min_spend) || 0} />
+              <BillUpload bookingId={viewing.id} venueId={venue.id} venueName={venue.name} venueEmail={venue.contact_email || ''} commissionRate={venue.commission_rate || '10'} commissionBasis={venue.commission_basis || 'net'} minSpend={Number(venue.min_spend) || 0} minSpendBasis={venue.min_spend_basis || 'gross'} concierge={concierge.full_name || 'Concierge'} />
               <BookingChat bookingId={viewing.id} currentUserId={userId} currentUserRole="venue" currentUserName={venue.name} notifyEmail={concierge.email || ''} notifyName={concierge.full_name || 'Concierge'} />
             </div>
 
