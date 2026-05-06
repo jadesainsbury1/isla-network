@@ -165,14 +165,41 @@ export default function BillUpload({ bookingId, venueName, venueEmail, commissio
             )
           })()}
 
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={handleSubmit} disabled={loading || !billAmount || scanning} style={{ padding: '10px 20px', background: '#C9A96E', color: '#000', border: 'none', borderRadius: 4, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'monospace', letterSpacing: '0.1em', opacity: loading || !billAmount || scanning ? 0.5 : 1 }}>
-              {loading ? 'Submitting...' : 'Confirm & Submit'}
-            </button>
-            <button onClick={() => setOpen(false)} style={{ padding: '10px 20px', background: 'transparent', color: '#666', border: '1px solid #333', borderRadius: 4, fontSize: 11, cursor: 'pointer' }}>
-              Cancel
-            </button>
-          </div>
+          {(() => {
+            const isDisabled = loading || !billAmount || scanning
+            return (
+              <div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isDisabled}
+                    style={{
+                      padding: '10px 20px',
+                      background: isDisabled ? '#2a2a2a' : '#C9A96E',
+                      color: isDisabled ? '#666' : '#000',
+                      border: '1px solid ' + (isDisabled ? '#333' : '#C9A96E'),
+                      borderRadius: 4,
+                      fontSize: 11,
+                      fontWeight: 700,
+                      cursor: isDisabled ? 'not-allowed' : 'pointer',
+                      fontFamily: 'monospace',
+                      letterSpacing: '0.1em'
+                    }}
+                  >
+                    {loading ? 'Submitting...' : 'Confirm & Submit'}
+                  </button>
+                  <button onClick={() => setOpen(false)} style={{ padding: '10px 20px', background: 'transparent', color: '#666', border: '1px solid #333', borderRadius: 4, fontSize: 11, cursor: 'pointer' }}>
+                    Cancel
+                  </button>
+                </div>
+                {!billAmount && !scanning && !loading && (
+                  <div style={{ marginTop: 8, fontFamily: 'monospace', fontSize: 10, color: '#888', letterSpacing: '0.05em' }}>
+                    Enter the bill amount above to enable submit
+                  </div>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
     </div>
