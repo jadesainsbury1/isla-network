@@ -74,7 +74,7 @@ export default async function VenueWelcomePage() {
           {[
             { num: '01', title: 'Complete your venue profile', sub: 'Booking instructions, packages, contact details', href: 'mailto:hello@islanetwork.es?subject=Founding%20Venue%20Profile%20-%20' + encodeURIComponent(venue?.name || '') },
             { num: '02', title: 'Schedule a 15-minute onboarding call', sub: 'Direct line to Jade — founder', href: 'mailto:hello@islanetwork.es?subject=Founding%20Venue%20Call%20-%20' + encodeURIComponent(venue?.name || '') },
-            { num: '03', title: 'Refer a concierge or GRM you trust', sub: 'Skip the queue · founding members get priority', href: 'mailto:hello@islanetwork.es?subject=Concierge%20Referral' },
+            { num: '03', title: 'Refer a concierge or GRM you trust', sub: 'Skip the queue · founding members get priority', href: '/refer' },
             { num: '04', title: 'Follow @islanetwork.es', sub: 'Launch updates · founding member features', href: 'https://instagram.com/islanetwork.es' },
           ].map((item) => (
             <a key={item.num} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} style={{ display: 'block', padding: '20px 24px', background: '#1a1410', border: '1px solid #2a2620', borderRadius: 6, marginBottom: 12, textDecoration: 'none', transition: 'border-color 0.2s' }}>

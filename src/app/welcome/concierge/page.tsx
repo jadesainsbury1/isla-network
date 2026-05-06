@@ -69,7 +69,7 @@ export default async function ConciergeWelcomePage() {
 
           {[
             { num: '01', title: 'Tell us your favourite venues', sub: 'We will prioritise getting them on ISLA', href: 'mailto:hello@islanetwork.es?subject=Venue%20Recommendations' },
-            { num: '02', title: 'Refer a concierge friend', sub: 'Founding membership · skip the queue', href: 'mailto:hello@islanetwork.es?subject=Concierge%20Referral' },
+            { num: '02', title: 'Refer a concierge friend', sub: 'Founding membership · skip the queue', href: '/refer' },
             { num: '03', title: '15-min call with Jade', sub: 'Direct line to the founder', href: 'mailto:hello@islanetwork.es?subject=Concierge%20Onboarding%20Call' },
             { num: '04', title: 'Follow @islanetwork.es', sub: 'Launch updates and new venues', href: 'https://instagram.com/islanetwork.es' },
           ].map((item) => (
