@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
   const { base64, mediaType: rawMediaType } = await req.json()
-  // Normalise media type — Claude API accepts image/webp, image/jpeg, image/png, image/gif
-  const mediaType = rawMediaType === 'image/webp' ? 'image/webp' : 
+  const mediaType = rawMediaType === 'image/webp' ? 'image/webp' :
                     rawMediaType?.startsWith('image/') ? rawMediaType : 'image/jpeg'
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -20,31 +19,31 @@ export async function POST(req: NextRequest) {
       messages: [{
         role: 'user',
         content: [
-          {
-            type: 'image',
-            source: { type: 'base64', media_type: mediaType, data: base64 }
-          },
-          {
-            type: 'text',
-            text: 'This is a restaurant or beach club bill. I need the NET F&B total excluding IVA and excluding service charge. On Spanish receipts this is the "Base Imponible" or "Sin IVA" or "Base IVA 10%" figure — NOT the final total which includes tax. For example: if the bill shows Base IVA 10%: 6445.91, IVA: 644.59, Total: 7090.50 — return 6445.91. If there is no IVA breakdown and only a single total, return that total. Return ONLY the number as digits, no currency symbol, no commas, no text, no explanation. If you cannot find a bill, return 0.'
-          }
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
+          { type: 'text', text: 'This is a restaurant or beach club bill from Spain. Extract two figures and return ONLY a JSON object on a single line, no other text:\n\n{"net": <number>, "gross": <number>}\n\nWhere:\n- "net" is the F&B subtotal BEFORE IVA tax and BEFORE service charge (Base Imponible / Sin IVA / Base IVA 10%)\n- "gross" is the FINAL total the customer paid INCLUDING IVA and service charge (Total / TOTAL A PAGAR)\n\nIf you can only find one figure, put the same number in both. If you cannot read the bill, return {"net": 0, "gross": 0}. Return ONLY the JSON, no markdown, no explanation.' }
         ]
       }]
     })
   })
 
   const data = await response.json()
+  const text = data.content?.[0]?.text?.trim() || '{"net":0,"gross":0}'
 
-  if (!response.ok) {
-    return NextResponse.json({ amount: null, error: data?.error?.message || 'API error', status: response.status, raw: data })
+  let parsed = { net: 0, gross: 0 }
+  try {
+    const cleaned = text.replace(/```json|```/g, '').trim()
+    parsed = JSON.parse(cleaned)
+  } catch {
+    const num = parseFloat(text.replace(/[^0-9.]/g, ''))
+    if (!isNaN(num) && num > 0) parsed = { net: num, gross: num }
   }
 
-  const text = data.content?.[0]?.text?.trim() || '0'
-  const amount = parseFloat(text.replace(/[^0-9.]/g, ''))
+  const net = Number(parsed.net) || 0
+  const gross = Number(parsed.gross) || 0
 
   return NextResponse.json({
-    amount: isNaN(amount) || amount === 0 ? null : amount,
-    debug: text,
-    raw: data
+    net: net > 0 ? net : null,
+    gross: gross > 0 ? gross : null,
+    amount: net > 0 ? net : (gross > 0 ? gross : null)
   })
 }
