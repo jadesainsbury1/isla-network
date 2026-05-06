@@ -9,16 +9,20 @@ import BookingChat from '@/components/BookingChat'
 import VenueBookingPanel from '@/components/VenueBookingPanel'
 import type { Booking, Profile } from '@/lib/types'
 
-export default async function VenueDashboardPage() {
+export default async function VenueDashboardPage({ searchParams }: { searchParams: Promise<{ venue?: string }> }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 
-  const { data: venue } = await supabase
+  const sp = await searchParams
+  const { data: venues } = await supabase
     .from('venues')
     .select('*')
     .eq('user_id', user.id)
-    .single()
+    .order('name', { ascending: true })
+
+  const allVenues = venues || []
+  const venue = (sp?.venue && allVenues.find(v => v.id === sp.venue)) || allVenues[0] || null
 
   if (!venue) {
     return (
@@ -63,7 +67,19 @@ export default async function VenueDashboardPage() {
 
   return (
     <>
-      <div className="topbar"><div className="page-title">Dashboard</div></div>
+      <div className="topbar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <div className="page-title">{venue.name}</div>
+        {allVenues.length > 1 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Venue</span>
+            <form>
+              <select name="venue" defaultValue={venue.id} onChange={(e) => { (e.currentTarget.form as HTMLFormElement).submit() }} style={{ padding: '6px 10px', background: 'var(--charcoal)', border: '1px solid #2a2620', borderRadius: 4, color: 'var(--cream)', fontSize: 12, fontFamily: 'monospace', cursor: 'pointer' }}>
+                {allVenues.map(v => (<option key={v.id} value={v.id}>{v.name}</option>))}
+              </select>
+            </form>
+          </div>
+        )}
+      </div>
       <div className="body">
 
         {/* Stats */}
