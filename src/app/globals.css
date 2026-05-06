@@ -923,3 +923,23 @@ tr:hover td { background: #1E1C1833; }
   }
 }
 
+/* Mobile horizontal scroll for booking tables */
+.table-card {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-card table {
+  min-width: 720px;
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .table-card {
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+.table-card::-webkit-scrollbar { height: 6px; }
+.table-card::-webkit-scrollbar-thumb { background: #2a2620; border-radius: 3px; }
+
