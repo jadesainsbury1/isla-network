@@ -190,7 +190,10 @@ export default function HomePage() {
         @media (max-width: 768px) {
           .urgency-bar { gap: 12px; padding: 10px 20px; }
           .nav { padding: 16px 20px; }
-          .nav-btn-s { display: none; }
+          .nav { padding: 14px 20px; gap: 8px; flex-wrap: wrap; }
+          .nav-actions { gap: 6px; }
+          .nav-btn-p, .nav-btn-s { padding: 7px 10px; font-size: 9px; letter-spacing: 0.08em; }
+          .nav-sub { display: none; }
           .stats-bar { gap: 32px; padding: 16px 20px; }
           .hero { padding: 60px 20px 48px; }
           .hero-title { font-size: 36px; }
@@ -239,7 +242,6 @@ export default function HomePage() {
         <div><div className="nav-logo">ISLA</div><div className="nav-sub">The Concierge Network</div></div>
         <div className="nav-actions">
           <Link href="/auth/login" className="nav-btn-s">Sign In</Link>
-          <Link href="/auth/signup?role=concierge" className="nav-btn-s">Join Free</Link>
           <Link href="/auth/signup?role=venue" className="nav-btn-p">List Your Venue</Link>
         </div>
       </nav>
