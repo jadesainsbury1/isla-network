@@ -34,8 +34,17 @@ export async function POST(req: NextRequest) {
   })
 
   const data = await response.json()
+
+  if (!response.ok) {
+    return NextResponse.json({ amount: null, error: data?.error?.message || 'API error', status: response.status, raw: data })
+  }
+
   const text = data.content?.[0]?.text?.trim() || '0'
   const amount = parseFloat(text.replace(/[^0-9.]/g, ''))
 
-  return NextResponse.json({ amount: isNaN(amount) || amount === 0 ? null : amount })
+  return NextResponse.json({
+    amount: isNaN(amount) || amount === 0 ? null : amount,
+    debug: text,
+    raw: data
+  })
 }
