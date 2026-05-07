@@ -159,7 +159,7 @@ export default function VenueBookingPanel({ bookings, venue, userId }: Props) {
               return (
                 <tr key={b.id} onClick={() => setViewingId(b.id)} style={{ cursor: 'pointer' }} className={viewingId === b.id ? 'tr-active' : ''}>
                   <td className="td-mono td-muted" style={{ color: 'var(--gold)' }}>{new Date(b.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}{gp.arrival_time ? <><br/><span style={{fontSize:10,color:'var(--muted)'}}>{gp.arrival_time}</span></> : null}</td>
-                  <td className="td-name" onClick={(e) => e.stopPropagation()}><Link href={`/venue/concierge/${concierge.id || ''}`} style={{ color: 'var(--cream)', textDecoration: 'none', borderBottom: '1px dotted var(--muted)' }}>{concierge.full_name || '—'}</Link></td>
+                  <td className="td-name"><Link href={`/venue/concierge/${concierge.id || ''}`} style={{ color: 'var(--cream)', textDecoration: 'none', borderBottom: '1px dotted var(--muted)' }}>{concierge.full_name || '—'}</Link></td>
                   <td className="td-muted" style={{ fontSize: 12 }}>{gp.guest_name || '—'}</td>
                   <td className="td-mono">{b.covers || '—'}</td>
                   <td><span className={'badge ' + (b.status === 'confirmed' ? 'badge-paid' : 'badge-pending')}>{b.status}</span></td>
