@@ -12,12 +12,15 @@ export default async function ConciergeProfilePage({ params, searchParams }: Pro
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
 
-  // Get venue for this user
-  const { data: venue } = await supabase
+  // Get all venues for this user; pick the one from ?from= or first
+  const { data: venues } = await supabase
     .from('venues')
     .select('*')
     .eq('user_id', user.id)
-    .single()
+    .order('name', { ascending: true })
+
+  const allVenues = venues || []
+  const venue = (sp?.from && allVenues.find(v => v.id === sp.from)) || allVenues[0] || null
 
   if (!venue) redirect('/venue/dashboard')
 
