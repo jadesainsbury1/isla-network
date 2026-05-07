@@ -2,10 +2,12 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 
-interface Props { params: Promise<{ id: string }> }
+interface Props { params: Promise<{ id: string }>; searchParams: Promise<{ from?: string }> }
 
-export default async function ConciergeProfilePage({ params }: Props) {
+export default async function ConciergeProfilePage({ params, searchParams }: Props) {
   const { id } = await params
+  const sp = await searchParams
+  const backHref = sp?.from ? `/venue/dashboard?venue=${sp.from}` : '/venue/dashboard'
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/auth/login')
@@ -46,7 +48,7 @@ export default async function ConciergeProfilePage({ params }: Props) {
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh', padding: 32 }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <Link href="/venue/dashboard" style={{ color: 'var(--muted)', fontSize: 12, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none' }}>
+        <Link href={backHref} style={{ color: 'var(--muted)', fontSize: 12, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.15em', textDecoration: 'none' }}>
           &larr; Back to dashboard
         </Link>
 
