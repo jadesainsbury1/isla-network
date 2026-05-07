@@ -23,13 +23,15 @@ export default async function VenueLayout({ children }: { children: React.ReactN
 
   const { data: venues } = await supabase
     .from('venues')
-    .select('name')
+    .select('name, parent_group')
     .eq('user_id', user.id)
     .order('name', { ascending: true })
-    .limit(1)
 
-  const venue = venues?.[0] || null
-  const initials = (venue?.name || profile?.full_name || 'V').charAt(0).toUpperCase()
+  const allVenues = venues || []
+  const groupName = allVenues.find(v => v.parent_group)?.parent_group || null
+  const displayName = groupName || allVenues[0]?.name || profile?.full_name || 'Venue'
+  const displayRole = groupName ? `${allVenues.length} venues · ISLA` : 'Venue · ISLA'
+  const initials = displayName.charAt(0).toUpperCase()
 
   return (
     <div className="app-shell">
@@ -44,8 +46,8 @@ export default async function VenueLayout({ children }: { children: React.ReactN
             {initials}
           </div>
           <div>
-            <div className="user-name">{venue?.name || profile?.full_name || 'Venue'}</div>
-            <div className="user-role">Venue · ISLA</div>
+            <div className="user-name">{displayName}</div>
+            <div className="user-role">{displayRole}</div>
           </div>
         </div>
 
