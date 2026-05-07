@@ -21,12 +21,14 @@ export default async function VenueLayout({ children }: { children: React.ReactN
 
   if (profile?.role === 'concierge') redirect('/concierge/revenue')
 
-  const { data: venue } = await supabase
+  const { data: venues } = await supabase
     .from('venues')
     .select('name')
     .eq('user_id', user.id)
-    .single()
+    .order('name', { ascending: true })
+    .limit(1)
 
+  const venue = venues?.[0] || null
   const initials = (venue?.name || profile?.full_name || 'V').charAt(0).toUpperCase()
 
   return (
