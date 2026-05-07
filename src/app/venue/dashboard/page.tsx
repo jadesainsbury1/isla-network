@@ -7,6 +7,7 @@ import VenuePayButton from '@/components/VenuePayButton'
 import BillUpload from '@/components/BillUpload'
 import BookingChat from '@/components/BookingChat'
 import VenueBookingPanel from '@/components/VenueBookingPanel'
+import VenueSwitcher from '@/components/VenueSwitcher'
 import type { Booking, Profile } from '@/lib/types'
 
 export default async function VenueDashboardPage({ searchParams }: { searchParams: Promise<{ venue?: string }> }) {
@@ -70,14 +71,7 @@ export default async function VenueDashboardPage({ searchParams }: { searchParam
       <div className="topbar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div className="page-title">{venue.name}</div>
         {allVenues.length > 1 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 9, fontFamily: 'monospace', letterSpacing: '0.2em', color: 'var(--muted)', textTransform: 'uppercase' }}>Venue</span>
-            <form>
-              <select name="venue" defaultValue={venue.id} onChange={(e) => { (e.currentTarget.form as HTMLFormElement).submit() }} style={{ padding: '6px 10px', background: 'var(--charcoal)', border: '1px solid #2a2620', borderRadius: 4, color: 'var(--cream)', fontSize: 12, fontFamily: 'monospace', cursor: 'pointer' }}>
-                {allVenues.map(v => (<option key={v.id} value={v.id}>{v.name}</option>))}
-              </select>
-            </form>
-          </div>
+          <VenueSwitcher venues={allVenues.map(v => ({ id: v.id, name: v.name }))} currentId={venue.id} />
         )}
       </div>
       <div className="body">
