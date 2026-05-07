@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import BookingConfirm from '@/components/BookingConfirm'
 import VenueInviteButton from '@/components/VenueInviteButton'
@@ -16,6 +17,9 @@ export default async function VenueDashboardPage({ searchParams }: { searchParam
   if (!user) redirect('/auth/login')
 
   const sp = await searchParams
+  const cookieStore = await cookies()
+  const cookieVenueId = cookieStore.get('selected_venue_id')?.value
+
   const { data: venues } = await supabase
     .from('venues')
     .select('*')
@@ -23,7 +27,13 @@ export default async function VenueDashboardPage({ searchParams }: { searchParam
     .order('name', { ascending: true })
 
   const allVenues = venues || []
-  const venue = (sp?.venue && allVenues.find(v => v.id === sp.venue)) || allVenues[0] || null
+  let venue = null
+  if (sp?.venue) venue = allVenues.find(v => v.id === sp.venue) || null
+  if (!venue && cookieVenueId) venue = allVenues.find(v => v.id === cookieVenueId) || null
+  if (!venue) venue = allVenues[0] || null
+  if (venue && venue.id !== cookieVenueId) {
+    cookieStore.set('selected_venue_id', venue.id, { path: '/', maxAge: 60 * 60 * 24 * 30 })
+  }
 
   if (!venue) {
     return (
